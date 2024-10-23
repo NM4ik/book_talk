@@ -1,7 +1,12 @@
 name: book_talk
-description: "A new Flutter project."
-publish_to: 'none'
-version: 0.1.0
+
+description: "BookTalk: an app for booking meeting rooms in the office."
+
+publish_to: "none"
+
+version: 0.0.1+1
+
+#repository: https://github.com/NM4ik/book_talk
 
 environment:
   sdk: ">=3.5.0 <4.0.0"
@@ -14,7 +19,6 @@ dependencies:
 dev_dependencies:
   custom_lint: ^0.6.8
   pedant: ^1.1.0
-
 
 flutter:
   uses-material-design: true
