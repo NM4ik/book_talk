@@ -1,4 +1,4 @@
-package com.mikhailov.book_talk
+package com.example.example
 
 import io.flutter.embedding.android.FlutterActivity
 
