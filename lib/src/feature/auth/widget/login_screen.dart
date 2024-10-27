@@ -46,12 +46,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     hintText: 'Email',
                   ),
                 ),
-                TextField(
-                  controller: _passwordController,
-                  decoration: InputDecoration(
-                    hintText: 'Password',
-                  ),
-                ),
+                _PasswordTextFieldWidget(controller: _passwordController),
                 Padding(
                   padding: const EdgeInsets.only(top: 24),
                   child: SizedBox(
@@ -86,3 +81,50 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 }
+
+class _PasswordTextFieldWidget extends StatefulWidget {
+  const _PasswordTextFieldWidget({required this.controller});
+
+  final TextEditingController controller;
+
+  @override
+  State<_PasswordTextFieldWidget> createState() =>
+      _PasswordTextFieldWidgetState();
+}
+
+class _PasswordTextFieldWidgetState extends State<_PasswordTextFieldWidget> {
+  bool _obscureText = true;
+
+  @override
+  Widget build(BuildContext context) {
+    return TextField(
+      controller: widget.controller,
+      decoration: InputDecoration(
+        hintText: 'Password',
+        suffixIcon: IconButton(
+          icon: Icon(_obscureText ? Icons.visibility_off : Icons.visibility),
+          onPressed: () {
+            setState(() => _obscureText = !_obscureText);
+          },
+        ),
+      ),
+      obscureText: _obscureText,
+    );
+  }
+}
+
+// mixin _AuthenticationFormStateMixin on State<LoginScreen> {
+//   static String? _emailValidator(String value) => switch (value.length) {
+//         0 => 'Email is required',
+//         < 3 => 'Too short value',
+//         _ => null,
+//       };
+
+//   static String? _passwordValidator(String value) => switch (value.length) {
+//         0 => 'Password is required',
+//         < 6 ||
+//         > 32 =>
+//           'Must be 6 or more characters and must be less than 32 characters',
+//         _ => null,
+//       };
+// }
