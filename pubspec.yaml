@@ -15,10 +15,31 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  intl: any
+  flutter_localizations:
+    sdk: flutter
+
+  # Stream
+  rxdart: ^0.28.0
+  flutter_bloc: ^8.1.6
+
+  # Logger
+  l: ^4.0.2
+
+  # Router
+  octopus: ^0.0.9
+  bloc_concurrency: ^0.2.5
+
+  # Device local data
+  shared_preferences: ^2.3.2
+
+  # UI lib
+  book_talk_ui:
+    path: packages/ui/book_talk_ui
 
 dev_dependencies:
-  custom_lint: ^0.6.8
-  pedant: ^1.1.0
+  pubspec_generator: ^4.0.0
+  build_runner: ^2.4.13
 
 flutter:
   uses-material-design: true

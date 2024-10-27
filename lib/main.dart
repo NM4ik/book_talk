@@ -1,27 +1,7 @@
-import 'package:flutter/material.dart';
+import 'dart:async';
 
-void main() {
-  runApp(
-    const MainApp(),
-  );
-}
+import 'package:book_talk/src/common/utils/error_tracking.dart';
+import 'package:book_talk/src/feature/bootstrap/logic/bootstrap.dart';
 
-class MainApp extends StatelessWidget {
-  const MainApp({
-    super.key,
-  });
-
-  @override
-  Widget build(
-    BuildContext context,
-  ) =>
-      const MaterialApp(
-        home: Scaffold(
-          body: Center(
-            child: Text(
-              'Hello World!',
-            ),
-          ),
-        ),
-      );
-}
+void main() => runZonedGuarded(
+    () => AppBootstrap().initializeApp(), ErrorTracking.trackError);

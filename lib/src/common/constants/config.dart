@@ -6,9 +6,7 @@ class Config {
 
   /// environment from starter
   Environment get environment => Environment.from(
-        const String.fromEnvironment(
-          'ENVIRONMENT',
-        ),
+        const String.fromEnvironment('ENVIRONMENT'),
       );
 }
 
@@ -25,4 +23,7 @@ enum Environment {
         'prod' => Environment.prod,
         _ => kReleaseMode ? Environment.prod : Environment.dev,
       };
+
+  bool get isDev => this == dev;
+  bool get isProd => this == prod;
 }

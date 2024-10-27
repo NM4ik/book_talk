@@ -1,0 +1,6 @@
+{
+    "editor.codeActionsOnSave": {
+        "source.fixAll": "always",
+        "source.dcm.fixAll": "always",
+    }
+}
