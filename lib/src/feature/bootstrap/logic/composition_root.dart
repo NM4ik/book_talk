@@ -1,6 +1,15 @@
+import 'dart:io';
+
 import 'package:book_talk/src/common/constants/config.dart';
+import 'package:book_talk/src/common/constants/pubspec.yaml.g.dart';
+import 'package:book_talk/src/common/model/app_metadata.dart';
 import 'package:book_talk/src/common/utils/logger.dart';
 import 'package:book_talk/src/common/utils/preferences_storage/preferences_storage.dart';
+import 'package:book_talk/src/feature/auth/bloc/auth_bloc.dart';
+import 'package:book_talk/src/feature/auth/data/auth_datasource.dart';
+import 'package:book_talk/src/feature/auth/data/auth_repository.dart';
+import 'package:book_talk/src/feature/auth/data/auth_storage.dart';
+import 'package:book_talk/src/feature/auth/model/auth_status.dart';
 import 'package:book_talk/src/feature/bootstrap/model/dependencies_container.dart';
 import 'package:book_talk/src/feature/settings/bloc/app_settings_bloc.dart';
 import 'package:book_talk/src/feature/settings/data/app_settings_datasource.dart';
@@ -64,13 +73,17 @@ class DependenciesFactory extends AsyncFactory<DependenciesContainer> {
 
   @override
   Future<DependenciesContainer> create() async {
-    final sharedPreferences = SharedPreferencesStorage(
-      sharedPreferences: SharedPreferencesAsync(),
-    );
+    final sharedPreferences =
+        SharedPreferencesStorage(sharedPreferences: SharedPreferencesAsync());
     final settingsBloc = await SettingsBlocFactory(sharedPreferences).create();
+    final appMetaData = AppMetadataFactory(config: config).create();
+    final authBloc =
+        await AuthBlocFactory(preferencesStorage: sharedPreferences).create();
 
     return DependenciesContainer(
       appSettingsBloc: settingsBloc,
+      appMetadata: appMetaData,
+      authBloc: authBloc,
     );
   }
 }
@@ -99,6 +112,47 @@ class SettingsBlocFactory extends AsyncFactory<AppSettingsBloc> {
     return AppSettingsBloc(
       appSettingsRepository: appSettingsRepository,
       initialState: initialState,
+    );
+  }
+}
+
+class AppMetadataFactory extends Factory<AppMetadata> {
+  final Config config;
+
+  AppMetadataFactory({required this.config});
+
+  @override
+  AppMetadata create() {
+    return AppMetadata(
+      environment: config.environment.name,
+      appVersion: Pubspec.version.canonical,
+      operatingSystem: Platform.operatingSystem,
+      locale: Platform.localeName,
+    );
+  }
+}
+
+class AuthBlocFactory extends AsyncFactory<AuthBloc> {
+  final PreferencesStorage preferencesStorage;
+
+  AuthBlocFactory({required this.preferencesStorage});
+
+  @override
+  Future<AuthBloc> create() async {
+    final AuthStorage authStorage = AuthStorageImpl(
+      preferencesStorage: preferencesStorage,
+    );
+    final AuthDatasource authDatasource = AuthDatasourceTemporaryImpl();
+    final AuthRepository authRepository = AuthRepositoryImpl(
+      authStorage: authStorage,
+      authDatasource: authDatasource,
+    );
+
+    final token = await authStorage.get();
+
+    return AuthBloc(
+      AuthState.idle(token != null ? AuthStatus.auth : AuthStatus.unAuth),
+      authRepository: authRepository,
     );
   }
 }

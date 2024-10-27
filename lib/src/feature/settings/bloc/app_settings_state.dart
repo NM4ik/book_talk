@@ -11,11 +11,11 @@ sealed class AppSettingsState {
   factory AppSettingsState.error(Object error) =>
       _ErrorAppSettingsState(error: error);
 
-  AppSettings? get settings => switch(this) {
-    _IdleAppSettingsState() => (this as _IdleAppSettingsState).appSettings,
-    _LoadingAppSettingsState() => null,
-    _ErrorAppSettingsState() => null,
-  };
+  AppSettings? get settings => switch (this) {
+        _IdleAppSettingsState() => (this as _IdleAppSettingsState).appSettings,
+        _LoadingAppSettingsState() => null,
+        _ErrorAppSettingsState() => null,
+      };
 }
 
 final class _IdleAppSettingsState extends AppSettingsState {
@@ -37,7 +37,10 @@ final class _IdleAppSettingsState extends AppSettingsState {
   String toString() => '_IdleAppSettingsState(appSettings: $appSettings)';
 }
 
-final class _LoadingAppSettingsState extends AppSettingsState {}
+final class _LoadingAppSettingsState extends AppSettingsState {
+  @override
+  String toString() => '_LoadingAppSettingsState()';
+}
 
 final class _ErrorAppSettingsState extends AppSettingsState {
   final Object error;

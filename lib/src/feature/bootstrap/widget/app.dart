@@ -1,3 +1,4 @@
+import 'package:book_talk/src/feature/auth/widget/auth_scope.dart';
 import 'package:book_talk/src/feature/bootstrap/model/dependencies_container.dart';
 import 'package:book_talk/src/feature/bootstrap/widget/app_context.dart';
 import 'package:book_talk/src/feature/bootstrap/widget/app_scope.dart';
@@ -17,7 +18,9 @@ class App extends StatelessWidget {
     return AppScope(
       dependenciesContainer: dependenciesContainer,
       child: SettingsScope(
-        child: MaterialAppContext(),
+        child: AuthScope(
+          child: MaterialAppContext(),
+        ),
       ),
     );
   }
