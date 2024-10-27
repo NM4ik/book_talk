@@ -1,5 +1,3 @@
-import 'package:flutter/foundation.dart';
-
 /// [Config] Main information about the application configuration.
 class Config {
   const Config();
@@ -13,7 +11,8 @@ class Config {
 /// [Environment] describes in what mode the app was started.
 enum Environment {
   dev,
-  prod;
+  prod,
+  unknown;
 
   static from(
     String env,
@@ -21,7 +20,7 @@ enum Environment {
       switch (env) {
         'dev' => Environment.dev,
         'prod' => Environment.prod,
-        _ => kReleaseMode ? Environment.prod : Environment.dev,
+        _ => Environment.unknown,
       };
 
   bool get isDev => this == dev;
