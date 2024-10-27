@@ -32,5 +32,3 @@ final class _SignEmailPasswordAuthEvent extends AuthEvent {
 final class _SignOutAuthEvent extends AuthEvent {
   const _SignOutAuthEvent();
 }
-
-

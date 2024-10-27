@@ -21,7 +21,6 @@ final class AuthBloc extends Bloc<AuthEvent, AuthState> {
     _authRepository.authStatus.map((status) => AuthState.idle(status)).listen(
       ($state) {
         if ($state != state) {
-          print('state update state');
           emit($state);
         }
       },
@@ -61,5 +60,4 @@ final class AuthBloc extends Bloc<AuthEvent, AuthState> {
       onError(e, stackTrace);
     }
   }
-
 }
