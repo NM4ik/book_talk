@@ -34,7 +34,7 @@ final class AccountBloc extends Bloc<AccountEvent, AccountState> {
     } on Object catch (error) {
       emitter(AccountState.error(state.user, error));
 
-      // TODO(mikhailov): Подумать на счет HTTPexcp.
+      // TODO(mikhailov): Think about HTTPexc.
       rethrow;
     }
   }

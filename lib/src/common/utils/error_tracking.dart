@@ -1,7 +1,7 @@
 import 'package:book_talk/src/common/utils/logger.dart';
 import 'package:flutter/widgets.dart';
 
-// TODO(mikhailov): implement tracking remote system.
+// TODO(mikhailov): implement tracking remote system. (Sentry, GlitchTip, FirebaseCrash)
 abstract final class ErrorTracking {
   static Future<void> trackError(
     Object error,

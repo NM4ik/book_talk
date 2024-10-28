@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:book_talk/src/feature/auth/data/auth_repository.dart';
 import 'package:book_talk/src/feature/auth/model/auth_status.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -21,7 +23,9 @@ final class AuthBloc extends Bloc<AuthEvent, AuthState> {
       },
     );
 
-    _authRepository.authStatus.map((status) => AuthState.idle(status)).listen(
+    _authStatusSubscription = _authRepository.authStatus
+        .map((status) => AuthState.idle(status))
+        .listen(
       ($state) {
         if ($state != state) {
           emit($state);
@@ -32,6 +36,7 @@ final class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   final AuthRepository _authRepository;
   final String? _token;
+  StreamSubscription<AuthState>? _authStatusSubscription;
 
   Future<void> _onSignEmailPasswordEvent(
     _SignEmailPasswordAuthEvent event,
@@ -66,4 +71,10 @@ final class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   String? get token => _token;
+
+  @override
+  Future<void> close() {
+    _authStatusSubscription?.cancel();
+    return super.close();
+  }
 }
