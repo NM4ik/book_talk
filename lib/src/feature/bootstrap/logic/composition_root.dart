@@ -5,11 +5,12 @@ import 'package:book_talk/src/common/constants/pubspec.yaml.g.dart';
 import 'package:book_talk/src/common/model/app_metadata.dart';
 import 'package:book_talk/src/common/utils/logger.dart';
 import 'package:book_talk/src/common/utils/preferences_storage/preferences_storage.dart';
+import 'package:book_talk/src/feature/account/data/user_repository.dart';
 import 'package:book_talk/src/feature/auth/bloc/auth_bloc.dart';
 import 'package:book_talk/src/feature/auth/data/auth_datasource.dart';
 import 'package:book_talk/src/feature/auth/data/auth_repository.dart';
 import 'package:book_talk/src/feature/auth/data/auth_storage.dart';
-import 'package:book_talk/src/feature/auth/model/auth_status.dart';
+import 'package:book_talk/src/feature/account/data/user_datasource.dart';
 import 'package:book_talk/src/feature/bootstrap/model/dependencies_container.dart';
 import 'package:book_talk/src/feature/settings/bloc/app_settings_bloc.dart';
 import 'package:book_talk/src/feature/settings/data/app_settings_datasource.dart';
@@ -84,6 +85,7 @@ class DependenciesFactory extends AsyncFactory<DependenciesContainer> {
       appSettingsBloc: settingsBloc,
       appMetadata: appMetaData,
       authBloc: authBloc,
+      userRepository: UserRepositoryFactory().create(),
     );
   }
 }
@@ -139,7 +141,7 @@ class AuthBlocFactory extends AsyncFactory<AuthBloc> {
 
   @override
   Future<AuthBloc> create() async {
-    final AuthStorage authStorage = AuthStorageImpl(
+    final AuthStorage<String> authStorage = AuthStorageImpl(
       preferencesStorage: preferencesStorage,
     );
     final AuthDatasource authDatasource = AuthDatasourceTemporaryImpl();
@@ -151,9 +153,16 @@ class AuthBlocFactory extends AsyncFactory<AuthBloc> {
     final token = await authStorage.get();
 
     return AuthBloc(
-      AuthState.idle(token != null ? AuthStatus.auth : AuthStatus.unAuth),
+      token,
       authRepository: authRepository,
     );
+  }
+}
+
+class UserRepositoryFactory extends Factory<UserRepository> {
+  @override
+  UserRepository create() {
+    return UserRepositoryImpl(userDatasource: UserDatasourceImpl());
   }
 }
 

@@ -19,9 +19,9 @@ sealed class AppSettingsState {
 }
 
 final class _IdleAppSettingsState extends AppSettingsState {
-  final AppSettings? appSettings;
-
   const _IdleAppSettingsState({required this.appSettings});
+
+  final AppSettings? appSettings;
 
   @override
   bool operator ==(covariant _IdleAppSettingsState other) {
@@ -43,9 +43,9 @@ final class _LoadingAppSettingsState extends AppSettingsState {
 }
 
 final class _ErrorAppSettingsState extends AppSettingsState {
-  final Object error;
-
   const _ErrorAppSettingsState({required this.error});
+
+  final Object error;
 
   @override
   bool operator ==(covariant _ErrorAppSettingsState other) {

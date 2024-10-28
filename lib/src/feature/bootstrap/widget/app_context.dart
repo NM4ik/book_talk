@@ -25,6 +25,7 @@ class _MaterialAppContextState extends State<MaterialAppContext>
 
     return MaterialApp.router(
       title: 'BookTalk',
+      debugShowCheckedModeBanner: false,
 
       // App Router
       routerConfig: router.config,

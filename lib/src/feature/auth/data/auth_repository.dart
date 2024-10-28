@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:book_talk/src/feature/auth/data/auth_datasource.dart';
 import 'package:book_talk/src/feature/auth/data/auth_storage.dart';
 import 'package:book_talk/src/feature/auth/model/auth_status.dart';
@@ -17,7 +19,7 @@ class AuthRepositoryImpl<T> implements AuthRepository<T> {
   final AuthStorage<T> _authStorage;
   final AuthDatasource<T> _authDatasource;
 
-  const AuthRepositoryImpl({
+  AuthRepositoryImpl({
     required AuthStorage<T> authStorage,
     required AuthDatasource<T> authDatasource,
   })  : _authStorage = authStorage,

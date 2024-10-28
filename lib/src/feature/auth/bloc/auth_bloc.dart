@@ -7,9 +7,12 @@ part 'auth_event.dart';
 
 final class AuthBloc extends Bloc<AuthEvent, AuthState> {
   AuthBloc(
-    super.initialState, {
+    String? token, {
     required AuthRepository authRepository,
-  }) : _authRepository = authRepository {
+  })  : _authRepository = authRepository,
+        _token = token,
+        super(AuthState.idle(
+            token != null ? AuthStatus.auth : AuthStatus.unAuth)) {
     on<AuthEvent>(
       (event, emitter) => switch (event) {
         _SignEmailPasswordAuthEvent() =>
@@ -28,6 +31,7 @@ final class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   final AuthRepository _authRepository;
+  final String? _token;
 
   Future<void> _onSignEmailPasswordEvent(
     _SignEmailPasswordAuthEvent event,
@@ -60,4 +64,6 @@ final class AuthBloc extends Bloc<AuthEvent, AuthState> {
       onError(e, stackTrace);
     }
   }
+
+  String? get token => _token;
 }
