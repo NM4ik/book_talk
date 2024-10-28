@@ -24,20 +24,31 @@ final class _IdleAppSettingsState extends AppSettingsState {
   final AppSettings? appSettings;
 
   @override
-  bool operator ==(covariant _IdleAppSettingsState other) {
-    if (identical(this, other)) return true;
-
-    return other.appSettings == appSettings;
-  }
+  int get hashCode => Object.hashAll([appSettings]);
 
   @override
-  int get hashCode => appSettings.hashCode;
+  bool operator ==(covariant Object other) {
+    if (identical(this, other)) return true;
+
+    return other is _IdleAppSettingsState && other.appSettings == appSettings;
+  }
 
   @override
   String toString() => '_IdleAppSettingsState(appSettings: $appSettings)';
 }
 
 final class _LoadingAppSettingsState extends AppSettingsState {
+  const _LoadingAppSettingsState();
+
+  @override
+  int get hashCode => super.hashCode;
+
+  @override
+  bool operator ==(covariant Object other) {
+    if (identical(this, other)) return true;
+    return other is _LoadingAppSettingsState;
+  }
+
   @override
   String toString() => '_LoadingAppSettingsState()';
 }
@@ -48,14 +59,13 @@ final class _ErrorAppSettingsState extends AppSettingsState {
   final Object error;
 
   @override
-  bool operator ==(covariant _ErrorAppSettingsState other) {
-    if (identical(this, other)) return true;
-
-    return other.error == error;
-  }
+  int get hashCode => Object.hashAll([error]);
 
   @override
-  int get hashCode => error.hashCode;
+  bool operator ==(covariant Object other) {
+    if (identical(this, other)) return true;
+    return other is _ErrorAppSettingsState && other.error == error;
+  }
 
   @override
   String toString() => '_ErrorAppSettingsState(error: $error)';

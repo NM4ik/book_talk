@@ -16,17 +16,10 @@ final class _SignEmailPasswordAuthEvent extends AuthEvent {
   final String email;
   final String password;
 
-  const _SignEmailPasswordAuthEvent(
-      {required this.email, required this.password});
-
-  @override
-  int get hashCode => email.hashCode ^ password.hashCode;
-
-  @override
-  bool operator ==(covariant _SignEmailPasswordAuthEvent other) {
-    if (identical(this, other)) return true;
-    return email == other.email && password == other.password;
-  }
+  const _SignEmailPasswordAuthEvent({
+    required this.email,
+    required this.password,
+  });
 }
 
 final class _SignOutAuthEvent extends AuthEvent {

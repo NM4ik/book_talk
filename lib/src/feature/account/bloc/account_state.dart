@@ -17,7 +17,7 @@ final class _IdleAccountState extends AccountState {
   const _IdleAccountState({required super.user});
 
   @override
-  int get hashCode => user.hashCode;
+  int get hashCode => Object.hashAll([user]);
 
   @override
   bool operator ==(covariant Object other) {
@@ -33,7 +33,7 @@ final class _ProcessingAccountState extends AccountState {
   const _ProcessingAccountState({required super.user});
 
   @override
-  int get hashCode => user.hashCode;
+  int get hashCode => Object.hashAll([user]);
 
   @override
   bool operator ==(covariant Object other) {
@@ -51,7 +51,7 @@ final class _ErrorAccountState extends AccountState {
   final Object error;
 
   @override
-  int get hashCode => Object.hashAll([user.hashCode, error.hashCode]);
+  int get hashCode => Object.hashAll([user, error]);
 
   @override
   bool operator ==(covariant Object other) {

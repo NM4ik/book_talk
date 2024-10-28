@@ -24,7 +24,7 @@ final class _IdleAuthState extends AuthState {
   const _IdleAuthState({required super.authStatus});
 
   @override
-  bool operator ==(covariant AuthState other) {
+  bool operator ==(covariant Object other) {
     if (identical(this, other)) return true;
 
     return other is _IdleAuthState && other.authStatus == authStatus;
@@ -41,7 +41,7 @@ final class _ProcessingAuthState extends AuthState {
   const _ProcessingAuthState({required super.authStatus});
 
   @override
-  bool operator ==(covariant AuthState other) {
+  bool operator ==(covariant Object other) {
     if (identical(this, other)) return true;
     return other is _ProcessingAuthState && other.authStatus == authStatus;
   }
@@ -62,12 +62,14 @@ final class _ErrorAuthState extends AuthState {
   final Object error;
 
   @override
-  int get hashCode => Object.hashAll([super.hashCode, error.hashCode]);
+  int get hashCode => Object.hashAll([authStatus, error]);
 
   @override
-  bool operator ==(covariant _ErrorAuthState other) {
+  bool operator ==(covariant Object other) {
     if (identical(this, other)) return true;
 
-    return authStatus == other.authStatus && error == other.error;
+    return other is _ErrorAuthState &&
+        authStatus == other.authStatus &&
+        error == other.error;
   }
 }
