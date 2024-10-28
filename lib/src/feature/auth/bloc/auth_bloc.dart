@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:book_talk/src/common/utils/mixins/bloc_state_mixin.dart';
 import 'package:book_talk/src/feature/auth/data/auth_repository.dart';
 import 'package:book_talk/src/feature/auth/model/auth_status.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -7,7 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 part 'auth_state.dart';
 part 'auth_event.dart';
 
-final class AuthBloc extends Bloc<AuthEvent, AuthState> {
+final class AuthBloc extends Bloc<AuthEvent, AuthState> with SetStateMixin {
   AuthBloc(
     String? token, {
     required AuthRepository authRepository,
@@ -28,7 +29,7 @@ final class AuthBloc extends Bloc<AuthEvent, AuthState> {
         .listen(
       ($state) {
         if ($state != state) {
-          emit($state);
+          setState($state);
         }
       },
     );
