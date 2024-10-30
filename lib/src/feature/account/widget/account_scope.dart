@@ -24,10 +24,7 @@ class _AccountScopeState extends State<AccountScope> {
 
   @override
   void initState() {
-    _accountBloc = AccountBloc(
-      userRepository: AppScope.of(context).userRepository,
-      token: AppScope.of(context).authBloc.token ?? '',
-    )..add(AccountEvent.load());
+    _accountBloc = AppScope.of(context).accountBloc..add(AccountEvent.load());
     super.initState();
   }
 

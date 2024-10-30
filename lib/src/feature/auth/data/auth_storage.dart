@@ -31,10 +31,16 @@ final class AuthStorageImpl implements AuthStorage<String> {
   Future<String?> get() async => await _tokenEntry.get();
 
   @override
-  Future<void> save(String data) async => await _tokenEntry.set(data);
+  Future<void> save(String data) async {
+    await _tokenEntry.set(data);
+    _streamController.add(data);
+  }
 
   @override
-  Future<void> clear() async => await _tokenEntry.remove();
+  Future<void> clear() async {
+    await _tokenEntry.remove();
+    _streamController.add(null);
+  }
 
   @override
   Future<void> close() async {

@@ -9,13 +9,8 @@ part 'auth_state.dart';
 part 'auth_event.dart';
 
 final class AuthBloc extends Bloc<AuthEvent, AuthState> with SetStateMixin {
-  AuthBloc(
-    String? token, {
-    required AuthRepository authRepository,
-  })  : _authRepository = authRepository,
-        _token = token,
-        super(AuthState.idle(
-            token != null ? AuthStatus.auth : AuthStatus.unAuth)) {
+  AuthBloc(super.initialState, {required AuthRepository authRepository})
+      : _authRepository = authRepository {
     on<AuthEvent>(
       (event, emitter) => switch (event) {
         _SignEmailPasswordAuthEvent() =>
@@ -36,7 +31,6 @@ final class AuthBloc extends Bloc<AuthEvent, AuthState> with SetStateMixin {
   }
 
   final AuthRepository _authRepository;
-  final String? _token;
   StreamSubscription<AuthState>? _authStatusSubscription;
 
   Future<void> _onSignEmailPasswordEvent(
@@ -70,8 +64,6 @@ final class AuthBloc extends Bloc<AuthEvent, AuthState> with SetStateMixin {
       onError(e, stackTrace);
     }
   }
-
-  String? get token => _token;
 
   @override
   Future<void> close() {
