@@ -1,33 +1,3 @@
-import 'dart:convert';
-
-class UserDto {
-  final String id;
-  final String name;
-  final String avatar;
-
-  const UserDto({
-    required this.id,
-    required this.name,
-    required this.avatar,
-  });
-
-  factory UserDto.fromJson(String json) {
-    final data = jsonDecode(json);
-
-    return UserDto(
-      id: data['id'],
-      name: data['name'],
-      avatar: data['avatar'],
-    );
-  }
-
-  User toEntity() => User(
-        id: id,
-        name: name,
-        avatar: avatar,
-      );
-}
-
 class User {
   final String id;
   final String name;
@@ -42,6 +12,7 @@ class User {
   @override
   bool operator ==(covariant User other) {
     if (identical(this, other)) return true;
+
     return other.id == id && other.name == name && other.avatar == avatar;
   }
 

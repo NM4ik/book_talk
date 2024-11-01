@@ -1,5 +1,6 @@
 import 'package:book_talk/src/feature/auth/bloc/auth_bloc.dart';
 import 'package:book_talk/src/feature/bootstrap/widget/app_scope.dart';
+import 'package:book_talk_ui/book_talk_ui.dart';
 import 'package:flutter/material.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -32,7 +33,7 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
       body: Center(
         child: ConstrainedBox(
-          constraints: BoxConstraints(
+          constraints: const BoxConstraints(
             maxWidth: 350,
           ),
           child: SingleChildScrollView(
@@ -42,24 +43,16 @@ class _LoginScreenState extends State<LoginScreen> {
               children: [
                 TextField(
                   controller: _emailController,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     hintText: 'Email',
                   ),
                 ),
                 _PasswordTextFieldWidget(controller: _passwordController),
                 Padding(
                   padding: const EdgeInsets.only(top: 24),
-                  child: SizedBox(
-                    height: 48,
-                    child: FilledButton(
-                      onPressed: () => _onSignIn(context),
-                      style: FilledButton.styleFrom(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                      ),
-                      child: Text('Sign in'),
-                    ),
+                  child: UiButton.filledPrimary(
+                    onPressed: () => _onSignIn(context),
+                    label: const Text('Sign in'),
                   ),
                 ),
               ],

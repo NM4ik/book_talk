@@ -14,7 +14,7 @@ class AppDebugWidget extends StatelessWidget {
         children: [
           child,
           SafeArea(
-            minimum: EdgeInsets.all(20),
+            minimum: const EdgeInsets.all(20),
             child: Text(
               'version: ${Pubspec.version.canonical}',
               style: TextStyle(color: Colors.red),

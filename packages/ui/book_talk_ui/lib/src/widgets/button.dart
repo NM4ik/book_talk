@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 enum ButtonVariant {
   /// Button with background filled with primary color
   filledPrimary,
+  negativePrimary,
 }
 
 class UiButton extends ButtonStyleButton {
@@ -34,6 +35,33 @@ class UiButton extends ButtonStyleButton {
           onLongPress: enabled ? onLongPress : null,
         );
 
+  UiButton.negativePrimary({
+    required VoidCallback? onPressed,
+    bool enabled = true,
+    IconAlignment iconAlignment = IconAlignment.start,
+    Widget? label,
+    Widget? icon,
+    VoidCallback? onLongPress,
+    super.autofocus = false,
+    super.onHover,
+    super.onFocusChange,
+    super.style,
+    super.focusNode,
+    super.clipBehavior,
+    super.statesController,
+    super.isSemanticButton,
+    super.key,
+  })  : variant = ButtonVariant.negativePrimary,
+        super(
+          child: _ButtonIconAndLabel(
+            icon: icon,
+            label: label,
+            iconAlignment: iconAlignment,
+          ),
+          onPressed: enabled ? onPressed : null,
+          onLongPress: enabled ? onLongPress : null,
+        );
+
   final ButtonVariant variant;
 
   @override
@@ -43,11 +71,34 @@ class UiButton extends ButtonStyleButton {
 
     return switch (variant) {
       ButtonVariant.filledPrimary => _FilledPrimaryStyle(palette: palette),
+      ButtonVariant.negativePrimary => _NegativePrimaryStyle(palette: palette),
     };
   }
 
   @override
   ButtonStyle? themeStyleOf(BuildContext context) => null;
+}
+
+class _NegativePrimaryStyle extends _UiBaseButtonStyle {
+  final ColorPalette? palette;
+
+  const _NegativePrimaryStyle({required this.palette});
+
+  @override
+  WidgetStateProperty<Color?>? get backgroundColor =>
+      const WidgetStatePropertyAll(Colors.transparent);
+
+  @override
+  WidgetStateProperty<BorderSide?>? get side => WidgetStatePropertyAll(
+        BorderSide(
+          color: palette?.primary ?? Colors.transparent,
+          width: 1,
+        ),
+      );
+
+  @override
+  WidgetStateProperty<double>? get elevation => const WidgetStatePropertyAll(0);
+
 }
 
 class _FilledPrimaryStyle extends _UiBaseButtonStyle {
@@ -109,7 +160,7 @@ class _UiBaseButtonStyle extends ButtonStyle {
   @override
   WidgetStateProperty<EdgeInsetsGeometry?>? get padding =>
       const WidgetStatePropertyAll(
-        EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        EdgeInsets.symmetric(horizontal: 16, vertical: 10),
       );
 
   @override
@@ -139,26 +190,6 @@ class _UiBaseButtonStyle extends ButtonStyle {
   @override
   WidgetStateProperty<double>? get iconSize =>
       const WidgetStatePropertyAll<double>(18.0);
-
-  // @override
-  // ButtonLayerBuilder? get backgroundBuilder => _backgroundBuilder;
-
-  // Widget _backgroundBuilder(
-  //   BuildContext context,
-  //   Set<WidgetState> states,
-  //   Widget? child,
-  // ) {
-  //   if (child == null) return const SizedBox.shrink();
-
-  //   return OutlineFocusButtonBorder(
-  //     showBorder: states.contains(WidgetState.focused),
-  //     border: RoundedRectangleBorder(
-  //       side: BorderSide(color: colorPalette.ring, width: 2),
-  //       borderRadius: BorderRadius.circular(8),
-  //     ),
-  //     child: child,
-  //   );
-  // }
 }
 
 class _ButtonIconAndLabel extends StatelessWidget {

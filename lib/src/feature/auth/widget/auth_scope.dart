@@ -33,12 +33,12 @@ class _AuthScopeState extends State<AuthScope> {
 }
 
 class _AuthInherited extends InheritedWidget {
-  final AuthStatus authStatus;
-
   const _AuthInherited({
     required super.child,
     required this.authStatus,
   });
+
+  final AuthStatus authStatus;
 
   @override
   bool updateShouldNotify(covariant _AuthInherited oldWidget) =>

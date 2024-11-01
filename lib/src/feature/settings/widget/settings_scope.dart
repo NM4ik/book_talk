@@ -10,14 +10,15 @@ class SettingsScope extends StatefulWidget {
     super.key,
   });
 
-  final Widget child;
-
   static AppSettings? settingsOf(BuildContext context, {bool listen = true}) {
     final settingsScope = listen
         ? context.dependOnInheritedWidgetOfExactType<_InheritedSettingsScope>()
         : context.getInheritedWidgetOfExactType<_InheritedSettingsScope>();
-    return settingsScope!.appSettings;
+
+    return settingsScope?.appSettings;
   }
+
+  final Widget child;
 
   @override
   State<SettingsScope> createState() => _SettingsScopeState();

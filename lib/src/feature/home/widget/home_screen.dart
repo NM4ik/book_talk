@@ -1,21 +1,20 @@
-import 'package:book_talk/src/feature/account/widget/account_scope.dart';
-import 'package:cached_network_image/cached_network_image.dart';
+import 'package:book_talk/src/common/router/routes.dart';
+import 'package:book_talk/src/common/widgets/user_avatar_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:octopus/octopus.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return AccountScope(
-      child: Scaffold(
-        appBar: AppBar(
-          automaticallyImplyLeading: true,
-          title: Text('Home'),
-          actions: [
-            _AvatarTrailingButton(),
-          ],
-        ),
+    return Scaffold(
+      appBar: AppBar(
+        automaticallyImplyLeading: true,
+        title: const Text('Home'),
+        actions: [
+          const _AvatarTrailingButton(),
+        ],
       ),
     );
   }
@@ -26,45 +25,12 @@ class _AvatarTrailingButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final accountBloc = AccountScope.of(context);
-
-    return StreamBuilder(
-      stream: accountBloc.userStream,
-      initialData: accountBloc.state.user,
-      builder: (context, snapshot) {
-        final user = snapshot.data;
-
-        print('user - $user');
-
-        Widget? child;
-        if (user != null) {
-          child = ClipOval(
-            child: CachedNetworkImage(
-              imageUrl: user.avatar,
-            ),
-          );
-        }
-
-        return Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: SizedBox(
-            width: 35,
-            height: 35,
-            child: DecoratedBox(
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: Colors.grey,
-              ),
-              child: child,
-            ),
-          ),
-        );
-
-        // return Text(
-        //   'snapshot - ${snapshot.data}, state - ${snapshot.connectionState},'
-        //   'hasData = ${snapshot.hasData}',
-        // );
-      },
+    return GestureDetector(
+      onTap: () => context.octopus.push(Routes.account),
+      child: const Padding(
+        padding: EdgeInsets.symmetric(horizontal: 20),
+        child: UserAvatarWidget(),
+      ),
     );
   }
 }

@@ -4,7 +4,7 @@ import 'package:book_talk/src/common/utils/error_tracking.dart';
 import 'package:book_talk/src/common/utils/logger.dart';
 import 'package:book_talk/src/feature/bootstrap/logic/composition_root.dart';
 import 'package:book_talk/src/feature/bootstrap/widget/app.dart';
-import 'package:book_talk/src/feature/bootstrap/widget/app_failed.dart';
+import 'package:book_talk/src/feature/bootstrap/widget/material_app_failed.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

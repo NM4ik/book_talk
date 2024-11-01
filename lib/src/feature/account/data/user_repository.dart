@@ -12,17 +12,17 @@ abstract interface class UserRepository {
 }
 
 final class UserRepositoryImpl extends UserRepository {
-  final UserDatasource _userDatasource;
-
   UserRepositoryImpl({required UserDatasource userDatasource})
       : _userDatasource = userDatasource;
 
+  final UserDatasource _userDatasource;
   final _userSubject = BehaviorSubject<User?>();
 
   @override
   Future<User?> fetchUser(String token) async {
     final user = await _userDatasource.fetchUser(token);
     _userSubject.add(user);
+
     return user;
   }
 

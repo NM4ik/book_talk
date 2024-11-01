@@ -14,7 +14,7 @@ abstract interface class AuthStorage<T> implements Closable {
   Future<void> clear();
 
   /// Auth changes notifier
-  Stream<T?> authStream();
+  Stream<T?> get authStream;
 }
 
 final class AuthStorageImpl implements AuthStorage<String> {
@@ -48,5 +48,5 @@ final class AuthStorageImpl implements AuthStorage<String> {
   }
 
   @override
-  Stream<String?> authStream() => _streamController.stream;
+  Stream<String?> get authStream => _streamController.stream;
 }

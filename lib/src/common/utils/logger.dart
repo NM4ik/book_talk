@@ -47,6 +47,7 @@ final class DefaultAppLogger extends AppLogger {
       '\n'
       'StackTrace: ${stackTrace}',
     );
+
     return true;
   }
 }

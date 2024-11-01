@@ -3,8 +3,6 @@ part of 'auth_bloc.dart';
 sealed class AuthState {
   const AuthState({required this.authStatus});
 
-  final AuthStatus authStatus;
-
   factory AuthState.idle(AuthStatus authStatus) =>
       _IdleAuthState(authStatus: authStatus);
 
@@ -13,6 +11,8 @@ sealed class AuthState {
 
   factory AuthState.error(AuthStatus authStatus, Object error) =>
       _ErrorAuthState(authStatus: authStatus, error: error);
+
+  final AuthStatus authStatus;
 
   bool get isLoading => switch (this) {
         _ProcessingAuthState() => true,
@@ -43,6 +43,7 @@ final class _ProcessingAuthState extends AuthState {
   @override
   bool operator ==(covariant Object other) {
     if (identical(this, other)) return true;
+
     return other is _ProcessingAuthState && other.authStatus == authStatus;
   }
 

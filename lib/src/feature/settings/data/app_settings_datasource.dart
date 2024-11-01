@@ -1,6 +1,7 @@
 import 'package:book_talk/src/common/utils/preferences_storage/preferences_entry.dart';
 import 'package:book_talk/src/common/utils/preferences_storage/preferences_storage.dart';
 import 'package:book_talk/src/feature/settings/model/app_settings.dart';
+import 'package:book_talk/src/feature/settings/model/app_settings_dto.dart';
 
 abstract interface class AppSettingsDatasource {
   Future<void> saveSettings(AppSettings settings);
@@ -38,6 +39,7 @@ final class _AppSettingsPreferencesEntry
   Future<AppSettings?> get() async {
     final json = await preferencesStorage.getString(key);
     if (json == null) return null;
+
     return AppSettingsDto.fromJson(json).toEntity();
   }
 
@@ -47,6 +49,7 @@ final class _AppSettingsPreferencesEntry
   @override
   Future<void> set(AppSettings value) async {
     final json = AppSettingsDto.fromEntity(value).toJson();
+
     return await preferencesStorage.setString(key, json);
   }
 }

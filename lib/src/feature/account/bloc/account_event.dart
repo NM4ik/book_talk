@@ -3,7 +3,7 @@ part of 'account_bloc.dart';
 sealed class AccountEvent {
   const AccountEvent();
 
-  factory AccountEvent.load() => _LoadUserAccountEvent();
+  factory AccountEvent.load() => const _LoadUserAccountEvent();
 }
 
 final class _LoadUserAccountEvent extends AccountEvent {

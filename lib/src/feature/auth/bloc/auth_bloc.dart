@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:book_talk/src/common/utils/mixins/bloc_state_mixin.dart';
+import 'package:book_talk/src/common/utils/mixins/set_state_mixin.dart';
 import 'package:book_talk/src/feature/auth/data/auth_repository.dart';
 import 'package:book_talk/src/feature/auth/model/auth_status.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -68,6 +68,7 @@ final class AuthBloc extends Bloc<AuthEvent, AuthState> with SetStateMixin {
   @override
   Future<void> close() {
     _authStatusSubscription?.cancel();
+
     return super.close();
   }
 }

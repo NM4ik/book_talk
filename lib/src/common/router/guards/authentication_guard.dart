@@ -59,18 +59,21 @@ class AuthenticationGuard extends OctopusGuard {
         state.removeWhere((child) => _routes.contains(child.name));
         // Restore the last navigation when the user is authenticated
         // if the state contains only the authentication routes.
+
         return state.isEmpty ? _lastNavigation : state;
       } else {
         // Remove any navigation that is not an authentication navigation.
         state.removeWhere((child) => !_routes.contains(child.name));
         // Add the signin navigation if the state is empty.
         // Or return the state if it contains the signin navigation.
+
         return state.isEmpty ? _signinNavigation : state;
       }
     } else {
       if (isAuth) {
         // Save the current navigation as the last navigation.
         _lastNavigation = state;
+
         return super.call(history, state, context);
       } else {
         // User not authenticated.

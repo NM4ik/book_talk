@@ -144,9 +144,8 @@ class SettingsBlocFactory extends AsyncFactory<AppSettingsBloc> {
 }
 
 class AppMetadataFactory extends Factory<AppMetadata> {
-  final Config config;
-
   AppMetadataFactory({required this.config});
+  final Config config;
 
   @override
   AppMetadata create() {
@@ -160,13 +159,13 @@ class AppMetadataFactory extends Factory<AppMetadata> {
 }
 
 class AuthBlocFactory extends AsyncFactory<AuthBloc> {
-  final PreferencesStorage preferencesStorage;
-  final AuthStorage authStorage;
-
   AuthBlocFactory({
     required this.preferencesStorage,
     required this.authStorage,
   });
+
+  final PreferencesStorage preferencesStorage;
+  final AuthStorage authStorage;
 
   @override
   Future<AuthBloc> create() async {
@@ -185,10 +184,9 @@ class AuthBlocFactory extends AsyncFactory<AuthBloc> {
 }
 
 class AccountBlocFactory extends Factory<AccountBloc> {
+  AccountBlocFactory({required this.authStorage, required this.userRepository});
   final AuthStorage authStorage;
   final UserRepository userRepository;
-
-  AccountBlocFactory({required this.authStorage, required this.userRepository});
 
   @override
   AccountBloc create() {

@@ -1,5 +1,6 @@
 import 'package:book_talk/src/common/utils/extensions/build_context_extension.dart';
 import 'package:book_talk/src/feature/account/bloc/account_bloc.dart';
+import 'package:book_talk/src/feature/auth/bloc/auth_bloc.dart';
 import 'package:book_talk/src/feature/bootstrap/widget/app_scope.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -12,8 +13,8 @@ class AccountScope extends StatefulWidget {
 
   final Widget child;
 
-  static AccountBloc of(BuildContext context) =>
-      context.inheritedOf<_InheritedAccountScope>().accountBloc;
+  static _InheritedAccountScope of(BuildContext context) =>
+      context.inheritedOf<_InheritedAccountScope>();
 
   @override
   State<AccountScope> createState() => _AccountScopeState();
@@ -21,11 +22,12 @@ class AccountScope extends StatefulWidget {
 
 class _AccountScopeState extends State<AccountScope> {
   late final AccountBloc _accountBloc;
+  late AuthState authState;
 
   @override
   void initState() {
-    _accountBloc = AppScope.of(context).accountBloc..add(AccountEvent.load());
     super.initState();
+    _accountBloc = AppScope.of(context).accountBloc..add(AccountEvent.load());
   }
 
   @override
@@ -43,12 +45,11 @@ class _AccountScopeState extends State<AccountScope> {
 }
 
 class _InheritedAccountScope extends InheritedWidget {
-  final AccountBloc accountBloc;
-
   const _InheritedAccountScope({
     required super.child,
     required this.accountBloc,
   });
+  final AccountBloc accountBloc;
 
   @override
   bool updateShouldNotify(covariant _InheritedAccountScope oldWidget) =>

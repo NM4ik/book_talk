@@ -16,14 +16,14 @@ abstract interface class AuthRepository<T> {
 }
 
 class AuthRepositoryImpl<T> implements AuthRepository<T> {
-  final AuthStorage<T> _authStorage;
-  final AuthDatasource<T> _authDatasource;
-
   AuthRepositoryImpl({
     required AuthStorage<T> authStorage,
     required AuthDatasource<T> authDatasource,
   })  : _authStorage = authStorage,
         _authDatasource = authDatasource;
+
+  final AuthStorage<T> _authStorage;
+  final AuthDatasource<T> _authDatasource;
 
   @override
   Future<T> signInWithEmailAndPassword(String email, String password) async {
@@ -31,7 +31,8 @@ class AuthRepositoryImpl<T> implements AuthRepository<T> {
       email,
       password,
     );
-    _authStorage.save(token);
+    await _authStorage.save(token);
+
     return token;
   }
 
@@ -44,7 +45,7 @@ class AuthRepositoryImpl<T> implements AuthRepository<T> {
   }
 
   @override
-  Stream<AuthStatus> get authStatus => _authStorage.authStream().map(
+  Stream<AuthStatus> get authStatus => _authStorage.authStream.map(
         (token) => token != null ? AuthStatus.auth : AuthStatus.unAuth,
       );
 }

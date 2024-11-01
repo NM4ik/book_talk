@@ -2,7 +2,6 @@ part of 'account_bloc.dart';
 
 sealed class AccountState {
   const AccountState({required this.user});
-  final User? user;
 
   factory AccountState.idle(User? user) => _IdleAccountState(user: user);
 
@@ -11,6 +10,8 @@ sealed class AccountState {
 
   factory AccountState.error(User? user, Object error) =>
       _ErrorAccountState(user: user, error: error);
+
+  final User? user;
 }
 
 final class _IdleAccountState extends AccountState {
@@ -22,6 +23,7 @@ final class _IdleAccountState extends AccountState {
   @override
   bool operator ==(covariant Object other) {
     if (identical(other, this)) return true;
+
     return other is _IdleAccountState && other.user == user;
   }
 
@@ -38,6 +40,7 @@ final class _ProcessingAccountState extends AccountState {
   @override
   bool operator ==(covariant Object other) {
     if (identical(other, this)) return true;
+
     return other is _ProcessingAccountState && other.user == user;
   }
 
@@ -56,6 +59,7 @@ final class _ErrorAccountState extends AccountState {
   @override
   bool operator ==(covariant Object other) {
     if (identical(other, this)) return true;
+
     return other is _ErrorAccountState &&
         other.user == user &&
         error == other.error;

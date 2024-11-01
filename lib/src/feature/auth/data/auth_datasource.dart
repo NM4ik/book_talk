@@ -12,11 +12,12 @@ final class AuthDatasourceTemporaryImpl implements AuthDatasource<String> {
     String email,
     String password,
   ) async {
-    return await Future.delayed(Duration(seconds: 1), () => Uuid().v1());
+    return await Future.delayed(
+        const Duration(seconds: 1), () => const Uuid().v1());
   }
 
   @override
   Future<void> signOut() async {
-    return await Future.delayed(Duration(seconds: 1));
+    return await Future.delayed(const Duration(seconds: 1));
   }
 }
