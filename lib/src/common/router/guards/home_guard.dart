@@ -18,8 +18,8 @@ class HomeGuard extends OctopusGuard {
   ) {
     // If the user is not authenticated, do nothing.
     // The home route should not be in the state.
-    if (context['authStatus'] case AuthStatus status) if (status == AuthStatus.unAuth)
-      return state;
+    if (context['authStatus']
+        case AuthStatus status) if (status == AuthStatus.unAuth) return state;
 
     // Home route should be the first route in the state
     // and should be only one in whole state.
@@ -27,6 +27,7 @@ class HomeGuard extends OctopusGuard {
     final count = state.findAllByName(_homeName).length;
     if (count != 1) return _fix(state);
     if (state.children.first.name != _homeName) return _fix(state);
+
     return state;
   }
 

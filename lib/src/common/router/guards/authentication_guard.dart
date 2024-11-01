@@ -11,23 +11,11 @@ class AuthenticationGuard extends OctopusGuard {
     required OctopusState signinNavigation,
     required OctopusState homeNavigation,
     required this.buildContext,
-    OctopusState? lastNavigation,
     super.refresh,
   })  : _getAuthStatus = getAuthStatus,
         _routes = routes,
         _signinNavigation = signinNavigation,
-        _lastNavigation = lastNavigation ?? homeNavigation {
-    if (lastNavigation == null) {
-      try {
-        final state = OctopusState.fromLocation(
-          WidgetsBinding.instance.platformDispatcher.defaultRouteName,
-        );
-        if (state.isNotEmpty) {
-          _lastNavigation = state;
-        }
-      } on Object {/* ignore */}
-    }
-  }
+        _homeNavigation = homeNavigation;
 
   final BuildContext buildContext;
 
@@ -39,7 +27,7 @@ class AuthenticationGuard extends OctopusGuard {
   final OctopusState _signinNavigation;
 
   /// The navigation to use when the user is authenticated.
-  OctopusState _lastNavigation;
+  final OctopusState _homeNavigation;
 
   @override
   FutureOr<OctopusState> call(
@@ -60,7 +48,7 @@ class AuthenticationGuard extends OctopusGuard {
         // Restore the last navigation when the user is authenticated
         // if the state contains only the authentication routes.
 
-        return state.isEmpty ? _lastNavigation : state;
+        return state.isEmpty ? _homeNavigation : state;
       } else {
         // Remove any navigation that is not an authentication navigation.
         state.removeWhere((child) => !_routes.contains(child.name));
@@ -71,15 +59,12 @@ class AuthenticationGuard extends OctopusGuard {
       }
     } else {
       if (isAuth) {
-        // Save the current navigation as the last navigation.
-        _lastNavigation = state;
-
         return super.call(history, state, context);
-      } else {
-        // User not authenticated.
-        // Replace the current navigation with the signin navigation.
-        return _signinNavigation;
       }
+
+      // User not authenticated.
+      // Replace the current navigation with the signin navigation.
+      return _signinNavigation;
     }
   }
 }
