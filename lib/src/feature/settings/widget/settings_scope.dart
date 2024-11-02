@@ -39,12 +39,12 @@ class _SettingsScopeState extends State<SettingsScope> {
 }
 
 class _InheritedSettingsScope extends InheritedWidget {
-  final AppSettings? appSettings;
-
-  _InheritedSettingsScope({
+  const _InheritedSettingsScope({
     required this.appSettings,
     required super.child,
   });
+
+  final AppSettings? appSettings;
 
   @override
   bool updateShouldNotify(covariant _InheritedSettingsScope oldWidget) =>

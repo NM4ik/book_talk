@@ -2,6 +2,7 @@ import 'package:book_talk/src/common/constants/config.dart';
 import 'package:book_talk/src/common/utils/app_bloc_observer.dart';
 import 'package:book_talk/src/common/utils/error_tracking.dart';
 import 'package:book_talk/src/common/utils/logger.dart';
+import 'package:book_talk/src/common/utils/platform/platform_initialization.dart';
 import 'package:book_talk/src/feature/bootstrap/logic/composition_root.dart';
 import 'package:book_talk/src/feature/bootstrap/widget/app.dart';
 import 'package:book_talk/src/feature/bootstrap/widget/material_app_failed.dart';
@@ -25,6 +26,8 @@ final class AppBootstrap {
         ErrorTracking.trackPlatformDispatcherError;
     WidgetsBinding.instance.platformDispatcher.onError =
         ErrorTracking.trackPlatformDispatcherError;
+
+    $platformInitialization();
 
     await _runApp();
     bindings.allowFirstFrame();

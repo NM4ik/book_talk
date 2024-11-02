@@ -1,7 +1,10 @@
+import 'package:book_talk/src/common/widgets/window_size.dart';
 import 'package:book_talk/src/feature/auth/bloc/auth_bloc.dart';
 import 'package:book_talk/src/feature/bootstrap/widget/app_scope.dart';
 import 'package:book_talk_ui/book_talk_ui.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -11,53 +14,51 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  late final TextEditingController _passwordController;
-  late final TextEditingController _emailController;
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
 
-  @override
-  void initState() {
-    super.initState();
-    _passwordController = TextEditingController();
-    _emailController = TextEditingController();
-  }
+  final FocusNode emailFocusNode = FocusNode();
+  final FocusNode passwordFocusNode = FocusNode();
+
+  final PageController _pageController = PageController();
+  final ValueNotifier<int> _indexNotifier = ValueNotifier(0);
 
   @override
   void dispose() {
+    _pageController.dispose();
+    _indexNotifier.dispose();
     _passwordController.dispose();
     _emailController.dispose();
+    passwordFocusNode.dispose();
+    emailFocusNode.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    final windowSize = WindowSizeScope.of(context);
+
     return Scaffold(
       body: Center(
-        child: ConstrainedBox(
-          constraints: const BoxConstraints(
-            maxWidth: 350,
-          ),
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                TextField(
-                  controller: _emailController,
-                  decoration: const InputDecoration(
-                    hintText: 'Email',
-                  ),
+        child: Row(
+          children: [
+            if (!windowSize.isCompactFormat)
+              Expanded(
+                child: _PresentationSlider(
+                  pageController: _pageController,
+                  indexNotifier: _indexNotifier,
                 ),
-                _PasswordTextFieldWidget(controller: _passwordController),
-                Padding(
-                  padding: const EdgeInsets.only(top: 24),
-                  child: UiButton.filledPrimary(
-                    onPressed: () => _onSignIn(context),
-                    label: const Text('Sign in'),
-                  ),
-                ),
-              ],
+              ),
+            Expanded(
+              child: LoginForm(
+                emailController: _emailController,
+                passwordController: _passwordController,
+                passwordFocusNode: passwordFocusNode,
+                emailFocusNode: emailFocusNode,
+                onAuthPress: () => _onSignIn(context),
+              ),
             ),
-          ),
+          ],
         ),
       ),
     );
@@ -76,9 +77,15 @@ class _LoginScreenState extends State<LoginScreen> {
 }
 
 class _PasswordTextFieldWidget extends StatefulWidget {
-  const _PasswordTextFieldWidget({required this.controller});
+  const _PasswordTextFieldWidget({
+    required this.controller,
+    required this.focusNode,
+    required this.onEditingComplete,
+  });
 
   final TextEditingController controller;
+  final FocusNode focusNode;
+  final Function() onEditingComplete;
 
   @override
   State<_PasswordTextFieldWidget> createState() =>
@@ -90,34 +97,171 @@ class _PasswordTextFieldWidgetState extends State<_PasswordTextFieldWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return TextField(
-      controller: widget.controller,
-      decoration: InputDecoration(
-        hintText: 'Password',
-        suffixIcon: IconButton(
-          icon: Icon(_obscureText ? Icons.visibility_off : Icons.visibility),
-          onPressed: () {
-            setState(() => _obscureText = !_obscureText);
-          },
-        ),
-      ),
+    return UiTextField.standart(
+      hintText: 'Password',
       obscureText: _obscureText,
+      controller: widget.controller,
+      focus: widget.focusNode,
+      onEditingComplete: widget.onEditingComplete,
+      suffixIcon: IconButton(
+        icon: Icon(_obscureText ? Icons.visibility_off : Icons.visibility),
+        onPressed: () {
+          setState(() => _obscureText = !_obscureText);
+        },
+      ),
     );
   }
 }
 
-// mixin _AuthenticationFormStateMixin on State<LoginScreen> {
-//   static String? _emailValidator(String value) => switch (value.length) {
-//         0 => 'Email is required',
-//         < 3 => 'Too short value',
-//         _ => null,
-//       };
+const List<String> _bgAssets = [
+  'assets/images/auth_bg_sand.jpg',
+  'assets/images/auth_bg_sequoia.jpg',
+];
+const List<String> _titles = [
+  'Capturing Moments,\nCreating Memories',
+  'Bringing Ideas Together,\nCreating the Future',
+];
 
-//   static String? _passwordValidator(String value) => switch (value.length) {
-//         0 => 'Password is required',
-//         < 6 ||
-//         > 32 =>
-//           'Must be 6 or more characters and must be less than 32 characters',
-//         _ => null,
-//       };
-// }
+class _PresentationSlider extends StatelessWidget {
+  const _PresentationSlider({
+    required this.pageController,
+    required this.indexNotifier,
+  });
+
+  final PageController pageController;
+  final ValueNotifier<int> indexNotifier;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      clipBehavior: Clip.hardEdge,
+      margin: const EdgeInsets.all(20),
+      decoration: const BoxDecoration(
+        borderRadius: BorderRadius.all(Radius.circular(10)),
+      ),
+      child: Stack(
+        fit: StackFit.expand,
+        children: [
+          CarouselSlider.builder(
+            itemCount: _bgAssets.length,
+            itemBuilder: (context, index, realIndex) {
+              return Image.asset(
+                _bgAssets[index],
+                fit: BoxFit.cover,
+              );
+            },
+            options: CarouselOptions(
+              autoPlay: true,
+              autoPlayAnimationDuration: const Duration(milliseconds: 1300),
+              autoPlayCurve: Curves.fastOutSlowIn,
+              autoPlayInterval: const Duration(seconds: 5),
+              viewportFraction: 1,
+              height: double.infinity,
+              enableInfiniteScroll: true,
+              onPageChanged: (index, reason) {
+                indexNotifier.value = index;
+              },
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(20),
+            child: ListenableBuilder(
+              listenable: indexNotifier,
+              builder: (context, child) => Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  FittedBox(
+                    child: Text(
+                      _titles[indexNotifier.value],
+                      style: const TextStyle(
+                        fontSize: 40,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                  const SizedBox(height: 40),
+                  AnimatedSmoothIndicator(
+                    activeIndex: indexNotifier.value,
+                    count: _bgAssets.length,
+                    effect: const ExpandingDotsEffect(
+                      dotColor: Colors.white,
+                      activeDotColor: Colors.white,
+                      dotHeight: 3,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class LoginForm extends StatelessWidget {
+  const LoginForm({
+    super.key,
+    required this.emailController,
+    required this.passwordController,
+    required this.passwordFocusNode,
+    required this.emailFocusNode,
+    required this.onAuthPress,
+  });
+
+  final TextEditingController emailController;
+  final TextEditingController passwordController;
+  final FocusNode passwordFocusNode;
+  final FocusNode emailFocusNode;
+  final Function() onAuthPress;
+
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.all(20),
+        child: Align(
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(
+              maxWidth: 550,
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 40),
+                  child: Text(
+                    'Log in to account',
+                    style: Theme.of(context).appTypography?.headlineLarge,
+                  ),
+                ),
+                UiTextField.standart(
+                  hintText: 'Email',
+                  controller: emailController,
+                  onEditingComplete: passwordFocusNode.requestFocus,
+                  focus: emailFocusNode,
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 20, bottom: 40),
+                  child: _PasswordTextFieldWidget(
+                    controller: passwordController,
+                    focusNode: passwordFocusNode,
+                    onEditingComplete: () {
+                      passwordFocusNode.unfocus();
+                      onAuthPress();
+                    },
+                  ),
+                ),
+                UiButton.filledPrimary(
+                  onPressed: () => onAuthPress,
+                  label: const Text('Sign in'),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}

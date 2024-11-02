@@ -1,3 +1,4 @@
+import 'package:book_talk/src/common/widgets/window_size.dart';
 import 'package:book_talk/src/feature/account/widget/account_scope.dart';
 import 'package:book_talk/src/feature/auth/widget/auth_scope.dart';
 import 'package:book_talk/src/feature/bootstrap/model/dependencies_container.dart';
@@ -21,7 +22,9 @@ class App extends StatelessWidget {
       child: const SettingsScope(
         child: AuthScope(
           child: AccountScope(
-            child: MaterialAppContext(),
+            child: WindowSizeScope(
+              child: MaterialAppContext(),
+            ),
           ),
         ),
       ),
