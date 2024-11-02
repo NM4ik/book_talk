@@ -1,15 +1,15 @@
 class AppMetadata {
-  final String environment;
-  final String appVersion;
-  final String operatingSystem;
-  final String locale;
-
   const AppMetadata({
     required this.environment,
     required this.appVersion,
     required this.operatingSystem,
     required this.locale,
   });
+
+  final String environment;
+  final String appVersion;
+  final String operatingSystem;
+  final String locale;
 
   Map<String, String> convertHeaders() => {
         'X-Meta-Environment': environment,
