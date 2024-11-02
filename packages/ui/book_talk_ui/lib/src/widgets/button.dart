@@ -1,4 +1,4 @@
-import 'package:book_talk_ui/src/common/color_palette.dart';
+import 'package:book_talk_ui/book_talk_ui.dart';
 import 'package:flutter/material.dart';
 
 enum ButtonVariant {
@@ -67,11 +67,14 @@ class UiButton extends ButtonStyleButton {
   @override
   ButtonStyle defaultStyleOf(BuildContext context) {
     final theme = Theme.of(context);
-    final palette = theme.colorPalette;
+    final palette = theme.colorPalette!;
+    final typography = theme.appTypography!;
 
     return switch (variant) {
-      ButtonVariant.filledPrimary => _FilledPrimaryStyle(palette: palette),
-      ButtonVariant.negativePrimary => _NegativePrimaryStyle(palette: palette),
+      ButtonVariant.filledPrimary =>
+        _FilledPrimaryStyle(palette: palette, appTypography: typography),
+      ButtonVariant.negativePrimary =>
+        _NegativePrimaryStyle(palette: palette, appTypography: typography),
     };
   }
 
@@ -82,7 +85,10 @@ class UiButton extends ButtonStyleButton {
 class _NegativePrimaryStyle extends _UiBaseButtonStyle {
   final ColorPalette? palette;
 
-  const _NegativePrimaryStyle({required this.palette});
+  const _NegativePrimaryStyle({
+    required this.palette,
+    required super.appTypography,
+  });
 
   @override
   WidgetStateProperty<Color?>? get backgroundColor =>
@@ -98,13 +104,15 @@ class _NegativePrimaryStyle extends _UiBaseButtonStyle {
 
   @override
   WidgetStateProperty<double>? get elevation => const WidgetStatePropertyAll(0);
-
 }
 
 class _FilledPrimaryStyle extends _UiBaseButtonStyle {
   final ColorPalette? palette;
 
-  const _FilledPrimaryStyle({required this.palette});
+  const _FilledPrimaryStyle({
+    required this.palette,
+    required super.appTypography,
+  });
 
   @override
   WidgetStateProperty<Color?>? get backgroundColor =>
@@ -138,7 +146,9 @@ class _FilledPrimaryStyle extends _UiBaseButtonStyle {
 }
 
 class _UiBaseButtonStyle extends ButtonStyle {
-  const _UiBaseButtonStyle();
+  const _UiBaseButtonStyle({required this.appTypography});
+
+  final AppTypography appTypography;
 
   @override
   Duration? get animationDuration => const Duration(milliseconds: 200);
@@ -147,10 +157,14 @@ class _UiBaseButtonStyle extends ButtonStyle {
   AlignmentGeometry? get alignment => Alignment.center;
 
   @override
+  WidgetStateProperty<TextStyle?>? get textStyle =>
+      WidgetStatePropertyAll(appTypography.bodyMedium);
+
+  @override
   WidgetStateProperty<OutlinedBorder?>? get shape =>
       const WidgetStatePropertyAll(
         RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(8)),
+          borderRadius: BorderRadius.all(Radius.circular(4)),
         ),
       );
 
@@ -160,8 +174,7 @@ class _UiBaseButtonStyle extends ButtonStyle {
   @override
   WidgetStateProperty<EdgeInsetsGeometry?>? get padding =>
       const WidgetStatePropertyAll(
-        EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-      );
+          EdgeInsets.symmetric(horizontal: 16, vertical: 23));
 
   @override
   WidgetStateProperty<Size?>? get minimumSize =>
