@@ -6,6 +6,7 @@ dart_code_metrics:
     - avoid-late-keyword: false
     - member-ordering: false
     - prefer-match-file-name: false
+    - no-magic-number: false
 
 
 linter:

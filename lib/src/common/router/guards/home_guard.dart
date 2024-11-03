@@ -8,7 +8,7 @@ import 'package:octopus/octopus.dart';
 class HomeGuard extends OctopusGuard {
   HomeGuard();
 
-  static final String _homeName = Routes.home.name;
+  static final String _homeName = Routes.rooms.name;
 
   @override
   FutureOr<OctopusState> call(
@@ -34,5 +34,5 @@ class HomeGuard extends OctopusGuard {
   /// Change the state of the nested navigation.
   OctopusState _fix(OctopusState$Mutable state) => state
     ..clear()
-    ..putIfAbsent(_homeName, () => Routes.home.node());
+    ..putIfAbsent(_homeName, () => Routes.rooms.node());
 }

@@ -26,7 +26,7 @@ mixin RouterMixin<T extends StatefulWidget> on State<T> {
 
     router = Octopus(
       routes: Routes.values,
-      defaultRoute: Routes.home,
+      defaultRoute: Routes.rooms,
       transitionDelegate: const DefaultTransitionDelegate(),
       guards: <IOctopusGuard>[
         AuthenticationGuard(
@@ -35,7 +35,7 @@ mixin RouterMixin<T extends StatefulWidget> on State<T> {
             Routes.signin.name,
           },
           signinNavigation: OctopusState.single(Routes.signin.node()),
-          homeNavigation: OctopusState.single(Routes.home.node()),
+          homeNavigation: OctopusState.single(Routes.rooms.node()),
           buildContext: context,
           refresh: notifier,
         ),
