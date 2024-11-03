@@ -2,11 +2,16 @@ import 'package:flutter/material.dart';
 
 class ColorPalette extends ThemeExtension<ColorPalette> {
   final Color backgroundColor;
+
+  /// The primary color of entire app. [Brand-Color]
   final Color primary;
   final Color onPrimary;
 
   final Color secondary;
   final Color onSecondary;
+
+  /// The color of text, icons, buttons, active elements
+  final Color foreground;
 
   const ColorPalette({
     required this.backgroundColor,
@@ -14,6 +19,7 @@ class ColorPalette extends ThemeExtension<ColorPalette> {
     required this.onPrimary,
     required this.secondary,
     required this.onSecondary,
+    required this.foreground,
   });
 
   @override
@@ -23,6 +29,7 @@ class ColorPalette extends ThemeExtension<ColorPalette> {
     Color? onPrimary,
     Color? secondary,
     Color? onSecondary,
+    Color? foreground,
   }) {
     return ColorPalette(
       backgroundColor: backgroundColor ?? this.backgroundColor,
@@ -30,6 +37,7 @@ class ColorPalette extends ThemeExtension<ColorPalette> {
       onPrimary: onPrimary ?? this.onPrimary,
       secondary: secondary ?? this.secondary,
       onSecondary: onSecondary ?? this.onSecondary,
+      foreground: foreground ?? this.foreground,
     );
   }
 
@@ -48,6 +56,7 @@ class ColorPalette extends ThemeExtension<ColorPalette> {
       secondary: Color.lerp(secondary, other.secondary, t) ?? secondary,
       onSecondary: Color.lerp(onSecondary, other.onSecondary, t) ?? onSecondary,
       onPrimary: Color.lerp(onPrimary, other.onPrimary, t) ?? onPrimary,
+      foreground: Color.lerp(foreground, other.foreground, t) ?? foreground,
     );
   }
 }

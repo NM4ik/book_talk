@@ -3,14 +3,16 @@ part of 'auth_bloc.dart';
 sealed class AuthState {
   const AuthState({required this.authStatus});
 
-  factory AuthState.idle(AuthStatus authStatus) =>
-      _IdleAuthState(authStatus: authStatus);
+  const factory AuthState.idle({required AuthStatus authStatus}) =
+      _IdleAuthState;
 
-  factory AuthState.processing(AuthStatus authStatus) =>
-      _ProcessingAuthState(authStatus: authStatus);
+  const factory AuthState.processing({required AuthStatus authStatus}) =
+      _ProcessingAuthState;
 
-  factory AuthState.error(AuthStatus authStatus, Object error) =>
-      _ErrorAuthState(authStatus: authStatus, error: error);
+  const factory AuthState.error({
+    required AuthStatus authStatus,
+    required Object error,
+  }) = _ErrorAuthState;
 
   final AuthStatus authStatus;
 

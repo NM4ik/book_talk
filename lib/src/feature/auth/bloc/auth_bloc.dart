@@ -20,7 +20,7 @@ final class AuthBloc extends Bloc<AuthEvent, AuthState> with SetStateMixin {
     );
 
     _authStatusSubscription = _authRepository.authStatus
-        .map((status) => AuthState.idle(status))
+        .map((status) => AuthState.idle(authStatus: status))
         .listen(
       ($state) {
         if ($state != state) {
@@ -37,16 +37,16 @@ final class AuthBloc extends Bloc<AuthEvent, AuthState> with SetStateMixin {
     _SignEmailPasswordAuthEvent event,
     Emitter<AuthState> emitter,
   ) async {
-    emitter(AuthState.processing(state.authStatus));
+    emitter(AuthState.processing(authStatus: state.authStatus));
 
     try {
       await _authRepository.signInWithEmailAndPassword(
         event.email,
         event.password,
       );
-      emitter(AuthState.idle(AuthStatus.auth));
+      emitter(const AuthState.idle(authStatus: AuthStatus.auth));
     } on Object catch (e, stackTrace) {
-      emitter(AuthState.error(AuthStatus.unAuth, e));
+      emitter(AuthState.error(authStatus: AuthStatus.unAuth, error: e));
       onError(e, stackTrace);
     }
   }
@@ -55,12 +55,12 @@ final class AuthBloc extends Bloc<AuthEvent, AuthState> with SetStateMixin {
     _SignOutAuthEvent event,
     Emitter<AuthState> emitter,
   ) async {
-    emitter(AuthState.processing(state.authStatus));
+    emitter(AuthState.processing(authStatus: state.authStatus));
     try {
       await _authRepository.signOut();
-      emitter(AuthState.idle(AuthStatus.unAuth));
+      emitter(const AuthState.idle(authStatus: AuthStatus.unAuth));
     } on Object catch (e, stackTrace) {
-      emitter(AuthState.error(AuthStatus.unAuth, e));
+      emitter(AuthState.error(authStatus: AuthStatus.unAuth, error: e));
       onError(e, stackTrace);
     }
   }

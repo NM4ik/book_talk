@@ -14,7 +14,7 @@ final class AccountBloc extends Bloc<AccountEvent, AccountState> {
     required UserRepository userRepository,
   })  : _userRepository = userRepository,
         _authStorage = authStorage,
-        super(AccountState.idle(null)) {
+        super(const AccountState.idle(user: null)) {
     on<AccountEvent>(
       (event, emitter) => switch (event) {
         _LoadUserAccountEvent() => _onLoadEvent(event, emitter),
@@ -34,19 +34,19 @@ final class AccountBloc extends Bloc<AccountEvent, AccountState> {
     _LoadUserAccountEvent event,
     Emitter<AccountState> emitter,
   ) async {
-    emitter(AccountState.processing(state.user));
+    emitter(AccountState.processing(user: state.user));
 
     try {
       final token = await _authStorage.get();
       if (token == null) {
-        return emitter(AccountState.idle(null));
+        return emitter(const AccountState.idle(user: null));
       }
 
       final userResponse = await _userRepository.fetchUser(token);
 
-      emitter(AccountState.idle(userResponse));
+      emitter(AccountState.idle(user: userResponse));
     } on Object catch (error) {
-      emitter(AccountState.error(state.user, error));
+      emitter(AccountState.error(user: state.user,error: error));
 
       // TODO(mikhailov): Think about HTTPexc.
       rethrow;

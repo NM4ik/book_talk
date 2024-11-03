@@ -9,14 +9,24 @@ class BookTalkTheme {
   ThemeData get lightTheme => _lightThemeData;
 
   late final _darkThemeData = ThemeData(
-    brightness: Brightness.dark,
-    useMaterial3: true,
-    actionIconTheme: _actionIconThemeData,
-    scaffoldBackgroundColor: _darkColorPallete.backgroundColor,
     extensions: const {
       _darkColorPallete,
       _appTypography,
     },
+    brightness: Brightness.dark,
+    useMaterial3: true,
+    actionIconTheme: _actionIconThemeData,
+    scaffoldBackgroundColor: _darkColorPallete.backgroundColor,
+    appBarTheme: AppBarTheme(
+      backgroundColor: _darkColorPallete.backgroundColor,
+      elevation: .5,
+    ),
+    cupertinoOverrideTheme: CupertinoThemeData(
+      barBackgroundColor: _darkColorPallete.backgroundColor,
+      textTheme: CupertinoTextThemeData(
+        navLargeTitleTextStyle: _appTypography.headlineLarge,
+      ),
+    ),
   );
 
   late final _lightThemeData = ThemeData(
@@ -41,6 +51,7 @@ class BookTalkTheme {
     onPrimary: Colors.white,
     secondary: Color(0xFF3B364C),
     onSecondary: Colors.white,
+    foreground: Colors.white,
   );
 
   static const _appTypography = AppTypography(

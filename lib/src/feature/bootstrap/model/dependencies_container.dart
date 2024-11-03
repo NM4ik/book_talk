@@ -2,6 +2,7 @@ import 'package:book_talk/src/common/model/app_metadata.dart';
 import 'package:book_talk/src/feature/account/bloc/account_bloc.dart';
 import 'package:book_talk/src/feature/account/data/user_repository.dart';
 import 'package:book_talk/src/feature/auth/bloc/auth_bloc.dart';
+import 'package:book_talk/src/feature/rooms/data/rooms_repository.dart';
 import 'package:book_talk/src/feature/settings/bloc/app_settings_bloc.dart';
 
 class DependenciesContainer {
@@ -10,20 +11,25 @@ class DependenciesContainer {
     required this.appMetadata,
     required this.authBloc,
     required this.userRepository,
+    required this.roomsRepository,
     required this.accountBloc,
   });
 
-  /// [AppMetadata] client info
+  /// Information about the application and client environment
   final AppMetadata appMetadata;
 
-  /// [AppSettingsBloc] manage theme and locale
+  /// Manages application settings such as theme and locale
   final AppSettingsBloc appSettingsBloc;
 
-  /// [AuthBloc] user authentication
+  /// Handles user authentication and session management
   final AuthBloc authBloc;
 
-  /// [UserRepository] for manage user data
+  /// Provides access to user-related data and operations
   final UserRepository userRepository;
 
+  /// Manages account information and operations related to the user profile
   final AccountBloc accountBloc;
+
+  /// Provides access to room-related data and operations
+  final RoomsRepository roomsRepository;
 }

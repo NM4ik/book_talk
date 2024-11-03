@@ -3,13 +3,15 @@ part of 'account_bloc.dart';
 sealed class AccountState {
   const AccountState({required this.user});
 
-  factory AccountState.idle(User? user) => _IdleAccountState(user: user);
+  const factory AccountState.idle({required User? user}) = _IdleAccountState;
 
-  factory AccountState.processing(User? user) =>
-      _ProcessingAccountState(user: user);
+  const factory AccountState.processing({required User? user}) =
+      _ProcessingAccountState;
 
-  factory AccountState.error(User? user, Object error) =>
-      _ErrorAccountState(user: user, error: error);
+  const factory AccountState.error({
+    required User? user,
+    required Object error,
+  }) = _ErrorAccountState;
 
   final User? user;
 }

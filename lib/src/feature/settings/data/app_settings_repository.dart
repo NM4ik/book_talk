@@ -1,5 +1,6 @@
 import 'package:book_talk/src/feature/settings/data/app_settings_datasource.dart';
 import 'package:book_talk/src/feature/settings/model/app_settings.dart';
+import 'package:flutter/material.dart';
 
 abstract class AppSettingsRepository {
   const AppSettingsRepository();
@@ -10,15 +11,16 @@ abstract class AppSettingsRepository {
 }
 
 final class AppSettingsRepositoryImpl extends AppSettingsRepository {
-  final AppSettingsDatasource _appSettingsDatasource;
-
   const AppSettingsRepositoryImpl({
     required AppSettingsDatasource appSettingsDatasource,
   }) : _appSettingsDatasource = appSettingsDatasource;
 
+  final AppSettingsDatasource _appSettingsDatasource;
+
   @override
   Future<AppSettings?> getAppSettings() async =>
-      _appSettingsDatasource.getSettings();
+      (await _appSettingsDatasource.getSettings()) ??
+      const AppSettings(themeMode: ThemeMode.dark, locale: null);
 
   @override
   Future<void> setAppSettings(AppSettings settings) async =>

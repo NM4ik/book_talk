@@ -9,17 +9,17 @@ sealed class AuthEvent {
         password: password,
       );
 
-  factory AuthEvent.signOut() => _SignOutAuthEvent();
+  factory AuthEvent.signOut() => const _SignOutAuthEvent();
 }
 
 final class _SignEmailPasswordAuthEvent extends AuthEvent {
-  final String email;
-  final String password;
 
   const _SignEmailPasswordAuthEvent({
     required this.email,
     required this.password,
   });
+  final String email;
+  final String password;
 }
 
 final class _SignOutAuthEvent extends AuthEvent {

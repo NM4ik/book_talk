@@ -25,11 +25,11 @@ final class AppSettingsBloc extends Bloc<AppSettingsEvent, AppSettingsState> {
     Emitter<AppSettingsState> emitter,
   ) async {
     try {
-      emitter(_LoadingAppSettingsState());
+      emitter(const AppSettingsState.loading());
       _appSettingsRepository.setAppSettings(event.appSettings);
-      emitter(_IdleAppSettingsState(appSettings: event.appSettings));
+      emitter(AppSettingsState.idle(appSettings: event.appSettings));
     } catch (error) {
-      emitter(_ErrorAppSettingsState(error: error));
+      emitter(AppSettingsState.error(error: error));
     }
   }
 }

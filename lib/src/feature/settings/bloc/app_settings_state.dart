@@ -3,18 +3,23 @@ part of 'app_settings_bloc.dart';
 sealed class AppSettingsState {
   const AppSettingsState();
 
-  factory AppSettingsState.idle(AppSettings? appSettings) =>
-      _IdleAppSettingsState(appSettings: appSettings);
+  const factory AppSettingsState.idle({required AppSettings? appSettings}) =
+      _IdleAppSettingsState;
 
-  factory AppSettingsState.loading() => _LoadingAppSettingsState();
+  const factory AppSettingsState.loading() = _LoadingAppSettingsState;
 
-  factory AppSettingsState.error(Object error) =>
-      _ErrorAppSettingsState(error: error);
+  const factory AppSettingsState.error({required Object error}) =
+      _ErrorAppSettingsState;
 
   AppSettings? get settings => switch (this) {
         _IdleAppSettingsState() => (this as _IdleAppSettingsState).appSettings,
         _LoadingAppSettingsState() => null,
         _ErrorAppSettingsState() => null,
+      };
+
+  bool get isLoading => switch (this) {
+        _LoadingAppSettingsState() => true,
+        _ => false,
       };
 }
 

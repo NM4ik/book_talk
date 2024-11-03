@@ -11,7 +11,7 @@ class AuthScope extends StatefulWidget {
   final Widget child;
 
   static AuthStatus of(BuildContext context) =>
-      context.inheritedOf<_AuthInherited>().authStatus;
+      context.inheritedOf<_InheritedAuthScope>().authStatus;
 
   @override
   State<AuthScope> createState() => _AuthScopeState();
@@ -24,7 +24,7 @@ class _AuthScopeState extends State<AuthScope> {
   Widget build(BuildContext context) => BlocBuilder<AuthBloc, AuthState>(
         bloc: _authBloc,
         builder: (context, state) {
-          return _AuthInherited(
+          return _InheritedAuthScope(
             child: widget.child,
             authStatus: state.authStatus,
           );
@@ -32,8 +32,8 @@ class _AuthScopeState extends State<AuthScope> {
       );
 }
 
-class _AuthInherited extends InheritedWidget {
-  const _AuthInherited({
+class _InheritedAuthScope extends InheritedWidget {
+  const _InheritedAuthScope({
     required super.child,
     required this.authStatus,
   });
@@ -41,6 +41,6 @@ class _AuthInherited extends InheritedWidget {
   final AuthStatus authStatus;
 
   @override
-  bool updateShouldNotify(covariant _AuthInherited oldWidget) =>
+  bool updateShouldNotify(covariant _InheritedAuthScope oldWidget) =>
       oldWidget.authStatus != authStatus;
 }

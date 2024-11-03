@@ -14,6 +14,8 @@ import 'package:book_talk/src/feature/auth/data/auth_storage.dart';
 import 'package:book_talk/src/feature/account/data/user_datasource.dart';
 import 'package:book_talk/src/feature/auth/model/auth_status.dart';
 import 'package:book_talk/src/feature/bootstrap/model/dependencies_container.dart';
+import 'package:book_talk/src/feature/rooms/data/rooms_datasource.dart';
+import 'package:book_talk/src/feature/rooms/data/rooms_repository.dart';
 import 'package:book_talk/src/feature/settings/bloc/app_settings_bloc.dart';
 import 'package:book_talk/src/feature/settings/data/app_settings_datasource.dart';
 import 'package:book_talk/src/feature/settings/data/app_settings_repository.dart';
@@ -36,12 +38,11 @@ final class CompositionRoot {
     logger.logMessage('Dependencies initialized');
 
     stopwatch.stop();
-    final result = CompositionResult(
+
+    return CompositionResult(
       dependencies: dependencies,
       msSpent: stopwatch.elapsedMilliseconds,
     );
-
-    return result;
   }
 }
 
@@ -91,6 +92,7 @@ class DependenciesFactory extends AsyncFactory<DependenciesContainer> {
 
     /// repositories
     final userRepository = UserRepositoryFactory().create();
+    final roomsRepository = RoomsRepositoryFactory().create();
 
     /// BLoC
     final settingsBloc = await SettingsBlocFactory(
@@ -111,6 +113,7 @@ class DependenciesFactory extends AsyncFactory<DependenciesContainer> {
       authBloc: authBloc,
       userRepository: userRepository,
       accountBloc: accountBloc,
+      roomsRepository: roomsRepository,
     );
   }
 }
@@ -134,7 +137,9 @@ class SettingsBlocFactory extends AsyncFactory<AppSettingsBloc> {
     );
 
     final appSettings = await appSettingsRepository.getAppSettings();
-    final initialState = AppSettingsState.idle(appSettings);
+    final initialState = AppSettingsState.idle(appSettings: appSettings);
+
+    print('initialState - $initialState, appSettings - $appSettings');
 
     return AppSettingsBloc(
       appSettingsRepository: appSettingsRepository,
@@ -177,7 +182,9 @@ class AuthBlocFactory extends AsyncFactory<AuthBloc> {
     final token = await authStorage.get();
 
     return AuthBloc(
-      AuthState.idle(token != null ? AuthStatus.auth : AuthStatus.unAuth),
+      AuthState.idle(
+        authStatus: token != null ? AuthStatus.auth : AuthStatus.unAuth,
+      ),
       authRepository: authRepository,
     );
   }
@@ -201,6 +208,13 @@ class UserRepositoryFactory extends Factory<UserRepository> {
   @override
   UserRepository create() {
     return UserRepositoryImpl(userDatasource: UserDatasourceImpl());
+  }
+}
+
+class RoomsRepositoryFactory extends Factory<RoomsRepository> {
+  @override
+  RoomsRepository create() {
+    return RoomsRepositoryImpl(roomsDatasource: RoomsDatasourceImpl());
   }
 }
 

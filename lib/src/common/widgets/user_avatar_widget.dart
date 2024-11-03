@@ -31,8 +31,8 @@ class UserAvatarWidget extends StatelessWidget {
         }
 
         return SizedBox(
-          width: avatarSize,
-          height: avatarSize,
+          width: size,
+          height: size,
           child: DecoratedBox(
             decoration: const BoxDecoration(
               shape: BoxShape.circle,
