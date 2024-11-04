@@ -22,9 +22,16 @@ class BookTalkTheme {
       elevation: .5,
     ),
     cupertinoOverrideTheme: CupertinoThemeData(
+      brightness: Brightness.dark,
       barBackgroundColor: _darkColorPallete.backgroundColor,
+      primaryColor: _darkColorPallete.primary,
+      primaryContrastingColor: _darkColorPallete.onPrimary,
       textTheme: CupertinoTextThemeData(
-        navLargeTitleTextStyle: _appTypography.headlineLarge,
+        primaryColor: _darkColorPallete.primary,
+        navLargeTitleTextStyle: _appTypography.headlineLarge
+            .copyWith(color: _darkColorPallete.foreground),
+        navTitleTextStyle: _appTypography.titleMedium
+            .copyWith(color: _darkColorPallete.foreground),
       ),
     ),
   );
@@ -74,6 +81,11 @@ class BookTalkTheme {
       fontFamily: 'Poppins',
       fontWeight: FontWeight.w400,
       fontSize: 32,
+      height: 1,
+      wordSpacing: 0,
+      backgroundColor: Colors.transparent,
+      decorationColor: Colors.transparent,
+      decorationThickness: 1,
     ),
     headlineMedium: TextStyle(
       fontFamily: 'Poppins',
@@ -94,6 +106,11 @@ class BookTalkTheme {
       fontFamily: 'Poppins',
       fontWeight: FontWeight.w500,
       fontSize: 16,
+      height: 1,
+      wordSpacing: 0,
+      backgroundColor: Colors.transparent,
+      decorationColor: Colors.transparent,
+      decorationThickness: 1,
     ),
     titleSmall: TextStyle(
       fontFamily: 'Poppins',

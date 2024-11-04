@@ -118,9 +118,9 @@ sealed class WindowSize extends Size {
 
   /// Lazy maps the [WindowSize] to a value of type [T].
   T maybeMap<T>({
-    required T Function(_WindowSizeCompact)? compact,
-    required T Function(_WindowSizeMedium)? medium,
-    required T Function(_WindowSizeLarge)? large,
+    T Function(_WindowSizeCompact)? compact,
+    T Function(_WindowSizeMedium)? medium,
+    T Function(_WindowSizeLarge)? large,
     required T Function() orElse,
   }) =>
       switch (this) {

@@ -2,6 +2,7 @@ import 'package:book_talk/src/common/router/routes.dart';
 import 'package:book_talk/src/common/widgets/user_avatar_widget.dart';
 import 'package:book_talk/src/common/widgets/shimmer.dart';
 import 'package:book_talk/src/common/widgets/window_size.dart';
+import 'package:book_talk/src/feature/bootstrap/widget/app_scope.dart';
 import 'package:book_talk/src/feature/rooms/bloc/rooms_bloc.dart';
 import 'package:book_talk/src/feature/rooms/model/room.dart';
 import 'package:book_talk/src/feature/rooms/widget/rooms_scope.dart';
@@ -12,15 +13,24 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:octopus/octopus.dart';
 
-class RoomsScreen extends StatelessWidget {
+class RoomsScreen extends StatefulWidget {
   const RoomsScreen({super.key});
 
   @override
+  State<RoomsScreen> createState() => _RoomsScreenState();
+}
+
+class _RoomsScreenState extends State<RoomsScreen> {
+  @override
+  void initState() {
+    super.initState();
+    AppScope.of(context).roomsBloc.add(const RoomsEvent.load());
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return const RoomsScope(
-      child: Scaffold(
-        body: _RoomsScrollView(),
-      ),
+    return const Scaffold(
+      body: _RoomsScrollView(),
     );
   }
 }
@@ -86,7 +96,7 @@ class _RoomsGridView extends StatelessWidget {
         ),
         mainAxisSpacing: 50,
         crossAxisSpacing: 30,
-        childAspectRatio: 1.7,
+        childAspectRatio: 2,
       ),
       itemCount: isLoading ? 10 : (rooms?.length ?? 0),
       itemBuilder: (context, index) {
@@ -118,8 +128,7 @@ class _RoomCard extends StatelessWidget {
       clipBehavior: Clip.hardEdge,
       borderRadius: const BorderRadius.all(Radius.circular(8)),
       child: ColoredBox(
-        color:
-            Theme.of(context).colorPalette?.secondary ?? Colors.transparent,
+        color: Theme.of(context).colorPalette?.secondary ?? Colors.transparent,
         child: Row(
           children: [
             AspectRatio(
@@ -145,14 +154,34 @@ class _RoomCard extends StatelessWidget {
                       children: [
                         Icon(
                           Icons.access_time_rounded,
-                          // color: Colors.grey[500],
-                          // color: Theme.of(context).colorPalette?.primary,
                           color: Theme.of(context).scaffoldBackgroundColor,
                         ),
                         const SizedBox(width: 5),
-                        // Text(room.openTime + ' - ' + room.closeTime),
-                        UiText.labelMedium(
-                          room.openTime + ' - ' + room.closeTime,
+                        Expanded(
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              UiText.labelMedium(
+                                room.openTime + ' - ' + room.closeTime,
+                              ),
+                              GestureDetector(
+                                onTap: () => Octopus.of(context).setState(
+                                  (state) => state
+                                    ..removeByName(Routes.roomDetail.name)
+                                    ..add(
+                                      Routes.roomDetail.node(
+                                        arguments: {'id': room.id.toString()},
+                                      ),
+                                    ),
+                                ),
+                                child: const Icon(
+                                  CupertinoIcons.settings,
+                                  size: 20,
+                                ),
+                              )
+                            ],
+                          ),
                         ),
                       ],
                     )

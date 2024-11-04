@@ -43,12 +43,11 @@ final class AccountBloc extends Bloc<AccountEvent, AccountState> {
       }
 
       final userResponse = await _userRepository.fetchUser(token);
-
       emitter(AccountState.idle(user: userResponse));
-    } on Object catch (error) {
-      emitter(AccountState.error(user: state.user,error: error));
 
-      // TODO(mikhailov): Think about HTTPexc.
+      // TODO(mikhailov): handle repository exceptions.
+    } on Object catch (error) {
+      emitter(AccountState.error(user: state.user, error: error));
       rethrow;
     }
   }

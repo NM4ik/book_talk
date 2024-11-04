@@ -37,8 +37,8 @@ class _MaterialAppContextState extends State<MaterialAppContext>
         GlobalCupertinoLocalizations.delegate,
       ],
       supportedLocales: [
-        Locale.fromSubtags(languageCode: 'en'),
-        Locale.fromSubtags(languageCode: 'ru'),
+        const Locale.fromSubtags(languageCode: 'en'),
+        const Locale.fromSubtags(languageCode: 'ru'),
       ],
 
       locale: settings?.locale,
@@ -46,16 +46,13 @@ class _MaterialAppContextState extends State<MaterialAppContext>
       theme: bookTalkUI.lightTheme,
       themeMode: settings?.themeMode ?? ThemeMode.system,
 
-      // Theme
-      // TODO(mikhailov): theme.
       builder: (context, child) {
-        final safeChild = child ?? SizedBox.shrink();
-        final Widget childWidget;
-        if (!kReleaseMode) {
-          childWidget = AppDebugWidget(child: safeChild);
-        } else {
-          childWidget = safeChild;
-        }
+        final safeChild = child ?? const SizedBox.shrink();
+        final childWidget = kReleaseMode
+            ? safeChild
+            : AppDebugWidget(
+                child: safeChild,
+              );
 
         return MediaQuery(
           key: _materialAppKey,

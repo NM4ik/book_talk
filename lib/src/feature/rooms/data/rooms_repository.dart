@@ -1,11 +1,15 @@
 import 'package:book_talk/src/feature/rooms/data/rooms_datasource.dart';
 import 'package:book_talk/src/feature/rooms/model/room.dart';
 
+/// Repository for accessing and managing room data.
 abstract interface class RoomsRepository {
   const RoomsRepository();
 
-  /// Fetch rooms list data
+  /// Returns a list of all rooms.
   Future<List<Room>> fetchRooms();
+
+  /// Deletes a room by its [id]. Returns `true` if successful.
+  Future<bool> deleteRoom(int id);
 }
 
 final class RoomsRepositoryImpl extends RoomsRepository {
@@ -20,4 +24,8 @@ final class RoomsRepositoryImpl extends RoomsRepository {
 
     return roomsResponse.map((roomDto) => roomDto.toEntity()).toList();
   }
+
+  @override
+  Future<bool> deleteRoom(int id) async =>
+      await _roomsDatasource.deleteRoom(id);
 }

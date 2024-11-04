@@ -46,6 +46,7 @@ dependencies:
   uuid: ^4.5.1
   cupertino_icons: ^1.0.8
   window_manager: ^0.4.3
+  collection: ^1.18.0
 
 dev_dependencies:
   pubspec_generator: ^4.0.0

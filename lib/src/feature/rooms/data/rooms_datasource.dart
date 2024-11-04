@@ -1,7 +1,14 @@
+import 'dart:math';
+
 import 'package:book_talk/src/feature/rooms/model/room_dto.dart';
 
+/// Interface for managing room data.
 abstract interface class RoomsDatasource {
+  /// Returns a list of all available rooms.
   Future<List<RoomDto>> fetchRooms();
+
+  /// Deletes a room by its [id]. Returns `true` if successful.
+  Future<bool> deleteRoom(int id);
 }
 
 final class RoomsDatasourceImpl extends RoomsDatasource {
@@ -15,6 +22,22 @@ final class RoomsDatasourceImpl extends RoomsDatasource {
           )
           .toList(),
     );
+  }
+
+  @override
+  Future<bool> deleteRoom(int id) async {
+    final isDeleted = await Future.delayed(
+      const Duration(seconds: 1),
+      () => Random().nextBool(),
+    );
+
+    if (isDeleted) {
+      _mockJson.removeWhere((item) => item['id'] == id);
+
+      return true;
+    }
+
+    return false;
   }
 }
 

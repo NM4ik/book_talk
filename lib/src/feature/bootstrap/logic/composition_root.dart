@@ -14,6 +14,7 @@ import 'package:book_talk/src/feature/auth/data/auth_storage.dart';
 import 'package:book_talk/src/feature/account/data/user_datasource.dart';
 import 'package:book_talk/src/feature/auth/model/auth_status.dart';
 import 'package:book_talk/src/feature/bootstrap/model/dependencies_container.dart';
+import 'package:book_talk/src/feature/rooms/bloc/rooms_bloc.dart';
 import 'package:book_talk/src/feature/rooms/data/rooms_datasource.dart';
 import 'package:book_talk/src/feature/rooms/data/rooms_repository.dart';
 import 'package:book_talk/src/feature/settings/bloc/app_settings_bloc.dart';
@@ -92,7 +93,6 @@ class DependenciesFactory extends AsyncFactory<DependenciesContainer> {
 
     /// repositories
     final userRepository = UserRepositoryFactory().create();
-    final roomsRepository = RoomsRepositoryFactory().create();
 
     /// BLoC
     final settingsBloc = await SettingsBlocFactory(
@@ -106,6 +106,7 @@ class DependenciesFactory extends AsyncFactory<DependenciesContainer> {
       authStorage: authStorage,
       userRepository: userRepository,
     ).create();
+    final roomsBloc = RoomsBlocFactory().create();
 
     return DependenciesContainer(
       appSettingsBloc: settingsBloc,
@@ -113,7 +114,7 @@ class DependenciesFactory extends AsyncFactory<DependenciesContainer> {
       authBloc: authBloc,
       userRepository: userRepository,
       accountBloc: accountBloc,
-      roomsRepository: roomsRepository,
+      roomsBloc: roomsBloc,
     );
   }
 }
@@ -138,8 +139,6 @@ class SettingsBlocFactory extends AsyncFactory<AppSettingsBloc> {
 
     final appSettings = await appSettingsRepository.getAppSettings();
     final initialState = AppSettingsState.idle(appSettings: appSettings);
-
-    print('initialState - $initialState, appSettings - $appSettings');
 
     return AppSettingsBloc(
       appSettingsRepository: appSettingsRepository,
@@ -190,6 +189,20 @@ class AuthBlocFactory extends AsyncFactory<AuthBloc> {
   }
 }
 
+class RoomsBlocFactory extends Factory<RoomsBloc> {
+  RoomsBlocFactory();
+
+  @override
+  RoomsBloc create() {
+    return RoomsBloc(
+      const RoomsState.idle(rooms: null),
+      roomsRepository: RoomsRepositoryImpl(
+        roomsDatasource: RoomsDatasourceImpl(),
+      ),
+    );
+  }
+}
+
 class AccountBlocFactory extends Factory<AccountBloc> {
   AccountBlocFactory({required this.authStorage, required this.userRepository});
   final AuthStorage authStorage;
@@ -208,13 +221,6 @@ class UserRepositoryFactory extends Factory<UserRepository> {
   @override
   UserRepository create() {
     return UserRepositoryImpl(userDatasource: UserDatasourceImpl());
-  }
-}
-
-class RoomsRepositoryFactory extends Factory<RoomsRepository> {
-  @override
-  RoomsRepository create() {
-    return RoomsRepositoryImpl(roomsDatasource: RoomsDatasourceImpl());
   }
 }
 
