@@ -14,7 +14,7 @@ class MaterialAppFailed extends StatelessWidget {
 
   // TODO(mikhailov): Create error view.
   @override
-  Widget build(BuildContext context) => MaterialApp(
+  Widget build(BuildContext context) => const MaterialApp(
         home: Scaffold(
           body: Center(
             child: Text('ERROR'),

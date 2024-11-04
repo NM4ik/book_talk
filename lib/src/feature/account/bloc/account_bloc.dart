@@ -46,9 +46,9 @@ final class AccountBloc extends Bloc<AccountEvent, AccountState> {
       emitter(AccountState.idle(user: userResponse));
 
       // TODO(mikhailov): handle repository exceptions.
-    } on Object catch (error) {
+    } on Object catch (error, st) {
       emitter(AccountState.error(user: state.user, error: error));
-      rethrow;
+      onError(error, st);
     }
   }
 

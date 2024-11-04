@@ -19,6 +19,7 @@ abstract final class ErrorTracking {
     StackTrace stackTrace,
   ) {
     appLogger.logError(error, stackTrace);
+
     return true;
   }
 }

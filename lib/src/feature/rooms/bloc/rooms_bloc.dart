@@ -30,10 +30,10 @@ final class RoomsBloc extends Bloc<RoomsEvent, RoomsState> {
       final rooms = await _roomsRepository.fetchRooms();
       emitter(RoomsState.idle(rooms: rooms));
 
-    // TODO(mikhailov): handle repository exceptions.
-    } on Object catch (e) {
-      emitter(RoomsState.error(rooms: null, error: e));
-      rethrow;
+      // TODO(mikhailov): handle repository exceptions.
+    } on Object catch (error, st) {
+      emitter(RoomsState.error(rooms: null, error: error));
+      onError(error, st);
     }
   }
 }
