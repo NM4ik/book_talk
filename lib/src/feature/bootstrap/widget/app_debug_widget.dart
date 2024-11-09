@@ -17,7 +17,7 @@ class AppDebugWidget extends StatelessWidget {
             minimum: const EdgeInsets.all(20),
             child: Text(
               'version: ${Pubspec.version.canonical}',
-              style: TextStyle(color: Colors.red),
+              style: const TextStyle(color: Colors.red),
             ),
           ),
         ],

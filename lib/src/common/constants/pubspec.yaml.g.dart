@@ -124,13 +124,13 @@ sealed class Pubspec {
   /// Build date and time (UTC)
   static final DateTime timestamp = DateTime.utc(
     2024,
-    10,
-    26,
-    10,
-    50,
-    29,
-    224,
-    821,
+    11,
+    9,
+    12,
+    21,
+    39,
+    694,
+    163,
   );
 
   /// Name
@@ -419,12 +419,25 @@ sealed class Pubspec {
     'l': r'^4.0.2',
     'octopus': r'^0.0.9',
     'bloc_concurrency': r'^0.2.5',
+    'shared_preferences': r'^2.3.2',
+    'book_talk_ui': <String, Object>{
+      'path': r'packages/ui/book_talk_ui',
+    },
+    'cached_network_image': r'^3.4.1',
+    'carousel_slider': r'^5.0.0',
+    'smooth_page_indicator': r'^1.2.0+3',
+    'uuid': r'^4.5.1',
+    'cupertino_icons': r'^1.0.8',
+    'window_manager': r'^0.4.3',
+    'collection': r'^1.18.0',
   };
 
   /// Developer dependencies
   static const Map<String, Object> devDependencies = <String, Object>{
     'pubspec_generator': r'^4.0.0',
     'build_runner': r'^2.4.13',
+    'dart_code_metrics_presets': r'^2.17.0',
+    'dartdoc': r'^8.1.0',
   };
 
   /// Dependency overrides
@@ -481,6 +494,12 @@ sealed class Pubspec {
     'dependency_overrides': dependencyOverrides,
     'flutter': <String, Object>{
       'uses-material-design': true,
+      'assets': <Object>[
+        r'assets/images/',
+      ],
+      'shaders': <Object>[
+        r'assets/shaders/shimmer.frag',
+      ],
     },
   };
 

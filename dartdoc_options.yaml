@@ -1,0 +1,10 @@
+dartdoc:
+  categories:
+    "COMMON":
+      markdown: doc/topics/common.md
+  categoryOrder: ["COMMON"]
+  showUndocumentedCategories: true
+  include: ["common"]
+  exclude: ['unnecessary']  
+  ignore:
+    - unresolved-doc-reference

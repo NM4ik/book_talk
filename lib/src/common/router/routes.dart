@@ -5,6 +5,10 @@ import 'package:book_talk/src/feature/rooms/widget/rooms_screen.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:octopus/octopus.dart';
 
+/// Enum representing navigable routes within the app.
+///
+/// This enum helps manage and centralize route definitions for consistent
+/// navigation handling across the app.
 enum Routes with OctopusRoute {
   signin('signin', title: 'SignIn'),
   rooms('rooms', title: 'Rooms'),

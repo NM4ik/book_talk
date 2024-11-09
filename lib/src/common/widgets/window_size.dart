@@ -2,6 +2,10 @@ import 'package:book_talk/src/common/utils/extensions/build_context_extension.da
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 
+/// The scope provides [WindowSize] information to its descendants.
+/// 
+/// This widget listens for size changes and updates its state accordingly,
+/// making it useful for managing layouts across different screen sizes.
 class WindowSizeScope extends StatefulWidget {
   const WindowSizeScope({
     required this.child,
@@ -71,6 +75,19 @@ class _InheritedWindowSizeScope extends InheritedWidget {
       windowSize != oldWidget.windowSize;
 }
 
+/// Сlass representing different window sizes, used for handling
+/// various screen dimensions in a responsive manner.
+///
+/// [WindowSize] is a base class for representing a window's size, with three
+/// concrete subclasses for different size categories: compact, medium, and large.
+/// The class allows categorization of window sizes based on specific width thresholds.
+///
+/// The factory constructor [WindowSize.fromSize] categorizes the input [Size]
+/// into one of the window size types based on its width, throwing an error for
+/// invalid sizes.
+///
+/// The class provides convenience getters like [isLargeFormat], [isMediumFormat],
+/// and [isCompactFormat] to check the window's category in an easy-to-read way.
 sealed class WindowSize extends Size {
   WindowSize({
     required this.maxWidth,
@@ -89,16 +106,19 @@ sealed class WindowSize extends Size {
     };
   }
 
+  /// Returns true if the window is considered large (width >= [minWidth] of [_WindowSizeLarge]).
   bool get isLargeFormat => switch (this) {
         _WindowSizeLarge() => true,
         _ => false,
       };
 
+  /// Returns true if the window is considered medium (width >= [minWidth] of [_WindowSizeMedium]).
   bool get isMediumFormat => switch (this) {
         _WindowSizeMedium() => true,
         _ => false,
       };
 
+  /// Returns true if the window is considered compact (width < [minWidth] of [_WindowSizeCompact]).
   bool get isCompactFormat => switch (this) {
         _WindowSizeCompact() => true,
         _ => false,
@@ -143,7 +163,7 @@ final class _WindowSizeCompact extends WindowSize {
         );
 
   static const _minWidth = 0.0;
-  static const _maxWidth = 700.0;
+  static const _maxWidth = 500.0;
 
   @override
   bool operator ==(Object other) {
@@ -170,7 +190,7 @@ final class _WindowSizeMedium extends WindowSize {
           size: size,
         );
 
-  static const _minWidth = 701.0;
+  static const _minWidth = 501.0;
   static const _maxWidth = 1024.0;
 
   @override

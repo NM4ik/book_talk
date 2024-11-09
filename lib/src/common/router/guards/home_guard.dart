@@ -3,8 +3,16 @@ import 'package:book_talk/src/common/router/routes.dart';
 import 'package:book_talk/src/feature/auth/model/auth_status.dart';
 import 'package:octopus/octopus.dart';
 
-/// Check routes always contain the home route at the first position.
-/// Only exception for not authenticated users.
+/// A guard ensuring the correct setup of the home route in navigation.
+///
+/// [HomeGuard] extends [OctopusGuard] to maintain the correct state for
+/// navigating to the home route. It ensures that the home route is the
+/// first and only route when the user is authenticated. If the user is
+/// unauthenticated, no action is taken, and the state remains unchanged.
+///
+/// The guard verifies the route setup and calls [_fix] when adjustments
+/// are needed, clearing any extra routes and setting the home route
+/// as the initial and sole route in the navigation state.
 class HomeGuard extends OctopusGuard {
   HomeGuard();
 

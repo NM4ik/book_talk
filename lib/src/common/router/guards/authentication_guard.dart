@@ -4,6 +4,18 @@ import 'package:octopus/octopus.dart';
 
 import 'package:book_talk/src/feature/auth/model/auth_status.dart';
 
+/// A guard for managing authentication-based navigation within the app.
+///
+/// The [AuthenticationGuard] class extends [OctopusGuard] to control navigation
+/// based on the user's authentication status.
+///
+/// It navigates to the appropriate screen, such as a sign-in or home screen,
+/// depending on the user's auth state.
+///
+/// The guard ensures that authenticated users cannot access sign-in routes and
+/// redirects unauthenticated users to sign-in when needed.
+///
+/// This guard operates by checking the authentication status through [getAuthStatus]
 class AuthenticationGuard extends OctopusGuard {
   AuthenticationGuard({
     required AuthStatus Function() getAuthStatus,

@@ -18,11 +18,11 @@ abstract class PreferencesStorage {
 /// A concrete implementation of [PreferencesStorage] using `SharedPreferencesAsync`.
 /// Uses an instance of [SharedPreferencesAsync] to persist and manage data.
 final class SharedPreferencesStorage extends PreferencesStorage {
-  final SharedPreferencesAsync _sharedPreferences;
-
   const SharedPreferencesStorage({
     required SharedPreferencesAsync sharedPreferences,
   }) : _sharedPreferences = sharedPreferences;
+
+  final SharedPreferencesAsync _sharedPreferences;
 
   @override
   Future<String?> getString(String key) async =>

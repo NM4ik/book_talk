@@ -52,6 +52,7 @@ dev_dependencies:
   pubspec_generator: ^4.0.0
   build_runner: ^2.4.13
   dart_code_metrics_presets: ^2.17.0
+  dartdoc: ^8.1.0
 
 flutter:
   uses-material-design: true

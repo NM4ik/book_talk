@@ -26,3 +26,10 @@ extension ContextExtension on BuildContext {
         'out_of_scope',
       ));
 }
+
+/// An extension on [BuildContext] for easy access to [MediaQuery] properties.
+extension SizedExtension on BuildContext {
+  MediaQueryData get mq => MediaQuery.of(this);
+
+  double get widthPx => mq.size.width;
+}

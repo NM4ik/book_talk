@@ -84,19 +84,23 @@ class _RoomsGridView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final windowSize = WindowSizeScope.of(context);
     bool isLoading = rooms == null;
+
+    final windowSize = WindowSizeScope.of(context);
+    final windowWidth = MediaQuery.sizeOf(context).width;
+    final double spacing = windowSize.isLargeFormat ? 20 : 10;
+    final crossAxisCount = windowSize.isLargeFormat
+        ? 3
+        : windowWidth < 650
+            ? 1
+            : 2;
 
     return SliverGrid.builder(
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: windowSize.map(
-          compact: (_) => 1,
-          medium: (_) => 2,
-          large: (_) => 3,
-        ),
-        mainAxisSpacing: 50,
-        crossAxisSpacing: 30,
-        childAspectRatio: 2,
+        crossAxisCount: crossAxisCount,
+        childAspectRatio: windowWidth / 3 / 100 / crossAxisCount + 0.8,
+        mainAxisSpacing: spacing,
+        crossAxisSpacing: spacing,
       ),
       itemCount: isLoading ? 10 : (rooms?.length ?? 0),
       itemBuilder: (context, index) {

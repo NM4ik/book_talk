@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="description" content="API docs for the WindowSize class from the common library, for the Dart programming language.">
+  <title>WindowSize class - common library - Dart API</title>
+
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+  
+  <link rel="stylesheet" href="../static-assets/github.css?v1">
+  <link rel="stylesheet" href="../static-assets/styles.css?v1">
+  <link rel="icon" href="../static-assets/favicon.png?v1">
+  
+</head>
+
+<body data-base-href="../" data-using-base-href="false" class="light-theme">
+<div id="overlay-under-drawer"></div>
+<header id="title">
+  <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li><a href="../index.html">book_talk</a></li>
+    <li><a href="../common/common-library.html">common.dart</a></li>
+    <li class="self-crumb">WindowSize class</li>
+  </ol>
+  <div class="self-name">WindowSize</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+  <div class="toggle" id="theme-button" title="Toggle brightness">
+    <label for="theme">
+      <input type="checkbox" id="theme" value="light-theme">
+      <span id="dark-theme-button" class="material-symbols-outlined">
+        dark_mode
+      </span>
+      <span id="light-theme-button" class="material-symbols-outlined">
+        light_mode
+      </span>
+    </label>
+  </div>
+</header>
+<main>
+<div
+    id="dartdoc-main-content"
+    class="main-content"
+    data-above-sidebar="common&#47;common-library-sidebar.html"
+    data-below-sidebar="common&#47;WindowSize-class-sidebar.html">
+    <div>
+<h1><span class="kind-class">WindowSize</span> class 
+    <a href="https://dart.dev/language/class-modifiers#sealed" class="feature feature-sealed" title="The direct subtypes of this class will be checked for exhaustiveness in switches.">sealed</a>
+ 
+</h1></div>
+
+    
+<section class="desc markdown">
+  <p>Сlass representing different window sizes, used for handling
+various screen dimensions in a responsive manner.</p>
+<p><a href="../common/WindowSize-class.html">WindowSize</a> is a base class for representing a window's size, with three
+concrete subclasses for different size categories: compact, medium, and large.
+The class allows categorization of window sizes based on specific width thresholds.</p>
+<p>The factory constructor <a href="../common/WindowSize/WindowSize.fromSize.html">WindowSize.fromSize</a> categorizes the input <code>Size</code>
+into one of the window size types based on its width, throwing an error for
+invalid sizes.</p>
+<p>The class provides convenience getters like <a href="../common/WindowSize/isLargeFormat.html">isLargeFormat</a>, <a href="../common/WindowSize/isMediumFormat.html">isMediumFormat</a>,
+and <a href="../common/WindowSize/isCompactFormat.html">isCompactFormat</a> to check the window's category in an easy-to-read way.</p>
+</section>
+
+
+    <section>
+      <dl class="dl-horizontal">
+        
+  <dt>Inheritance</dt>
+  <dd>
+    <ul class="gt-separated dark clazz-relationships">
+      <li>Object</li>
+        <li>OffsetBase</li>
+        <li>Size</li>
+      <li>WindowSize</li>
+    </ul>
+  </dd>
+
+        
+        
+
+
+        
+        
+
+
+      </dl>
+    </section>
+
+    
+  <section class="summary offset-anchor" id="constructors">
+    <h2>Constructors</h2>
+    <dl class="constructor-summary-list">
+        <dt id="WindowSize.fromSize" class="callable">
+          <span class="name"><a href="../common/WindowSize/WindowSize.fromSize.html">WindowSize.fromSize</a></span><span class="signature">(<span class="parameter" id="fromSize-param-size"><span class="type-annotation">Size</span> <span class="parameter-name">size</span></span>)</span>
+        </dt>
+        <dd>
+          
+            <div class="constructor-modifier features">factory</div>
+        </dd>
+    </dl>
+  </section>
+    
+  <section
+      class="summary offset-anchor"
+      id="instance-properties">
+    <h2>Properties</h2>
+    <dl class="properties">
+        <dt id="aspectRatio" class="property inherited">
+  <span class="name"><a href="../common/WindowSize/aspectRatio.html">aspectRatio</a></span>
+  <span class="signature">&#8594; double</span>
+  
+
+</dt>
+<dd class="inherited">
+  The aspect ratio of this size.
+  <div class="features"><span class="feature">no setter</span><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="flipped" class="property inherited">
+  <span class="name"><a href="../common/WindowSize/flipped.html">flipped</a></span>
+  <span class="signature">&#8594; Size</span>
+  
+
+</dt>
+<dd class="inherited">
+  A <code>Size</code> with the <code>width</code> and <code>height</code> swapped.
+  <div class="features"><span class="feature">no setter</span><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="hashCode" class="property inherited">
+  <span class="name"><a href="../common/WindowSize/hashCode.html">hashCode</a></span>
+  <span class="signature">&#8594; int</span>
+  
+
+</dt>
+<dd class="inherited">
+  The hash code for this object.
+  <div class="features"><span class="feature">no setter</span><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="height" class="property inherited">
+  <span class="name"><a href="../common/WindowSize/height.html">height</a></span>
+  <span class="signature">&#8594; double</span>
+  
+
+</dt>
+<dd class="inherited">
+  The vertical extent of this size.
+  <div class="features"><span class="feature">no setter</span><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="isCompactFormat" class="property">
+  <span class="name"><a href="../common/WindowSize/isCompactFormat.html">isCompactFormat</a></span>
+  <span class="signature">&#8594; bool</span>
+  
+
+</dt>
+<dd>
+  Returns true if the window is considered compact (width &lt; <a href="../common/WindowSize/minWidth.html">minWidth</a> of <code>_WindowSizeCompact</code>).
+  <div class="features"><span class="feature">no setter</span></div>
+
+</dd>
+
+        <dt id="isEmpty" class="property inherited">
+  <span class="name"><a href="../common/WindowSize/isEmpty.html">isEmpty</a></span>
+  <span class="signature">&#8594; bool</span>
+  
+
+</dt>
+<dd class="inherited">
+  Whether this size encloses a non-zero area.
+  <div class="features"><span class="feature">no setter</span><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="isFinite" class="property inherited">
+  <span class="name"><a href="../common/WindowSize/isFinite.html">isFinite</a></span>
+  <span class="signature">&#8594; bool</span>
+  
+
+</dt>
+<dd class="inherited">
+  Whether both components are finite (neither infinite nor NaN).
+  <div class="features"><span class="feature">no setter</span><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="isInfinite" class="property inherited">
+  <span class="name"><a href="../common/WindowSize/isInfinite.html">isInfinite</a></span>
+  <span class="signature">&#8594; bool</span>
+  
+
+</dt>
+<dd class="inherited">
+  Returns true if either component is <code>double.infinity</code>, and false if both
+are finite (or negative infinity, or NaN).
+  <div class="features"><span class="feature">no setter</span><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="isLargeFormat" class="property">
+  <span class="name"><a href="../common/WindowSize/isLargeFormat.html">isLargeFormat</a></span>
+  <span class="signature">&#8594; bool</span>
+  
+
+</dt>
+<dd>
+  Returns true if the window is considered large (width &gt;= <a href="../common/WindowSize/minWidth.html">minWidth</a> of <code>_WindowSizeLarge</code>).
+  <div class="features"><span class="feature">no setter</span></div>
+
+</dd>
+
+        <dt id="isMediumFormat" class="property">
+  <span class="name"><a href="../common/WindowSize/isMediumFormat.html">isMediumFormat</a></span>
+  <span class="signature">&#8594; bool</span>
+  
+
+</dt>
+<dd>
+  Returns true if the window is considered medium (width &gt;= <a href="../common/WindowSize/minWidth.html">minWidth</a> of <code>_WindowSizeMedium</code>).
+  <div class="features"><span class="feature">no setter</span></div>
+
+</dd>
+
+        <dt id="longestSide" class="property inherited">
+  <span class="name"><a href="../common/WindowSize/longestSide.html">longestSide</a></span>
+  <span class="signature">&#8594; double</span>
+  
+
+</dt>
+<dd class="inherited">
+  The greater of the magnitudes of the <code>width</code> and the <code>height</code>.
+  <div class="features"><span class="feature">no setter</span><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="maxWidth" class="property">
+  <span class="name"><a href="../common/WindowSize/maxWidth.html">maxWidth</a></span>
+  <span class="signature">&#8594; double</span>
+  
+
+</dt>
+<dd>
+  
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+        <dt id="minWidth" class="property">
+  <span class="name"><a href="../common/WindowSize/minWidth.html">minWidth</a></span>
+  <span class="signature">&#8594; double</span>
+  
+
+</dt>
+<dd>
+  
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+        <dt id="runtimeType" class="property inherited">
+  <span class="name"><a href="../common/WindowSize/runtimeType.html">runtimeType</a></span>
+  <span class="signature">&#8594; Type</span>
+  
+
+</dt>
+<dd class="inherited">
+  A representation of the runtime type of the object.
+  <div class="features"><span class="feature">no setter</span><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="shortestSide" class="property inherited">
+  <span class="name"><a href="../common/WindowSize/shortestSide.html">shortestSide</a></span>
+  <span class="signature">&#8594; double</span>
+  
+
+</dt>
+<dd class="inherited">
+  The lesser of the magnitudes of the <code>width</code> and the <code>height</code>.
+  <div class="features"><span class="feature">no setter</span><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="width" class="property inherited">
+  <span class="name"><a href="../common/WindowSize/width.html">width</a></span>
+  <span class="signature">&#8594; double</span>
+  
+
+</dt>
+<dd class="inherited">
+  The horizontal extent of this size.
+  <div class="features"><span class="feature">no setter</span><span class="feature">inherited</span></div>
+
+</dd>
+
+    </dl>
+  </section>
+    
+  <section
+      class="summary offset-anchor"
+      id="instance-methods">
+    <h2>Methods</h2>
+    <dl class="callables">
+        <dt id="bottomCenter" class="callable inherited">
+  <span class="name"><a href="../common/WindowSize/bottomCenter.html">bottomCenter</a></span><span class="signature">(<wbr><span class="parameter" id="bottomCenter-param-origin"><span class="type-annotation">Offset</span> <span class="parameter-name">origin</span></span>)
+    <span class="returntype parameter">&#8594; Offset</span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  The offset to the center of the bottom edge of the rectangle described by
+the given offset (which is interpreted as the top-left corner) and this
+size.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="bottomLeft" class="callable inherited">
+  <span class="name"><a href="../common/WindowSize/bottomLeft.html">bottomLeft</a></span><span class="signature">(<wbr><span class="parameter" id="bottomLeft-param-origin"><span class="type-annotation">Offset</span> <span class="parameter-name">origin</span></span>)
+    <span class="returntype parameter">&#8594; Offset</span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  The offset to the intersection of the bottom and left edges of the
+rectangle described by the given offset (which is interpreted as the
+top-left corner) and this size.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="bottomRight" class="callable inherited">
+  <span class="name"><a href="../common/WindowSize/bottomRight.html">bottomRight</a></span><span class="signature">(<wbr><span class="parameter" id="bottomRight-param-origin"><span class="type-annotation">Offset</span> <span class="parameter-name">origin</span></span>)
+    <span class="returntype parameter">&#8594; Offset</span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  The offset to the intersection of the bottom and right edges of the
+rectangle described by the given offset (which is interpreted as the
+top-left corner) and this size.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="center" class="callable inherited">
+  <span class="name"><a href="../common/WindowSize/center.html">center</a></span><span class="signature">(<wbr><span class="parameter" id="center-param-origin"><span class="type-annotation">Offset</span> <span class="parameter-name">origin</span></span>)
+    <span class="returntype parameter">&#8594; Offset</span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  The offset to the point halfway between the left and right and the top and
+bottom edges of the rectangle described by the given offset (which is
+interpreted as the top-left corner) and this size.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="centerLeft" class="callable inherited">
+  <span class="name"><a href="../common/WindowSize/centerLeft.html">centerLeft</a></span><span class="signature">(<wbr><span class="parameter" id="centerLeft-param-origin"><span class="type-annotation">Offset</span> <span class="parameter-name">origin</span></span>)
+    <span class="returntype parameter">&#8594; Offset</span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  The offset to the center of the left edge of the rectangle described by the
+given offset (which is interpreted as the top-left corner) and this size.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="centerRight" class="callable inherited">
+  <span class="name"><a href="../common/WindowSize/centerRight.html">centerRight</a></span><span class="signature">(<wbr><span class="parameter" id="centerRight-param-origin"><span class="type-annotation">Offset</span> <span class="parameter-name">origin</span></span>)
+    <span class="returntype parameter">&#8594; Offset</span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  The offset to the center of the right edge of the rectangle described by the
+given offset (which is interpreted as the top-left corner) and this size.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="contains" class="callable inherited">
+  <span class="name"><a href="../common/WindowSize/contains.html">contains</a></span><span class="signature">(<wbr><span class="parameter" id="contains-param-offset"><span class="type-annotation">Offset</span> <span class="parameter-name">offset</span></span>)
+    <span class="returntype parameter">&#8594; bool</span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  Whether the point specified by the given offset (which is assumed to be
+relative to the top left of the size) lies between the left and right and
+the top and bottom edges of a rectangle of this size.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="map" class="callable">
+  <span class="name"><a href="../common/WindowSize/map.html">map</a></span><span class="signature">&lt;<wbr><span class="type-parameter">T</span>&gt;</span><span class="signature">(<wbr>{<span class="parameter" id="map-param-compact"><span>required</span> <span class="type-annotation">T</span> <span class="parameter-name">compact</span>(<span class="parameter" id="param-"><span class="type-annotation">_WindowSizeCompact</span></span>), </span><span class="parameter" id="map-param-medium"><span>required</span> <span class="type-annotation">T</span> <span class="parameter-name">medium</span>(<span class="parameter" id="param-"><span class="type-annotation">_WindowSizeMedium</span></span>), </span><span class="parameter" id="map-param-large"><span>required</span> <span class="type-annotation">T</span> <span class="parameter-name">large</span>(<span class="parameter" id="param-"><span class="type-annotation">_WindowSizeLarge</span></span>)</span>})
+    <span class="returntype parameter">&#8594; T</span>
+  </span>
+  
+
+</dt>
+<dd>
+  Maps the <a href="../common/WindowSize-class.html">WindowSize</a> to a value of type <code>T</code>.
+  
+
+</dd>
+
+        <dt id="maybeMap" class="callable">
+  <span class="name"><a href="../common/WindowSize/maybeMap.html">maybeMap</a></span><span class="signature">&lt;<wbr><span class="type-parameter">T</span>&gt;</span><span class="signature">(<wbr>{<span class="parameter" id="maybeMap-param-compact"><span class="type-annotation">T</span> <span class="parameter-name">compact</span>(<span class="parameter" id="param-"><span class="type-annotation">_WindowSizeCompact</span></span>)?, </span><span class="parameter" id="maybeMap-param-medium"><span class="type-annotation">T</span> <span class="parameter-name">medium</span>(<span class="parameter" id="param-"><span class="type-annotation">_WindowSizeMedium</span></span>)?, </span><span class="parameter" id="maybeMap-param-large"><span class="type-annotation">T</span> <span class="parameter-name">large</span>(<span class="parameter" id="param-"><span class="type-annotation">_WindowSizeLarge</span></span>)?, </span><span class="parameter" id="maybeMap-param-orElse"><span>required</span> <span class="type-annotation">T</span> <span class="parameter-name">orElse</span>()</span>})
+    <span class="returntype parameter">&#8594; T</span>
+  </span>
+  
+
+</dt>
+<dd>
+  Lazy maps the <a href="../common/WindowSize-class.html">WindowSize</a> to a value of type <code>T</code>.
+  
+
+</dd>
+
+        <dt id="noSuchMethod" class="callable inherited">
+  <span class="name"><a href="../common/WindowSize/noSuchMethod.html">noSuchMethod</a></span><span class="signature">(<wbr><span class="parameter" id="noSuchMethod-param-invocation"><span class="type-annotation">Invocation</span> <span class="parameter-name">invocation</span></span>)
+    <span class="returntype parameter">&#8594; dynamic</span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  Invoked when a nonexistent method or property is accessed.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="topCenter" class="callable inherited">
+  <span class="name"><a href="../common/WindowSize/topCenter.html">topCenter</a></span><span class="signature">(<wbr><span class="parameter" id="topCenter-param-origin"><span class="type-annotation">Offset</span> <span class="parameter-name">origin</span></span>)
+    <span class="returntype parameter">&#8594; Offset</span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  The offset to the center of the top edge of the rectangle described by the
+given offset (which is interpreted as the top-left corner) and this size.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="topLeft" class="callable inherited">
+  <span class="name"><a href="../common/WindowSize/topLeft.html">topLeft</a></span><span class="signature">(<wbr><span class="parameter" id="topLeft-param-origin"><span class="type-annotation">Offset</span> <span class="parameter-name">origin</span></span>)
+    <span class="returntype parameter">&#8594; Offset</span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  The offset to the intersection of the top and left edges of the rectangle
+described by the given <code>Offset</code> (which is interpreted as the top-left corner)
+and this <code>Size</code>.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="topRight" class="callable inherited">
+  <span class="name"><a href="../common/WindowSize/topRight.html">topRight</a></span><span class="signature">(<wbr><span class="parameter" id="topRight-param-origin"><span class="type-annotation">Offset</span> <span class="parameter-name">origin</span></span>)
+    <span class="returntype parameter">&#8594; Offset</span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  The offset to the intersection of the top and right edges of the rectangle
+described by the given offset (which is interpreted as the top-left corner)
+and this size.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="toString" class="callable inherited">
+  <span class="name"><a href="../common/WindowSize/toString.html">toString</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; String</span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  A string representation of this object.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+    </dl>
+  </section>
+    
+  <section
+      class="summary offset-anchor inherited"
+      id="operators">
+    <h2>Operators</h2>
+    <dl class="callables">
+        <dt id="operator %" class="callable inherited">
+  <span class="name"><a href="../common/WindowSize/operator_modulo.html">operator %</a></span><span class="signature">(<wbr><span class="parameter" id="%-param-operand"><span class="type-annotation">double</span> <span class="parameter-name">operand</span></span>)
+    <span class="returntype parameter">&#8594; Size</span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  Modulo (remainder) operator.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="operator *" class="callable inherited">
+  <span class="name"><a href="../common/WindowSize/operator_multiply.html">operator *</a></span><span class="signature">(<wbr><span class="parameter" id="*-param-operand"><span class="type-annotation">double</span> <span class="parameter-name">operand</span></span>)
+    <span class="returntype parameter">&#8594; Size</span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  Multiplication operator.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="operator +" class="callable inherited">
+  <span class="name"><a href="../common/WindowSize/operator_plus.html">operator +</a></span><span class="signature">(<wbr><span class="parameter" id="+-param-other"><span class="type-annotation">Offset</span> <span class="parameter-name">other</span></span>)
+    <span class="returntype parameter">&#8594; Size</span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  Binary addition operator for adding an <code>Offset</code> to a <code>Size</code>.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="operator -" class="callable inherited">
+  <span class="name"><a href="../common/WindowSize/operator_minus.html">operator -</a></span><span class="signature">(<wbr><span class="parameter" id="--param-other"><span class="type-annotation">OffsetBase</span> <span class="parameter-name">other</span></span>)
+    <span class="returntype parameter">&#8594; OffsetBase</span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  Binary subtraction operator for <code>Size</code>.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="operator &#47;" class="callable inherited">
+  <span class="name"><a href="../common/WindowSize/operator_divide.html">operator /</a></span><span class="signature">(<wbr><span class="parameter" id="/-param-operand"><span class="type-annotation">double</span> <span class="parameter-name">operand</span></span>)
+    <span class="returntype parameter">&#8594; Size</span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  Division operator.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="operator &lt;" class="callable inherited">
+  <span class="name"><a href="../common/WindowSize/operator_less.html">operator <</a></span><span class="signature">(<wbr><span class="parameter" id="<-param-other"><span class="type-annotation">OffsetBase</span> <span class="parameter-name">other</span></span>)
+    <span class="returntype parameter">&#8594; bool</span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  Less-than operator. Compares an <code>Offset</code> or <code>Size</code> to another <code>Offset</code> or
+<code>Size</code>, and returns true if both the horizontal and vertical values of the
+left-hand-side operand are smaller than the horizontal and vertical values
+of the right-hand-side operand respectively. Returns false otherwise.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="operator &lt;=" class="callable inherited">
+  <span class="name"><a href="../common/WindowSize/operator_less_equal.html">operator <=</a></span><span class="signature">(<wbr><span class="parameter" id="<=-param-other"><span class="type-annotation">OffsetBase</span> <span class="parameter-name">other</span></span>)
+    <span class="returntype parameter">&#8594; bool</span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  Less-than-or-equal-to operator. Compares an <code>Offset</code> or <code>Size</code> to another
+<code>Offset</code> or <code>Size</code>, and returns true if both the horizontal and vertical
+values of the left-hand-side operand are smaller than or equal to the
+horizontal and vertical values of the right-hand-side operand
+respectively. Returns false otherwise.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="operator ==" class="callable inherited">
+  <span class="name"><a href="../common/WindowSize/operator_equals.html">operator ==</a></span><span class="signature">(<wbr><span class="parameter" id="==-param-other"><span class="type-annotation">Object</span> <span class="parameter-name">other</span></span>)
+    <span class="returntype parameter">&#8594; bool</span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  Compares two Sizes for equality.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="operator &gt;" class="callable inherited">
+  <span class="name"><a href="../common/WindowSize/operator_greater.html">operator ></a></span><span class="signature">(<wbr><span class="parameter" id=">-param-other"><span class="type-annotation">OffsetBase</span> <span class="parameter-name">other</span></span>)
+    <span class="returntype parameter">&#8594; bool</span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  Greater-than operator. Compares an <code>Offset</code> or <code>Size</code> to another <code>Offset</code>
+or <code>Size</code>, and returns true if both the horizontal and vertical values of
+the left-hand-side operand are bigger than the horizontal and vertical
+values of the right-hand-side operand respectively. Returns false
+otherwise.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="operator &gt;=" class="callable inherited">
+  <span class="name"><a href="../common/WindowSize/operator_greater_equal.html">operator >=</a></span><span class="signature">(<wbr><span class="parameter" id=">=-param-other"><span class="type-annotation">OffsetBase</span> <span class="parameter-name">other</span></span>)
+    <span class="returntype parameter">&#8594; bool</span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  Greater-than-or-equal-to operator. Compares an <code>Offset</code> or <code>Size</code> to
+another <code>Offset</code> or <code>Size</code>, and returns true if both the horizontal and
+vertical values of the left-hand-side operand are bigger than or equal to
+the horizontal and vertical values of the right-hand-side operand
+respectively. Returns false otherwise.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="operator ~&#47;" class="callable inherited">
+  <span class="name"><a href="../common/WindowSize/operator_truncate_divide.html">operator ~/</a></span><span class="signature">(<wbr><span class="parameter" id="~/-param-operand"><span class="type-annotation">double</span> <span class="parameter-name">operand</span></span>)
+    <span class="returntype parameter">&#8594; Size</span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  Integer (truncating) division operator.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+    </dl>
+  </section>
+    
+    
+    
+
+  </div> <!-- /.main-content -->
+  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+    <!-- The search input and breadcrumbs below are only responsively visible at low resolutions. -->
+<header id="header-search-sidebar" class="hidden-l">
+  <form class="search-sidebar" role="search">
+    <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+<ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+    <li><a href="../index.html">book_talk</a></li>
+    <li><a href="../common/common-library.html">common</a></li>
+    <li class="self-crumb">WindowSize class</li>
+</ol>
+
+    <h5>common library</h5>
+    <div id="dartdoc-sidebar-left-content"></div>
+  </div>
+  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+  </div><!--/.sidebar-offcanvas-->
+</main>
+<footer>
+  <span class="no-break">
+    book_talk
+      0.0.1+1
+  </span>
+  
+</footer>
+
+
+<script src="../static-assets/highlight.pack.js?v1"></script>
+<script src="../static-assets/docs.dart.js"></script>
+
+</body>
+</html>
+
