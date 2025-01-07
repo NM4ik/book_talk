@@ -1,5 +1,5 @@
 import 'package:book_talk/src/feature/account/bloc/account_bloc.dart';
-import 'package:book_talk/src/feature/account/widget/account_scope.dart';
+import 'package:book_talk/src/feature/bootstrap/widget/app_scope.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -15,7 +15,7 @@ class UserAvatarWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final accountBloc = AccountScope.of(context).accountBloc;
+    final accountBloc = AppScope.of(context).accountBloc;
 
     return BlocBuilder<AccountBloc, AccountState>(
       bloc: accountBloc,

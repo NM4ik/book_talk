@@ -1,13 +1,12 @@
+import 'package:book_talk/src/common/model/room/room.dart';
 import 'package:book_talk/src/common/router/routes.dart';
+import 'package:book_talk/src/common/widgets/image.dart';
 import 'package:book_talk/src/common/widgets/user_avatar_widget.dart';
 import 'package:book_talk/src/common/widgets/shimmer.dart';
 import 'package:book_talk/src/common/widgets/window_size.dart';
 import 'package:book_talk/src/feature/bootstrap/widget/app_scope.dart';
 import 'package:book_talk/src/feature/rooms/bloc/rooms_bloc.dart';
-import 'package:book_talk/src/feature/rooms/model/room.dart';
-import 'package:book_talk/src/feature/rooms/widget/rooms_scope.dart';
 import 'package:book_talk_ui/book_talk_ui.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -15,6 +14,14 @@ import 'package:octopus/octopus.dart';
 
 class RoomsScreen extends StatefulWidget {
   const RoomsScreen({super.key});
+
+  // static RoomsBloc of(BuildContext context) =>
+  //     context.inheritedOf<_InheritedRoomsScope>(listen: false).roomsBloc;
+
+  // static Room? getById(BuildContext context, int? id) =>
+  //     of(context).state.rooms?.firstWhereOrNull(
+  //           (Room? room) => room?.id == id,
+  //         );
 
   @override
   State<RoomsScreen> createState() => _RoomsScreenState();
@@ -59,12 +66,26 @@ class _RoomsScrollView extends StatelessWidget {
   Widget build(BuildContext context) {
     return CustomScrollView(
       slivers: [
-        const CupertinoSliverNavigationBar(
-          largeTitle: Text('Rooms'),
-          trailing: _AvatarTrailingButton(),
+        CupertinoSliverNavigationBar(
+          largeTitle: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              // TODO(Mikhailov): localize
+              const Text('Rooms'),
+              const SizedBox(width: 10),
+              GestureDetector(
+                onTap: () => _onRoomEdit(context, null),
+                child: Icon(
+                  Icons.add_circle_rounded,
+                  color: Theme.of(context).colorPalette?.primary,
+                ),
+              ),
+            ],
+          ),
+          trailing: const _AvatarTrailingButton(),
         ),
         BlocBuilder<RoomsBloc, RoomsState>(
-          bloc: RoomsScope.of(context),
+          bloc: AppScope.of(context).roomsBloc,
           builder: (context, state) {
             return SliverPadding(
               padding: const EdgeInsets.all(20),
@@ -128,6 +149,9 @@ class _RoomCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final int weekDay = DateTime.now().weekday;
+    final currentWeekDay = room.roomWeekSettings.days[weekDay];
+
     return ClipRRect(
       clipBehavior: Clip.hardEdge,
       borderRadius: const BorderRadius.all(Radius.circular(8)),
@@ -137,9 +161,9 @@ class _RoomCard extends StatelessWidget {
           children: [
             AspectRatio(
               aspectRatio: 2.7 / 4,
-              child: CachedNetworkImage(
-                imageUrl: room.avatar,
-                fit: BoxFit.cover,
+              child: CachedNetworkImage.url(
+                url: room.avatar,
+                boxFit: BoxFit.cover,
               ),
             ),
             Expanded(
@@ -150,8 +174,10 @@ class _RoomCard extends StatelessWidget {
                   children: [
                     UiText.titleSmall(room.name),
                     const SizedBox(height: 10),
+
+                    // TODO(Mikhailov): localize
                     UiText.bodyMedium(
-                      'Вместимость: ${room.capacity}',
+                      'Capacity: ${room.capacity}',
                     ),
                     const Spacer(),
                     Row(
@@ -166,19 +192,15 @@ class _RoomCard extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
+                              // TODO(mikhailov): make open time.
+                              // refactor
                               UiText.labelMedium(
-                                room.openTime + ' - ' + room.closeTime,
+                                currentWeekDay.startTime.format(context) +
+                                    ' - ' +
+                                    currentWeekDay.endTime.format(context),
                               ),
                               GestureDetector(
-                                onTap: () => Octopus.of(context).setState(
-                                  (state) => state
-                                    ..removeByName(Routes.roomDetail.name)
-                                    ..add(
-                                      Routes.roomDetail.node(
-                                        arguments: {'id': room.id.toString()},
-                                      ),
-                                    ),
-                                ),
+                                onTap: () => _onRoomEdit(context, room),
                                 child: const Icon(
                                   CupertinoIcons.settings,
                                   size: 20,
@@ -198,4 +220,16 @@ class _RoomCard extends StatelessWidget {
       ),
     );
   }
+}
+
+void _onRoomEdit(BuildContext context, Room? room) {
+  Octopus.of(context).setState((state) => state
+    ..removeByName(Routes.roomDetail.name)
+    ..add(
+      Routes.roomDetail.node(
+        arguments: {
+          if (room != null) 'id': room.id.toString(),
+        },
+      ),
+    ));
 }

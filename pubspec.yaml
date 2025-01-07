@@ -6,25 +6,28 @@ publish_to: "none"
 
 version: 0.0.1+1
 
-#repository: https://github.com/NM4ik/book_talk
-
+# repository: https://github.com/NM4ik/book_talk
 environment:
-  sdk: ">=3.5.0 <4.0.0"
-  flutter: ">=3.24.3 <4.0.0"
+  sdk: ">=3.6.0 <4.0.0"
+  flutter: ">=3.27.1 <4.0.0"
+
+workspace:
+  - packages/book_talk_ui
 
 dependencies:
   flutter:
     sdk: flutter
-  intl: any
   flutter_localizations:
     sdk: flutter
+  intl: any
 
-  # Stream
+  # State and data flow
   rxdart: ^0.28.0
   flutter_bloc: ^8.1.6
+  bloc: ^8.1.4
 
   # Logger
-  l: ^4.0.2
+  l: ^5.0.0
 
   # Router
   octopus: ^0.0.9
@@ -34,8 +37,8 @@ dependencies:
   shared_preferences: ^2.3.2
 
   # UI lib
-  book_talk_ui:
-    path: packages/ui/book_talk_ui
+  # book_talk_ui:
+  #   path: packages/ui/book_talk_ui
 
   # UI
   cached_network_image: ^3.4.1
@@ -47,16 +50,24 @@ dependencies:
   cupertino_icons: ^1.0.8
   window_manager: ^0.4.3
   collection: ^1.18.0
+  image_picker: ^1.1.2
 
 dev_dependencies:
+  flutter_gen: ^5.8.0
+  flutter_gen_runner: ^5.8.0
   pubspec_generator: ^4.0.0
   build_runner: ^2.4.13
   dart_code_metrics_presets: ^2.17.0
   dartdoc: ^8.1.0
 
 flutter:
+  generate: true
   uses-material-design: true
   assets:
+    - lib/l10n/
     - assets/images/
   shaders:
     - assets/shaders/shimmer.frag
+    
+flutter_intl:
+  enabled: true

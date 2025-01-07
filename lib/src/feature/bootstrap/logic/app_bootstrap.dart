@@ -24,11 +24,8 @@ final class AppBootstrap {
     FlutterError.onError = appLogger.logFlutterError;
     PlatformDispatcher.instance.onError =
         ErrorTracking.trackPlatformDispatcherError;
-    WidgetsBinding.instance.platformDispatcher.onError =
-        ErrorTracking.trackPlatformDispatcherError;
 
-    $platformInitialization();
-
+    await $platformInitialization();
     await _runApp();
     bindings.allowFirstFrame();
   }

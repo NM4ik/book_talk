@@ -13,7 +13,6 @@ sealed class AuthEvent {
 }
 
 final class _SignEmailPasswordAuthEvent extends AuthEvent {
-
   const _SignEmailPasswordAuthEvent({
     required this.email,
     required this.password,

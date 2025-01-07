@@ -1,11 +1,12 @@
 {
-    "editor.codeActionsOnSave": {
-        "source.fixAll": "always",
-        "source.dcm.fixAll": "always",
-    },
-
-    "explorer.fileNesting.patterns": {
-        "pubspec.yaml": ".flutter-plugins, .packages, .dart_tool, .flutter-plugins-dependencies, .metadata, .packages, pubspec.lock, build.yaml, analysis_options.yaml, all_lint_rules.yaml, dart*.yaml, flutter*.yaml, icons_launcher.yaml, devtools_options.yaml",
-        "*.dart": "$(capture).g.dart, $(capture).freezed.dart, $(capture).config.dart"
-    },
+  "editor.codeActionsOnSave": {
+    "source.fixAll": "always",
+    "source.dcm.fixAll": "always"
+  },
+  "explorer.fileNesting.patterns": {
+    "pubspec.yaml": ".flutter-plugins, .packages, .dart_tool, .flutter-plugins-dependencies, .metadata, .packages, pubspec.lock, build.yaml, analysis_options.yaml, all_lint_rules.yaml, dart*.yaml, flutter*.yaml, icons_launcher.yaml, devtools_options.yaml",
+    "*.dart": "$(capture).g.dart, $(capture).freezed.dart, $(capture).config.dart"
+  },
+  "dart.flutterSdkPath": "/Users/nikitamikhailov/.puro/envs/newest/flutter",
+    "dart.sdkPath": "/Users/nikitamikhailov/.puro/envs/newest/flutter/bin/cache/dart-sdk"
 }

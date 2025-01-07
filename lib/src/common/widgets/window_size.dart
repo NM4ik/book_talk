@@ -3,7 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 
 /// The scope provides [WindowSize] information to its descendants.
-/// 
+///
 /// This widget listens for size changes and updates its state accordingly,
 /// making it useful for managing layouts across different screen sizes.
 class WindowSizeScope extends StatefulWidget {

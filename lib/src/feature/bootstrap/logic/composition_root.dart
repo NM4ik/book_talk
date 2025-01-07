@@ -213,7 +213,7 @@ class AccountBlocFactory extends Factory<AccountBloc> {
     return AccountBloc(
       authStorage: authStorage,
       userRepository: userRepository,
-    );
+    )..add(AccountEvent.load());
   }
 }
 

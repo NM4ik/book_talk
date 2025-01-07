@@ -1,0 +1,23 @@
+{
+    "@@locale": "en",
+    
+    "roomCapacityNumber": "Room capacity",
+    "@roomCapacityNumber": {},
+
+    "title": "Title",
+    "@title": {},
+
+    "roomIsActiveStatus": "Room is active",
+    "@roomIsActiveStatus": {},
+
+    "roomEditTitle": "Edit Room",
+    "@roomEditTitle": {},
+
+    "roomCreateTitle": "Create Room",
+    "@roomCreateTitle": {},
+
+    "roomSelectImage": "Select image",
+    "@roomSelectImage": {}
+}
+
+

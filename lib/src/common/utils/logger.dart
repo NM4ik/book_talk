@@ -33,7 +33,7 @@ final class DefaultAppLogger extends AppLogger {
 
   @override
   void logError(Object error, StackTrace stackTrace) {
-    _logger.w(
+    _logger.e(
       '$error'
       '\n'
       '[StackTrace]:\n$stackTrace',
@@ -42,7 +42,7 @@ final class DefaultAppLogger extends AppLogger {
 
   @override
   void logFlutterError(FlutterErrorDetails details) {
-    _logger.w(
+    _logger.e(
       'FlutterError: ${details.exception}'
       '\n'
       'StackTrace: ${details.stack}',
@@ -50,13 +50,14 @@ final class DefaultAppLogger extends AppLogger {
   }
 
   @override
+
   void logMessage(String message) {
     _logger.i(message);
   }
 
   @override
   bool logPlatformDispatcherError(Object exception, StackTrace stackTrace) {
-    _logger.w(
+    _logger.e(
       'PlatformDispatcherError: ${exception}'
       '\n'
       'StackTrace: ${stackTrace}',

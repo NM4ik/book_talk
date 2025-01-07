@@ -1,3 +1,4 @@
+import 'package:book_talk/generated/assets.gen.dart';
 import 'package:book_talk/src/common/widgets/window_size.dart';
 import 'package:book_talk/src/feature/auth/bloc/auth_bloc.dart';
 import 'package:book_talk/src/feature/bootstrap/widget/app_scope.dart';
@@ -64,8 +65,9 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  _onSignIn(BuildContext context) {
+  void _onSignIn(BuildContext context) {
     final authBloc = AppScope.of(context).authBloc;
+
     if (authBloc.state.isLoading) return;
     authBloc.add(
       AuthEvent.signEmailPassword(
@@ -105,18 +107,17 @@ class _PasswordTextFieldWidgetState extends State<_PasswordTextFieldWidget> {
       onEditingComplete: widget.onEditingComplete,
       suffixIcon: IconButton(
         icon: Icon(_obscureText ? Icons.visibility_off : Icons.visibility),
-        onPressed: () {
-          setState(() => _obscureText = !_obscureText);
-        },
+        onPressed: () => setState(() => _obscureText = !_obscureText),
       ),
     );
   }
 }
 
-const List<String> _bgAssets = [
-  'assets/images/auth_bg_sand.jpg',
-  'assets/images/auth_bg_sequoia.jpg',
+final _bgAssets = [
+  Assets.images.authBgSand.path,
+  Assets.images.authBgSequoia.path,
 ];
+
 const List<String> _titles = [
   'Capturing Moments,\nCreating Memories',
   'Bringing Ideas Together,\nCreating the Future',
@@ -254,7 +255,7 @@ class LoginForm extends StatelessWidget {
                   ),
                 ),
                 UiButton.filledPrimary(
-                  onPressed: () => onAuthPress,
+                  onPressed: onAuthPress,
                   label: const Text('Sign in'),
                 ),
               ],

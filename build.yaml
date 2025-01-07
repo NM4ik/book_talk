@@ -8,3 +8,7 @@ targets:
       pubspec_generator:
         options:
           output: lib/src/common/constants/pubspec.yaml.g.dart
+      flutter_gen:
+        options: 
+          output: lib/generated/ # Optional (default: lib/gen/)
+          line_length: 80

@@ -1,5 +1,5 @@
+import 'package:book_talk/src/common/model/room/room.dart';
 import 'package:book_talk/src/feature/rooms/data/rooms_datasource.dart';
-import 'package:book_talk/src/feature/rooms/model/room.dart';
 
 /// Repository for accessing and managing room data.
 abstract interface class RoomsRepository {

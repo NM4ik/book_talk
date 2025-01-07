@@ -1,6 +1,5 @@
 import 'package:book_talk/src/common/widgets/user_avatar_widget.dart';
 import 'package:book_talk/src/feature/account/bloc/account_bloc.dart';
-import 'package:book_talk/src/feature/account/widget/account_scope.dart';
 import 'package:book_talk/src/feature/auth/bloc/auth_bloc.dart';
 import 'package:book_talk/src/feature/bootstrap/widget/app_scope.dart';
 import 'package:book_talk/src/feature/settings/bloc/app_settings_bloc.dart';
@@ -14,7 +13,7 @@ class AccountScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final accountBloc = AccountScope.of(context).accountBloc;
+    final accountBloc = AppScope.of(context).accountBloc;
 
     return Scaffold(
       appBar: AppBar(

@@ -1,9 +1,9 @@
 /// {@category common}
 /// Contains metadata about the app environment, version, operating system, and locale.
 ///
-/// The [AppMetadata] class is used to represent and organize key information 
-/// about the app's runtime environment. This data can be converted to a 
-/// header-friendly format using [convertHeaders], making it easy to include 
+/// The [AppMetadata] class is used to represent and organize key information
+/// about the app's runtime environment. This data can be converted to a
+/// header-friendly format using [convertHeaders], making it easy to include
 /// as metadata in HTTP requests or logs.
 class AppMetadata {
   const AppMetadata({

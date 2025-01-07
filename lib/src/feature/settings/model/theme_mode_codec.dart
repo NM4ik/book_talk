@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 
 class ThemeModeCodec extends Codec<ThemeMode, String> {
   @override
-  Converter<String, ThemeMode> get decoder => _DecodeConverter();
+  Converter<String, ThemeMode> get decoder => const _DecodeConverter();
 
   @override
-  Converter<ThemeMode, String> get encoder => _EncodeConverter();
+  Converter<ThemeMode, String> get encoder => const _EncodeConverter();
 }
 
 final class _DecodeConverter extends Converter<String, ThemeMode> {

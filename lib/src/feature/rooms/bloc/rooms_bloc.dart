@@ -1,7 +1,7 @@
+import 'package:bloc/bloc.dart';
+import 'package:book_talk/src/common/model/room/room.dart';
 import 'package:book_talk/src/feature/rooms/data/rooms_repository.dart';
-import 'package:book_talk/src/feature/rooms/model/room.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 part 'rooms_state.dart';
 part 'rooms_event.dart';
@@ -14,6 +14,7 @@ final class RoomsBloc extends Bloc<RoomsEvent, RoomsState> {
     on<RoomsEvent>(
       (event, emitter) => switch (event) {
         _RoomsLoadEvent() => _onLoadEvent(event, emitter),
+        _RoomsRefreshEvent() => _onRefreshEvent(event, emitter),
       },
     );
   }
@@ -32,7 +33,23 @@ final class RoomsBloc extends Bloc<RoomsEvent, RoomsState> {
 
       // TODO(mikhailov): handle repository exceptions.
     } on Object catch (error, st) {
-      emitter(RoomsState.error(rooms: null, error: error));
+      emitter(RoomsState.error(rooms: state.rooms, error: error));
+      onError(error, st);
+    }
+  }
+
+  Future<void> _onRefreshEvent(
+    _RoomsRefreshEvent event,
+    Emitter<RoomsState> emitter,
+  ) async {
+    emitter(const RoomsState.processing(rooms: null));
+
+    try {
+      final rooms = await _roomsRepository.fetchRooms();
+      emitter(RoomsState.idle(rooms: rooms));
+      // TODO(mikhailov): handle repository exceptions.
+    } on Object catch (error, st) {
+      emitter(RoomsState.error(rooms: state.rooms, error: error));
       onError(error, st);
     }
   }

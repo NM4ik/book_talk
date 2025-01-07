@@ -14,7 +14,7 @@ library pubspec;
 
   MIT License
 
-  Copyright (c) 2024 Plague Fox
+  Copyright (c) 2025 Plague Fox
 
   Permission is hereby granted, free of charge, to any person obtaining a copy
   of this software and associated documentation files (the "Software"), to deal
@@ -123,14 +123,14 @@ sealed class Pubspec {
 
   /// Build date and time (UTC)
   static final DateTime timestamp = DateTime.utc(
-    2024,
-    11,
-    9,
-    12,
-    21,
-    39,
-    694,
-    163,
+    2025,
+    1,
+    7,
+    16,
+    5,
+    30,
+    315,
+    792,
   );
 
   /// Name
@@ -346,8 +346,8 @@ sealed class Pubspec {
 
   /// Environment
   static const Map<String, String> environment = <String, String>{
-    'sdk': '>=3.5.0 <4.0.0',
-    'flutter': '>=3.5.0 <4.0.0',
+    'sdk': '>=3.6.0 <4.0.0',
+    'flutter': '>=3.6.0 <4.0.0',
   };
 
   /// Platforms
@@ -410,19 +410,17 @@ sealed class Pubspec {
     'flutter': <String, Object>{
       'sdk': r'flutter',
     },
-    'intl': r'any',
     'flutter_localizations': <String, Object>{
       'sdk': r'flutter',
     },
+    'intl': r'any',
     'rxdart': r'^0.28.0',
     'flutter_bloc': r'^8.1.6',
-    'l': r'^4.0.2',
+    'bloc': r'^8.1.4',
+    'l': r'^5.0.0',
     'octopus': r'^0.0.9',
     'bloc_concurrency': r'^0.2.5',
     'shared_preferences': r'^2.3.2',
-    'book_talk_ui': <String, Object>{
-      'path': r'packages/ui/book_talk_ui',
-    },
     'cached_network_image': r'^3.4.1',
     'carousel_slider': r'^5.0.0',
     'smooth_page_indicator': r'^1.2.0+3',
@@ -430,10 +428,13 @@ sealed class Pubspec {
     'cupertino_icons': r'^1.0.8',
     'window_manager': r'^0.4.3',
     'collection': r'^1.18.0',
+    'image_picker': r'^1.1.2',
   };
 
   /// Developer dependencies
   static const Map<String, Object> devDependencies = <String, Object>{
+    'flutter_gen': r'^5.8.0',
+    'flutter_gen_runner': r'^5.8.0',
     'pubspec_generator': r'^4.0.0',
     'build_runner': r'^2.4.13',
     'dart_code_metrics_presets': r'^2.17.0',
@@ -492,14 +493,22 @@ sealed class Pubspec {
     'dependencies': dependencies,
     'dev_dependencies': devDependencies,
     'dependency_overrides': dependencyOverrides,
+    'workspace': <Object>[
+      r'packages/book_talk_ui',
+    ],
     'flutter': <String, Object>{
+      'generate': true,
       'uses-material-design': true,
       'assets': <Object>[
+        r'lib/l10n/',
         r'assets/images/',
       ],
       'shaders': <Object>[
         r'assets/shaders/shimmer.frag',
       ],
+    },
+    'flutter_intl': <String, Object>{
+      'enabled': true,
     },
   };
 
