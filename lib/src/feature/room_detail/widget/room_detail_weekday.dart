@@ -1,5 +1,5 @@
 import 'package:book_talk/src/common/model/room/room_day_setting.dart';
-import 'package:book_talk/src/feature/bootstrap/widget/overlay_popup.dart';
+import 'package:book_talk/src/common/widgets/overlay_popup.dart';
 import 'package:book_talk/src/feature/room_detail/bloc/room_detail_bloc.dart';
 import 'package:book_talk/src/feature/room_detail/widget/room_detail_scope.dart';
 import 'package:book_talk_ui/book_talk_ui.dart';

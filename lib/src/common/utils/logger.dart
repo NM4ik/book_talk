@@ -50,7 +50,6 @@ final class DefaultAppLogger extends AppLogger {
   }
 
   @override
-
   void logMessage(String message) {
     _logger.i(message);
   }

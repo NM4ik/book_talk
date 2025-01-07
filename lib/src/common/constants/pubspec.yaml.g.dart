@@ -165,7 +165,8 @@ sealed class Pubspec {
   /// Think of the description as the sales pitch for your package.
   /// Users see it when they [browse for packages](https://pub.dev/packages).
   /// The description is plain text: no markdown or HTML.
-  static const String description = r'BookTalk: an app for booking meeting rooms in the office.';
+  static const String description =
+      r'BookTalk: an app for booking meeting rooms in the office.';
 
   /// Homepage
   ///
@@ -511,5 +512,4 @@ sealed class Pubspec {
       'enabled': true,
     },
   };
-
 }

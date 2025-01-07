@@ -8,7 +8,6 @@ sealed class AppSettingsEvent {
 }
 
 final class _UpdateAppSettingsEvent extends AppSettingsEvent {
-  final AppSettings appSettings;
-
   const _UpdateAppSettingsEvent({required this.appSettings});
+  final AppSettings appSettings;
 }
