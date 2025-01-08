@@ -1,6 +1,7 @@
 import 'dart:io' as io;
 import 'dart:ui';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:window_manager/window_manager.dart';
 
@@ -20,6 +21,9 @@ Future<void> _desktopInitialization() async {
     // size: Size(960, 800),
     // maximumSize: Size(1440, 1080),
     center: true,
+
+    // TODO(Mikhailov): save last window size for desktop and fetch it here
+    size: kDebugMode ? Size(430, 932) : null,
     // backgroundColor:
     //     PlatformDispatcher.instance.platformBrightness == Brightness.dark
     //         ? ThemeData.dark().colorScheme.surface
