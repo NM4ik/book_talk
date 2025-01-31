@@ -4,24 +4,27 @@ import 'package:bloc/bloc.dart';
 mixin TaskExecuterBlocMixin<E, S> on Bloc<E, S> {
   bool get executeTaskIngoreOn => false;
 
-  Future<void> executeTask<T>({
+  Future<T?> executeTask<T>({
     required FutureOr<T> Function() handle,
-    required Function(T data) onDone,
+    void Function(T data)? onDone,
     Function(Object error, StackTrace stackTrace)? onError,
   }) async {
-    if (executeTaskIngoreOn) return;
+    if (executeTaskIngoreOn) return null;
 
     try {
       final T data = await handle();
 
       if (!isClosed) {
-        onDone(data);
+        onDone?.call(data);
       }
+
+      return data;
     } on Object catch (e, stackTrace) {
       this.onError(e, stackTrace);
       if (!isClosed) {
         onError?.call(e, stackTrace);
       }
     }
+    return null;
   }
 }

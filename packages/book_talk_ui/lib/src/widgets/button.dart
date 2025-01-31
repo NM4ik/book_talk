@@ -6,9 +6,36 @@ enum ButtonVariant {
   filledPrimary,
   negativePrimary,
   filledDesctructive,
+  common,
 }
 
 class UiButton extends ButtonStyleButton {
+  UiButton.common({
+    required Widget child,
+    required VoidCallback? onPressed,
+    bool enabled = true,
+    IconAlignment iconAlignment = IconAlignment.start,
+    VoidCallback? onLongPress,
+    super.autofocus = false,
+    super.onHover,
+    super.onFocusChange,
+    super.style,
+    super.focusNode,
+    super.clipBehavior,
+    super.statesController,
+    super.isSemanticButton,
+    this.innerPadding,
+    this.borderRadius,
+    this.bgColor,
+    this.hoverColor,
+    super.key,
+  })  : variant = ButtonVariant.common,
+        super(
+          child: child,
+          onPressed: enabled ? onPressed : null,
+          onLongPress: enabled ? onLongPress : null,
+        );
+
   UiButton.filledPrimary({
     required VoidCallback? onPressed,
     bool enabled = true,
@@ -28,6 +55,8 @@ class UiButton extends ButtonStyleButton {
     this.borderRadius,
     super.key,
   })  : variant = ButtonVariant.filledPrimary,
+        hoverColor = null,
+        bgColor = null,
         super(
           child: _ButtonIconAndLabel(
             icon: icon,
@@ -57,6 +86,8 @@ class UiButton extends ButtonStyleButton {
     this.borderRadius,
     super.key,
   })  : variant = ButtonVariant.negativePrimary,
+        hoverColor = null,
+        bgColor = null,
         super(
           child: _ButtonIconAndLabel(
             icon: icon,
@@ -86,6 +117,8 @@ class UiButton extends ButtonStyleButton {
     this.borderRadius,
     super.key,
   })  : variant = ButtonVariant.filledDesctructive,
+        hoverColor = null,
+        bgColor = null,
         super(
           child: _ButtonIconAndLabel(
             icon: icon,
@@ -99,6 +132,9 @@ class UiButton extends ButtonStyleButton {
   final ButtonVariant variant;
   final EdgeInsets? innerPadding;
   final BorderRadius? borderRadius;
+
+  final Color? bgColor;
+  final Color? hoverColor;
 
   @override
   ButtonStyle defaultStyleOf(BuildContext context) {
@@ -122,11 +158,51 @@ class UiButton extends ButtonStyleButton {
           colorPalette: palette,
           appTypography: typography,
         ),
+      ButtonVariant.common => _CommonButtonStyle(
+          colorPalette: palette,
+          appTypography: typography,
+          bgColor: bgColor,
+          hoverColor: hoverColor,
+          borderRadius: borderRadius,
+        ),
     };
   }
 
   @override
   ButtonStyle? themeStyleOf(BuildContext context) => null;
+}
+
+class _CommonButtonStyle extends _UiBaseButtonStyle {
+  const _CommonButtonStyle({
+    required super.colorPalette,
+    required super.appTypography,
+    super.innerPadding = null,
+    super.borderRadius,
+    this.bgColor,
+    this.hoverColor,
+  });
+
+  final Color? bgColor;
+  final Color? hoverColor;
+
+  @override
+  WidgetStateProperty<Color?>? get backgroundColor =>
+      WidgetStatePropertyAll(bgColor ?? Colors.transparent);
+
+  @override
+  WidgetStateProperty<Color?>? get overlayColor =>
+      WidgetStatePropertyAll(hoverColor ?? Colors.transparent);
+
+  @override
+  WidgetStateProperty<BorderSide?>? get side =>
+      WidgetStatePropertyAll(BorderSide.none);
+
+  @override
+  WidgetStateProperty<double>? get elevation => const WidgetStatePropertyAll(0);
+
+  @override
+  WidgetStateProperty<EdgeInsetsGeometry?>? get padding =>
+      WidgetStatePropertyAll(EdgeInsets.zero);
 }
 
 class _FilledDesctructivePrimaryStyle extends _UiBaseButtonStyle {
@@ -161,7 +237,7 @@ class _FilledPrimaryStyle extends _UiBaseButtonStyle {
       WidgetStateProperty.resolveWith(
         (states) {
           if (states.contains(WidgetState.disabled)) {
-            return colorPalette.primary.withOpacity(.12);
+            return colorPalette.primary.withValues(alpha: .12);
           }
 
           return colorPalette.primary;

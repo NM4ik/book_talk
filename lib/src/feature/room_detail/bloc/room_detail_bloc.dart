@@ -41,6 +41,8 @@ final class RoomDetailBloc extends Bloc<RoomDetailEvent, RoomDetailState>
         _EditRoomEvent() => _onEditRoomEvent(event, emitter),
         _DeleteRoomEvent() => _onDeleteRoomEvent(event, emitter),
       },
+
+      // TODO(Mikhailov): transformer
       transformer: droppable(),
     );
   }
@@ -146,7 +148,8 @@ final class RoomDetailBloc extends Bloc<RoomDetailEvent, RoomDetailState>
       },
       onError: (error, stackTrace) {
         emitter(
-            RoomDetailState.error(room: state.room, message: error.toString()));
+          RoomDetailState.error(room: state.room, message: error.toString()),
+        );
       },
     );
   }

@@ -1,4 +1,5 @@
 import 'package:book_talk/src/common/model/room/room.dart';
+import 'package:book_talk/src/common/model/room/room_day_setting.dart';
 import 'package:book_talk/src/common/router/routes.dart';
 import 'package:book_talk/src/common/widgets/image.dart';
 import 'package:book_talk/src/common/widgets/user_avatar_widget.dart';
@@ -149,74 +150,78 @@ class _RoomCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final int weekDay = DateTime.now().weekday;
-    final currentWeekDay = room.roomWeekSettings.days[weekDay];
+    final int weekDay = DateTime.now().weekday - 1;
+    final RoomWeekdaySetting currentWeekDay =
+        room.roomWeekSettings.days[weekDay];
 
-    return ClipRRect(
-      clipBehavior: Clip.hardEdge,
+    return UiButton.common(
+      onPressed: () {
+        Octopus.of(context).push(
+          Routes.booking,
+          arguments: {'room-id': room.id.toString()},
+        );
+      },
+      bgColor: Theme.of(context).colorPalette?.secondary,
+      hoverColor: Theme.of(context).colorPalette?.muted,
       borderRadius: const BorderRadius.all(Radius.circular(8)),
-      child: ColoredBox(
-        color: Theme.of(context).colorPalette?.secondary ?? Colors.transparent,
-        child: Row(
-          children: [
-            AspectRatio(
-              aspectRatio: 2.7 / 4,
-              child: CachedNetworkImage.url(
-                url: room.avatar,
-                boxFit: BoxFit.cover,
-              ),
+      clipBehavior: Clip.hardEdge,
+      child: Row(
+        children: [
+          AspectRatio(
+            aspectRatio: 2.7 / 4,
+            child: CachedNetworkImage.url(
+              url: room.avatar,
+              boxFit: BoxFit.cover,
             ),
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.all(10),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    UiText.titleSmall(room.name),
-                    const SizedBox(height: 10),
+          ),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.all(10),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  UiText.titleSmall(room.name),
+                  const SizedBox(height: 10),
 
-                    // TODO(Mikhailov): localize
-                    UiText.bodyMedium(
-                      'Capacity: ${room.capacity}',
-                    ),
-                    const Spacer(),
-                    Row(
-                      children: [
-                        Icon(
-                          Icons.access_time_rounded,
-                          color: Theme.of(context).scaffoldBackgroundColor,
-                        ),
-                        const SizedBox(width: 5),
-                        Expanded(
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              // TODO(mikhailov): make open time.
-                              // refactor
-                              UiText.labelMedium(
-                                currentWeekDay.startTime.format(context) +
-                                    ' - ' +
-                                    currentWeekDay.endTime.format(context),
+                  // TODO(Mikhailov): localize
+                  UiText.bodyMedium('Capacity: ${room.capacity}'),
+                  const Spacer(),
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.access_time_rounded,
+                        color: Theme.of(context).scaffoldBackgroundColor,
+                      ),
+                      const SizedBox(width: 5),
+                      Expanded(
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            // TODO(mikhailov): make open time.
+                            // refactor
+                            UiText.labelMedium(
+                              currentWeekDay.startTime.format(context) +
+                                  ' - ' +
+                                  currentWeekDay.endTime.format(context),
+                            ),
+                            GestureDetector(
+                              onTap: () => _onRoomEdit(context, room),
+                              child: const Icon(
+                                CupertinoIcons.settings,
+                                size: 20,
                               ),
-                              GestureDetector(
-                                onTap: () => _onRoomEdit(context, room),
-                                child: const Icon(
-                                  CupertinoIcons.settings,
-                                  size: 20,
-                                ),
-                              )
-                            ],
-                          ),
+                            )
+                          ],
                         ),
-                      ],
-                    )
-                  ],
-                ),
+                      ),
+                    ],
+                  )
+                ],
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

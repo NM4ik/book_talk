@@ -55,10 +55,13 @@ class BookTalkTheme {
           onTap: () {
             Navigator.pop(context);
           },
-          child: Icon(
-            CupertinoIcons.chevron_back,
-            size: 25,
-            color: _darkColorPallete.primary,
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 5),
+            child: Icon(
+              CupertinoIcons.chevron_back,
+              size: 25,
+              color: _darkColorPallete.primary,
+            ),
           ),
         ),
       );
@@ -71,7 +74,7 @@ class BookTalkTheme {
     onSecondary: Colors.white,
     foreground: Colors.white,
     destructive: Color(0xFFB22222),
-    muted: Color(0xFF7F8C8D),
+    muted: Color.fromARGB(255, 51, 47, 66),
     complementary: Color(0xFFFFC966),
   );
 
