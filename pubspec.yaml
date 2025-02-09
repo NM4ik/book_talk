@@ -25,13 +25,13 @@ dependencies:
   rxdart: ^0.28.0
   flutter_bloc: ^8.1.6
   bloc: ^8.1.4
+  bloc_concurrency: ^0.2.5
 
   # Logger
   l: ^5.0.0
 
   # Router
   octopus: ^0.0.9
-  bloc_concurrency: ^0.2.5
 
   # Device local data
   shared_preferences: ^2.3.2
@@ -44,6 +44,7 @@ dependencies:
   cached_network_image: ^3.4.1
   carousel_slider: ^5.0.0
   smooth_page_indicator: ^1.2.0+3
+  animations: ^2.0.11
 
   # Utils
   uuid: ^4.5.1

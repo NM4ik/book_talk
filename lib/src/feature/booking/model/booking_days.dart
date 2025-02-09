@@ -1,3 +1,6 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:flutter/foundation.dart';
+
 /// Represents booking days.
 ///
 /// Consists of a list of [DateTime]s and a [BookingDaysPagination].
@@ -12,6 +15,15 @@ class BookingDays {
 
   /// A pagination object.
   final BookingDaysPagination pagination;
+
+  @override
+  bool operator ==(covariant BookingDays other) {
+    if (identical(this, other)) return true;
+    return listEquals(other.days, days) && other.pagination == pagination;
+  }
+
+  @override
+  int get hashCode => days.hashCode ^ pagination.hashCode;
 }
 
 class BookingDaysPagination {

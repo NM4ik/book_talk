@@ -61,15 +61,12 @@ class _BookingDays extends StatelessWidget {
         builder: (context, state) {
           return state.$map(
             idle: ({required bookingDays}) {
-              print('bookingDays - ${bookingDays?.days}');
-              return const BookingCalendar();
-
-              
+              // TODO(Mikhailov): remove ! operator and handle null. If null just show
+              // empty screen or smth
+              return BookingCalendar(bookingDays: bookingDays!);
             },
             processing: () {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
+              return const Center(child: CircularProgressIndicator());
             },
             error: ({required bookingDays, required message}) => Text(message),
           );
