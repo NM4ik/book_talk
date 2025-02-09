@@ -18,7 +18,7 @@ export 'src/common/router/routes.dart';
 /// Utils
 export 'src/common/utils/extensions/build_context_extension.dart';
 export 'src/common/utils/interface/closable.dart';
-export 'src/common/utils/mixins/set_state_mixin.dart';
+export 'src/common/utils/mixins/emittable_set_state_mixin.dart';
 export 'src/common/utils/preferences_storage/preferences_entry.dart';
 export 'src/common/utils/preferences_storage/preferences_storage.dart';
 export 'src/common/utils/app_bloc_observer.dart';

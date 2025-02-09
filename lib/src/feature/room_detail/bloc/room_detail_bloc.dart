@@ -1,10 +1,8 @@
 import 'dart:async';
-
 import 'package:bloc/bloc.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:book_talk/src/common/model/room/room.dart';
 import 'package:book_talk/src/common/model/room/room_day_setting.dart';
-import 'package:book_talk/src/common/utils/mixins/task_executor_mixin.dart';
 import 'package:book_talk/src/feature/room_detail/data/room_detail_repository.dart';
 import 'package:book_talk/src/feature/room_detail/data/room_image_repository.dart';
 import 'package:book_talk/src/feature/room_detail/model/file_image.dart';
@@ -12,8 +10,7 @@ part 'room_detail_event.dart';
 part 'room_detail_state.dart';
 
 /// Bloc for managing room details state.
-final class RoomDetailBloc extends Bloc<RoomDetailEvent, RoomDetailState>
-    with TaskExecuterBlocMixin {
+final class RoomDetailBloc extends Bloc<RoomDetailEvent, RoomDetailState> {
   RoomDetailBloc({
     required IRoom? room,
     required RoomImageRepository roomImageRepository,
@@ -49,9 +46,6 @@ final class RoomDetailBloc extends Bloc<RoomDetailEvent, RoomDetailState>
 
   final RoomImageRepository _roomImageRepository;
   final RoomDetailRepository _roomDetailRepository;
-
-  @override
-  bool get executeTaskIngoreOn => state is _RoomDetailProcessingState;
 
   /// Toggles the room's active state.
   void _onChangeRoomActiveEvent(
@@ -137,60 +131,47 @@ final class RoomDetailBloc extends Bloc<RoomDetailEvent, RoomDetailState>
     _RoomDetailPickImageEvent event,
     Emitter<RoomDetailState> emitter,
   ) async {
-    await executeTask<FileImage?>(
-      handle: () async {
-        return await _roomImageRepository.pickImageFromGallery();
-      },
-      onDone: (pickedImage) {
-        final IRoom room = state.room;
-        if (pickedImage == null || room is! EmptyRoom) return;
-        setRoomState(state, (room).copyWith(fileImage: pickedImage));
-      },
-      onError: (error, stackTrace) {
-        emitter(
-          RoomDetailState.error(room: state.room, message: error.toString()),
-        );
-      },
-    );
+    try {
+      final FileImage? file = await _roomImageRepository.pickImageFromGallery();
+      final IRoom room = state.room;
+      if (file == null || room is! EmptyRoom) return;
+      setRoomState(state, (room).copyWith(fileImage: file));
+    } on Object catch (e, st) {
+      onError(e, st);
+      emitter(RoomDetailState.error(room: state.room, message: e.toString()));
+    }
   }
 
   Future<void> _onCreateRoomEvent(
     _CreateRoomEvent event,
     Emitter<RoomDetailState> emitter,
   ) async {
-    await executeTask<void>(
-      handle: () async {
-        emitter(RoomDetailState.processing(room: state.room));
-        await _roomDetailRepository.createRoom(state.room as EmptyRoom);
-      },
-      onDone: (_) {
-        emitter(RoomDetailState.success(room: state.room));
-      },
-      onError: (error, stackTrace) {
-        emitter(
-            RoomDetailState.error(room: state.room, message: error.toString()));
-      },
-    );
+    try {
+      emitter(RoomDetailState.processing(room: state.room));
+      await _roomDetailRepository.createRoom(state.room as EmptyRoom);
+      emitter(RoomDetailState.success(room: state.room));
+    } on Object catch (e, st) {
+      onError(e, st);
+      emitter(
+        RoomDetailState.error(room: state.room, message: e.toString()),
+      );
+    }
   }
 
   Future<void> _onEditRoomEvent(
     _EditRoomEvent event,
     Emitter<RoomDetailState> emitter,
   ) async {
-    await executeTask<void>(
-      handle: () async {
-        emitter(RoomDetailState.processing(room: state.room));
-        await _roomDetailRepository.editRoom(state.room as Room);
-      },
-      onDone: (_) {
-        emitter(RoomDetailState.success(room: state.room));
-      },
-      onError: (error, stackTrace) {
-        emitter(
-          RoomDetailState.error(room: state.room, message: error.toString()),
-        );
-      },
-    );
+    try {
+      emitter(RoomDetailState.processing(room: state.room));
+      await _roomDetailRepository.editRoom(state.room as Room);
+      emitter(RoomDetailState.success(room: state.room));
+    } on Object catch (e, st) {
+      onError(e, st);
+      emitter(
+        RoomDetailState.error(room: state.room, message: e.toString()),
+      );
+    }
   }
 
   Future<void> _onDeleteRoomEvent(

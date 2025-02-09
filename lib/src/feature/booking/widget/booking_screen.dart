@@ -64,12 +64,7 @@ class _BookingDays extends StatelessWidget {
               print('bookingDays - ${bookingDays?.days}');
               return const BookingCalendar();
 
-              return Row(
-                children: [
-                  for (final month in bookingDays!.days.values)
-                    for (final item in month) Text(item.toString()),
-                ],
-              );
+              
             },
             processing: () {
               return const Center(

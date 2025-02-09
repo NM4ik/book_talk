@@ -1,50 +1,107 @@
-import 'package:flutter/material.dart';
-
+/// {@template time_slot}
+/// Simple model to represent a time slot.
+/// {@endtemplate}
 class TimeSlot {
+  /// {@macro time_slot}
   const TimeSlot({
+    /// The datetime of the time slot.
     required this.time,
-    required this.dateTime,
-    required this.duration,
+
+    /// The status of the time slot.
+    this.status = TimeSlotStatus.available,
   });
 
-  final TimeOfDay time;
-  final DateTime dateTime;
-  final TimeOfDay duration;
+  /// The datetime of the time slot.
+  final DateTime time;
+
+  /// The status of the time slot.
+  final TimeSlotStatus status;
+
+  /// Whether the time slot is available.
+  bool get isAvailable => status.isAvailable;
+}
+
+/// Represents a booked time slot, which is always unavailable.
+class BookedTimeSlot extends TimeSlot {
+  /// Creates a [BookedTimeSlot] with the specified [time], [department], and [user].
+  /// The [status] is always set to [TimeSlotStatus.booked].
+  const BookedTimeSlot({
+    required super.time,
+    required this.department,
+    required this.user,
+    super.status = TimeSlotStatus.booked,
+  });
+
+  /// The department associated with the booking.
+  final String department;
+
+  /// The user who booked the time slot.
+  final String user;
+
+  @override
+  bool get isAvailable => false;
+}
+
+/// Enum representing the status of a time slot.
+enum TimeSlotStatus {
+  /// Indicates the time slot is available.
+  available,
+
+  /// Indicates the time slot is booked.
+  booked;
+
+  /// Creates a [TimeSlotStatus] from a JSON string.
+  factory TimeSlotStatus.fromJson(String json) => switch (json) {
+        'booked' => booked,
+        _ => available,
+      };
+
+  /// Converts the [TimeSlotStatus] to a JSON string.
+  String toJson() => switch (this) {
+        booked => 'booked',
+        _ => 'available',
+      };
+
+  /// Checks if the time slot is available.
+  bool get isAvailable => this == TimeSlotStatus.available;
 }
 
 class TimeSlotDto {
   const TimeSlotDto({
     required this.time,
-    required this.dateTime,
-    required this.duration,
+    required this.status,
+    required this.user,
+    required this.department,
   });
 
   factory TimeSlotDto.fromJson(Map<String, dynamic> json) => TimeSlotDto(
-        time: _stringToTimeOfDay(json['time'].toString()),
-        dateTime: DateTime.parse(json['dateTime']),
-        duration: _stringToTimeOfDay(json['duration'].toString()),
+        time: DateTime.parse(json['time']),
+        status: json['status'] as String,
+        user: json['user'] as String?,
+        department: json['department'] as String?,
       );
 
   factory TimeSlotDto.fromEntity(TimeSlot timeSlot) => TimeSlotDto(
         time: timeSlot.time,
-        dateTime: timeSlot.dateTime,
-        duration: timeSlot.duration,
+        status: timeSlot.status.toJson(),
+        user: null,
+        department: null,
       );
 
-  final TimeOfDay time;
-  final DateTime dateTime;
-  final TimeOfDay duration;
+  final DateTime time;
+  final String status;
+  final String? user;
+  final String? department;
 
-  TimeSlot toEntity() => TimeSlot(
+  TimeSlot toEntity() {
+    if (department != null && user != null) {
+      return BookedTimeSlot(
         time: time,
-        dateTime: dateTime,
-        duration: duration,
+        department: department!,
+        user: user!,
       );
+    }
 
-  static TimeOfDay _stringToTimeOfDay(String time) {
-    final parts = time.split(':');
-    final hour = int.parse(parts.first);
-    final minute = int.parse(parts.last);
-    return TimeOfDay(hour: hour, minute: minute);
+    return TimeSlot(time: time);
   }
 }

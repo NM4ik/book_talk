@@ -63,46 +63,98 @@ class _BookingCalendarState extends State<BookingCalendar> {
     print('daysInMonth - $daysInMonth');
     print('now.month - ${now.month + 1}');
 
-    // Генерируем список дат
+    // Generate dates starts with current day
     final dates = List.generate(
-      daysInMonth,
-      (index) => DateTime(now.year, now.month, index + 1),
+      daysInMonth - now.day,
+      (index) => DateTime(now.year, now.month, index + now.day),
     );
 
-    final dateFormatter = DateFormat.EEEE(
+    final dayFormatter = DateFormat(
+      'EEE',
+      Localizations.localeOf(context).languageCode,
+    );
+    final monthFormatter = DateFormat(
+      'MMMM',
       Localizations.localeOf(context).languageCode,
     );
 
-    return SizedBox(
-      height: 20,
-      child: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        itemCount: dates.length,
-        itemBuilder: (context, index) {
-          return Container(
-            width: 40,
-            margin: const EdgeInsets.symmetric(horizontal: 5),
-            color: Colors.blue,
-            child: Center(
-              child: Text(
-                dateFormatter.format(dates[index]),
-              ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          monthFormatter.format(now),
+        ),
+        SizedBox(
+          height: 70,
+          child: ListView.separated(
+            padding: const EdgeInsets.only(left: 12, right: 12),
+            scrollDirection: Axis.horizontal,
+            itemCount: dates.length,
+            itemBuilder: (context, index) {
+              return SizedBox(
+                width: 50,
+                child: DecoratedBox(
+                  decoration: BoxDecoration(
+                      color: Colors.blue,
+                      borderRadius: BorderRadius.circular(5)),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        dayFormatter.format(dates[index]),
+                      ),
+                      Text(
+                        dates[index].day.toString(),
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            },
+            separatorBuilder: (BuildContext context, int index) =>
+                const SizedBox(width: 10),
+          ),
+        ),
+        Expanded(
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                Wrap(
+                  runSpacing: 10,
+                  spacing: 10,
+                  children: [
+                    for (int i = 0; i < 24; i++) ...[
+                      Text(
+                        DateTime(now.year)
+                                .add(Duration(hours: i))
+                                .hour
+                                .toString() +
+                            ":" +
+                            DateTime(now.year)
+                                .add(Duration(hours: i))
+                                .minute
+                                .toString(),
+                      ),
+                      Text(
+                        DateTime(now.year)
+                                .add(Duration(hours: i, minutes: 30))
+                                .hour
+                                .toString() +
+                            ":" +
+                            DateTime(now.year)
+                                .add(Duration(hours: i, minutes: 30))
+                                .minute
+                                .toString(),
+                      ),
+                    ]
+                  ],
+                ),
+              ],
             ),
-          );
-        },
-      ),
+          ),
+        ),
+      ],
     );
-
-    // return Column(
-    //   children: [
-    //     Row(
-    //       children: [
-    //         Text(now.day.toString()),
-    //         Text(DateTime.january.toString()),
-    //       ],
-    //     ),
-    //     for (final day in dates) Text('day: $day'),
-    //   ],
-    // );
   }
 }
+
