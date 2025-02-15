@@ -9,8 +9,8 @@ sealed class BookingState {
       _Processing;
 
   const factory BookingState.error({
-    required BookingDays? bookingDays,
-    required String message,
+    BookingDays? bookingDays,
+    String? message,
   }) = _Error;
 
   final BookingDays? bookingDays;
@@ -20,7 +20,7 @@ sealed class BookingState {
     required T Function() processing,
     required T Function({
       required BookingDays? bookingDays,
-      required String message,
+      required String? message,
     }) error,
   }) =>
       switch (this) {
@@ -31,6 +31,10 @@ sealed class BookingState {
             message: (this as _Error).message,
           ),
       };
+
+  bool get isProcessing => this is _Processing;
+
+  bool get isError => this is _Error;
 }
 
 final class _Idle extends BookingState {
@@ -62,9 +66,9 @@ final class _Processing extends BookingState {
 }
 
 final class _Error extends BookingState {
-  const _Error({required super.bookingDays, required this.message});
+  const _Error({super.bookingDays, this.message});
 
-  final String message;
+  final String? message;
 
   @override
   bool operator ==(Object other) =>

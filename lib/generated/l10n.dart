@@ -55,6 +55,21 @@ class S {
     return Localizations.of<S>(context, S);
   }
 
+  /// `Rooms`
+  String get roomsTitle {
+    return Intl.message('Rooms', name: 'roomsTitle', desc: '', args: []);
+  }
+
+  /// `There are no rooms for booking yet`
+  String get noRoomsForBooking {
+    return Intl.message(
+      'There are no rooms for booking yet',
+      name: 'noRoomsForBooking',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Room capacity`
   String get roomCapacityNumber {
     return Intl.message(
@@ -100,6 +115,51 @@ class S {
     return Intl.message(
       'Select image',
       name: 'roomSelectImage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Room not found`
+  String get roomNotFound {
+    return Intl.message(
+      'Room not found',
+      name: 'roomNotFound',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Couldn't get a schedule`
+  String get bookingSheduleError {
+    return Intl.message(
+      'Couldn\'t get a schedule',
+      name: 'bookingSheduleError',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Try again or come back later`
+  String get retryOrLater {
+    return Intl.message(
+      'Try again or come back later',
+      name: 'retryOrLater',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Try again`
+  String get tryAgain {
+    return Intl.message('Try again', name: 'tryAgain', desc: '', args: []);
+  }
+
+  /// `Something went wrong`
+  String get errorSomethingWentWrong {
+    return Intl.message(
+      'Something went wrong',
+      name: 'errorSomethingWentWrong',
       desc: '',
       args: [],
     );

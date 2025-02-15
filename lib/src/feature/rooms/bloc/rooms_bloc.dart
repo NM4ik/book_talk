@@ -14,7 +14,6 @@ final class RoomsBloc extends Bloc<RoomsEvent, RoomsState> {
     on<RoomsEvent>(
       (event, emitter) => switch (event) {
         _RoomsLoadEvent() => _onLoadEvent(event, emitter),
-        _RoomsRefreshEvent() => _onRefreshEvent(event, emitter),
       },
     );
   }
@@ -30,24 +29,6 @@ final class RoomsBloc extends Bloc<RoomsEvent, RoomsState> {
     try {
       final rooms = await _roomsRepository.fetchRooms();
       emitter(RoomsState.idle(rooms: rooms));
-
-      // TODO(mikhailov): handle repository exceptions.
-    } on Object catch (error, st) {
-      emitter(RoomsState.error(rooms: state.rooms, error: error));
-      onError(error, st);
-    }
-  }
-
-  Future<void> _onRefreshEvent(
-    _RoomsRefreshEvent event,
-    Emitter<RoomsState> emitter,
-  ) async {
-    emitter(const RoomsState.processing(rooms: null));
-
-    try {
-      final rooms = await _roomsRepository.fetchRooms();
-      emitter(RoomsState.idle(rooms: rooms));
-      // TODO(mikhailov): handle repository exceptions.
     } on Object catch (error, st) {
       emitter(RoomsState.error(rooms: state.rooms, error: error));
       onError(error, st);

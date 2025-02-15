@@ -306,7 +306,7 @@ class _RoomDetailStateListener extends StatelessWidget {
                 message: 'Room was successfully created',
               );
 
-              AppScope.of(context).roomsBloc.add(const RoomsEvent.refresh());
+              AppScope.of(context).roomsBloc.add(const RoomsEvent.load());
               Octopus.of(context).setState(
                 (state) {
                   state

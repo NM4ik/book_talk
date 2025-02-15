@@ -21,7 +21,6 @@ final class RoomsRepositoryImpl extends RoomsRepository {
   @override
   Future<List<Room>> fetchRooms() async {
     final roomsResponse = await _roomsDatasource.fetchRooms();
-
     return roomsResponse.map((roomDto) => roomDto.toEntity()).toList();
   }
 
