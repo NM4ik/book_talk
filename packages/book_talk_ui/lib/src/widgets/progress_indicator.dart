@@ -86,7 +86,6 @@ class __DefferedProgressIndicatorState
 
   @override
   Widget build(BuildContext context) {
-    print('isVisible - $_isVisible');
     return AnimatedSwitcher(
       duration: _kDefferedAppearDuration,
       child: _isVisible
