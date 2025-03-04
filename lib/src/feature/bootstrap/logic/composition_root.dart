@@ -3,6 +3,11 @@ import 'dart:io';
 import 'package:book_talk/src/common/constants/config.dart';
 import 'package:book_talk/src/common/constants/pubspec.yaml.g.dart';
 import 'package:book_talk/src/common/model/app_metadata.dart';
+import 'package:book_talk/src/common/rest_api/auth/auth_client.dart';
+import 'package:book_talk/src/common/rest_api/auth/auth_refresh.dart';
+import 'package:book_talk/src/common/rest_api/auth/auth_storage.dart';
+import 'package:book_talk/src/common/rest_api/interceptors/log_interceptor.dart';
+import 'package:book_talk/src/common/rest_api/rest_api.dart';
 import 'package:book_talk/src/common/utils/logger.dart';
 import 'package:book_talk/src/common/utils/preferences_storage/preferences_storage.dart';
 import 'package:book_talk/src/feature/account/bloc/account_bloc.dart';
@@ -21,6 +26,7 @@ import 'package:book_talk/src/feature/settings/bloc/app_settings_bloc.dart';
 import 'package:book_talk/src/feature/settings/data/app_settings_datasource.dart';
 import 'package:book_talk/src/feature/settings/data/app_settings_repository.dart';
 import 'package:clock/clock.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 final class CompositionRoot {
@@ -35,7 +41,7 @@ final class CompositionRoot {
     final stopwatch = clock.stopwatch()..start();
 
     logger.logMessage('Initializing dependencies...');
-    final dependencies = await DependenciesFactory(config, logger).create();
+    final dependencies = await createDependenciesContainer(config, logger);
     logger.logMessage('Dependencies initialized');
 
     stopwatch.stop();
@@ -47,181 +53,149 @@ final class CompositionRoot {
   }
 }
 
-/// {@template factory}
-/// Factory that creates an instance of [T].
-/// {@endtemplate}
-abstract class Factory<T> {
-  /// Creates an instance of [T].
-  T create();
+/// Creates an instance of [DependenciesContainer].
+Future<DependenciesContainer> createDependenciesContainer(
+  Config config,
+  AppLogger logger,
+) async {
+  /// common
+  final AppMetadata appMetaData = createAppMetaData(config);
+
+  /// datasource
+  final SharedPreferencesStorage sharedPreferences = SharedPreferencesStorage(
+    sharedPreferences: SharedPreferencesAsync(),
+  );
+  final AuthStorage authStorage = AuthStorageImpl(
+    preferencesStorage: sharedPreferences,
+  );
+  await authStorage.get();
+
+  /// Rest API
+  final RestClient restClient = createRestClient(authStorage, appLogger);
+
+  /// repositories
+  final UserRepository userRepository = createUserRepository();
+
+  /// BLoC
+  final AppSettingsBloc settingsBloc =
+      await createAppSettingsBloc(sharedPreferences);
+  final AuthBloc authBloc =
+      await createAuthBloc(sharedPreferences, authStorage, restClient);
+  final AccountBloc accountBloc =
+      createAccountBloc(authStorage, userRepository);
+  final RoomsBloc roomsBloc = createRoomsBloc(restClient);
+
+  return DependenciesContainer(
+    config: config,
+    appSettingsBloc: settingsBloc,
+    appMetadata: appMetaData,
+    authBloc: authBloc,
+    userRepository: userRepository,
+    accountBloc: accountBloc,
+    roomsBloc: roomsBloc,
+  );
 }
 
-/// {@template async_factory}
-/// Factory that creates an instance of [T] asynchronously.
-/// {@endtemplate}
-abstract class AsyncFactory<T> {
-  /// Creates an instance of [T].
-  Future<T> create();
+RestClient createRestClient(AuthStorage authStorage, AppLogger appLogger) {
+  final RestClient restClient = RestClientDio(
+    baseUrl: dotenv.env['API_BASE_URL'] ?? '',
+    headers: {},
+  );
+  (restClient as RestClientDio).injectAuthenticationInterceptor(
+    tokenStorage: RestApiAuthStorage(authStorage: authStorage),
+    authorizationClient: RestApiAuthorizationClient(
+      authenticationRefreshRepository: AuthenticationRefreshRepositoryImpl(
+        restClient: restClient,
+      ),
+    ),
+    excludedPaths: ['auth/login', 'auth/refresh'],
+  );
+
+  // TODO(Mikhailov): ifDebug
+  (restClient).injectInterceptor(
+    interceptor: LoggerInterceptor(
+      appLogger: appLogger,
+    ),
+  );
+
+  return restClient;
 }
 
-/// {@template dependencies_factory}
-/// Factory that creates an instance of [DependenciesContainer].
-/// {@endtemplate}
-class DependenciesFactory extends AsyncFactory<DependenciesContainer> {
-  /// {@macro dependencies_factory}
-  DependenciesFactory(this.config, this.logger);
-
-  /// Application configuration
-  final Config config;
-
-  /// Logger used to log information during composition process.
-  final AppLogger logger;
-
-  @override
-  Future<DependenciesContainer> create() async {
-    /// common
-    final appMetaData = AppMetadataFactory(
-      config: config,
-    ).create();
-
-    /// datasource
-    final sharedPreferences = SharedPreferencesStorage(
-      sharedPreferences: SharedPreferencesAsync(),
-    );
-    final AuthStorage<String> authStorage = AuthStorageImpl(
+/// Creates an instance of [AppSettingsBloc].
+Future<AppSettingsBloc> createAppSettingsBloc(
+  PreferencesStorage sharedPreferences,
+) async {
+  final appSettingsRepository = AppSettingsRepositoryImpl(
+    appSettingsDatasource: AppSettingsDatasourceImpl(
       preferencesStorage: sharedPreferences,
-    );
+    ),
+  );
 
-    /// repositories
-    final userRepository = UserRepositoryFactory().create();
+  final appSettings = await appSettingsRepository.getAppSettings();
+  final initialState = AppSettingsState.idle(appSettings: appSettings);
 
-    /// BLoC
-    final settingsBloc = await SettingsBlocFactory(
-      sharedPreferences,
-    ).create();
-    final authBloc = await AuthBlocFactory(
-      preferencesStorage: sharedPreferences,
-      authStorage: authStorage,
-    ).create();
-    final accountBloc = AccountBlocFactory(
-      authStorage: authStorage,
-      userRepository: userRepository,
-    ).create();
-    final roomsBloc = RoomsBlocFactory().create();
-
-    return DependenciesContainer(
-      appSettingsBloc: settingsBloc,
-      appMetadata: appMetaData,
-      authBloc: authBloc,
-      userRepository: userRepository,
-      accountBloc: accountBloc,
-      roomsBloc: roomsBloc,
-    );
-  }
+  return AppSettingsBloc(
+    appSettingsRepository: appSettingsRepository,
+    initialState: initialState,
+  );
 }
 
-/// {@template settings_bloc_factory}
-/// Factory that creates an instance of [AppSettingsBloc].
-/// {@endtemplate}
-class SettingsBlocFactory extends AsyncFactory<AppSettingsBloc> {
-  /// {@macro settings_bloc_factory}
-  SettingsBlocFactory(this.sharedPreferences);
-
-  /// Shared preferences instance
-  final PreferencesStorage sharedPreferences;
-
-  @override
-  Future<AppSettingsBloc> create() async {
-    final appSettingsRepository = AppSettingsRepositoryImpl(
-      appSettingsDatasource: AppSettingsDatasourceImpl(
-        preferencesStorage: sharedPreferences,
-      ),
-    );
-
-    final appSettings = await appSettingsRepository.getAppSettings();
-    final initialState = AppSettingsState.idle(appSettings: appSettings);
-
-    return AppSettingsBloc(
-      appSettingsRepository: appSettingsRepository,
-      initialState: initialState,
-    );
-  }
+/// Creates an instance of [AppMetadata].
+AppMetadata createAppMetaData(Config config) {
+  return AppMetadata(
+    environment: config.environment.name,
+    appVersion: Pubspec.version.canonical,
+    operatingSystem: Platform.operatingSystem,
+    locale: Platform.localeName,
+  );
 }
 
-class AppMetadataFactory extends Factory<AppMetadata> {
-  AppMetadataFactory({required this.config});
-  final Config config;
+/// Creates an instance of [AuthBloc].
+Future<AuthBloc> createAuthBloc(
+  PreferencesStorage preferencesStorage,
+  AuthStorage authStorage,
+  RestClient restClient,
+) async {
+  final AuthDatasource authDatasource = AuthDatasourceImpl(
+    restClient: restClient,
+  );
+  final AuthRepository authRepository = AuthRepositoryImpl(
+    authStorage: authStorage,
+    authDatasource: authDatasource,
+  );
 
-  @override
-  AppMetadata create() {
-    return AppMetadata(
-      environment: config.environment.name,
-      appVersion: Pubspec.version.canonical,
-      operatingSystem: Platform.operatingSystem,
-      locale: Platform.localeName,
-    );
-  }
+  return AuthBloc(
+    AuthState.idle(
+      authStatus: authStorage.isAuth ? AuthStatus.auth : AuthStatus.unAuth,
+    ),
+    authRepository: authRepository,
+  );
 }
 
-class AuthBlocFactory extends AsyncFactory<AuthBloc> {
-  AuthBlocFactory({
-    required this.preferencesStorage,
-    required this.authStorage,
-  });
-
-  final PreferencesStorage preferencesStorage;
-  final AuthStorage authStorage;
-
-  @override
-  Future<AuthBloc> create() async {
-    final AuthDatasource authDatasource = AuthDatasourceTemporaryImpl();
-    final AuthRepository authRepository = AuthRepositoryImpl(
-      authStorage: authStorage,
-      authDatasource: authDatasource,
-    );
-    final token = await authStorage.get();
-
-    return AuthBloc(
-      AuthState.idle(
-        authStatus: token != null ? AuthStatus.auth : AuthStatus.unAuth,
-      ),
-      authRepository: authRepository,
-    );
-  }
+/// Creates an instance of [RoomsBloc].
+RoomsBloc createRoomsBloc(RestClient restClient) {
+  return RoomsBloc(
+    const RoomsState.idle(rooms: null),
+    roomsRepository: RoomsRepositoryImpl(
+      roomsDatasource: RoomsDatasourceImpl(restClient: restClient),
+    ),
+  );
 }
 
-class RoomsBlocFactory extends Factory<RoomsBloc> {
-  RoomsBlocFactory();
-
-  @override
-  RoomsBloc create() {
-    return RoomsBloc(
-      const RoomsState.idle(rooms: null),
-      roomsRepository: RoomsRepositoryImpl(
-        roomsDatasource: RoomsDatasourceImpl(),
-      ),
-    );
-  }
+/// Creates an instance of [AccountBloc].
+AccountBloc createAccountBloc(
+  AuthStorage authStorage,
+  UserRepository userRepository,
+) {
+  return AccountBloc(
+    authStorage: authStorage,
+    userRepository: userRepository,
+  )..add(AccountEvent.load());
 }
 
-class AccountBlocFactory extends Factory<AccountBloc> {
-  AccountBlocFactory({required this.authStorage, required this.userRepository});
-  final AuthStorage authStorage;
-  final UserRepository userRepository;
-
-  @override
-  AccountBloc create() {
-    return AccountBloc(
-      authStorage: authStorage,
-      userRepository: userRepository,
-    )..add(AccountEvent.load());
-  }
-}
-
-class UserRepositoryFactory extends Factory<UserRepository> {
-  @override
-  UserRepository create() {
-    return UserRepositoryImpl(userDatasource: UserDatasourceImpl());
-  }
+/// Creates an instance of [UserRepository].
+UserRepository createUserRepository() {
+  return UserRepositoryImpl(userDatasource: UserDatasourceImpl());
 }
 
 /// {@template composition_result}

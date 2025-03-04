@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dio/dio.dart';
 import 'package:rest_client/rest_client.dart';
 import 'package:rest_client/src/exception/rest_client_exception.dart';
@@ -38,17 +40,32 @@ class RestClientDio extends RestClientBase {
 
       Response? response;
       try {
-        response = await _dioClient.post(
-          path,
-          data: requestData,
-          queryParameters: queryParameters,
-          options: Options(
-            headers: $headers,
-            extra: extra,
-          ),
-        );
+        response = switch (method) {
+          RestClientMethod.post => await _dioClient.post(
+              path,
+              data: requestData,
+              queryParameters: queryParameters,
+              options: Options(
+                headers: $headers,
+                extra: extra,
+                method: 'POST',
+              ),
+            ),
+          RestClientMethod.$get => await _dioClient.get(
+              path,
+              data: requestData,
+              queryParameters: queryParameters,
+              options: Options(
+                headers: $headers,
+                extra: extra,
+                method: 'GET',
+              ),
+            ),
+        };
       } on DioException catch (e) {
+        // TODO(Mikhailov): handle errors
         response = e.response;
+        log('DIO RESPONSE = ${response?.data}, error: ${e.message}');
       }
 
       final Map<String, Object?>? decodedBody = decodeResponse(response?.data);
@@ -70,5 +87,24 @@ class RestClientDio extends RestClientBase {
         stackTrace,
       );
     }
+  }
+
+  void injectAuthenticationInterceptor({
+    required AuthTokenStorage<Token> tokenStorage,
+    required AuthorizationClient<Token> authorizationClient,
+    required List<String> excludedPaths,
+  }) {
+    _dioClient.interceptors.add(
+      AuthInterceptor(
+        dio: _dioClient,
+        tokenStorage: tokenStorage,
+        authorizationClient: authorizationClient,
+        excludedPaths: excludedPaths,
+      ),
+    );
+  }
+
+  void injectInterceptor({required Interceptor interceptor}) {
+    _dioClient.interceptors.add(interceptor);
   }
 }

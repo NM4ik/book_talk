@@ -10,9 +10,11 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart' as bloc_concurrency;
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 final class AppBootstrap {
   Future<void> initializeApp() async {
+    await dotenv.load();
     final bindings = WidgetsFlutterBinding.ensureInitialized()
       ..deferFirstFrame();
 

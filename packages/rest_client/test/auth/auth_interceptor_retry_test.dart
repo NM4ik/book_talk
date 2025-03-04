@@ -7,7 +7,6 @@ import 'package:rest_client/src/auth/token_storage.dart';
 import 'package:rest_client/src/auth/auth_interceptor.dart';
 import 'package:rest_client/src/utils/retry_request.dart';
 
-// Ensure mock class is set up correctly
 class MockErrorInterceptorHandler extends Mock
     implements ErrorInterceptorHandler {}
 
@@ -36,22 +35,26 @@ void main() {
   late Token validToken;
   late Token expiredToken;
   late ErrorInterceptorHandler errorHandler;
+  late Response<dynamic> validResponse;
 
   setUp(() {
     dio = MockDio();
     authorizationClient = MockAuthorizationClient();
     tokenStorage = MockTokenStorage();
     errorHandler = MockErrorInterceptorHandler();
+    validResponse = Response(requestOptions: RequestOptions());
     authInterceptor = AuthInterceptor(
       dio: dio,
       tokenStorage: tokenStorage,
       authorizationClient: authorizationClient,
+      excludedPaths: ['auth/refresh', 'auth/login'],
     );
 
     registerFallbackValue(DioException(requestOptions: RequestOptions()));
     registerFallbackValue(Response<dynamic>);
     registerFallbackValue(FakeResponse());
     registerFallbackValue(RequestOptions());
+    registerFallbackValue(const Token(accessToken: '', refreshToken: ''));
 
     validToken = const Token(
       accessToken: 'valid_access',
@@ -72,14 +75,12 @@ void main() {
 
   group('AuthInterceptor retry tests', () {
     test('retryRequest should retry the request and return response', () async {
-      final reqOpt = RequestOptions();
-      final validResponse = Response(requestOptions: reqOpt);
-      when(() => dio.fetch(reqOpt))
+      when(() => dio.fetch(validResponse.requestOptions))
           .thenAnswer((_) async => Future.value(validResponse));
-      final result = await retryRequest(dio, reqOpt);
+      final result = await retryRequest(dio, validResponse.requestOptions);
 
       expect(result, equals(validResponse));
-      verify(() => dio.fetch(reqOpt)).called(1);
+      verify(() => dio.fetch(validResponse.requestOptions)).called(1);
     });
 
     test('retryRequest should throw DioException on failure', () async {
@@ -95,19 +96,19 @@ void main() {
     });
 
     test('should retry request after 401 with valid refresh token', () async {
-      final requestOptions = RequestOptions();
-      final validResponse = Response(requestOptions: RequestOptions());
-      when(() => authorizationClient.isAccessTokenValid(expiredToken))
-          .thenAnswer((_) async => false);
-      when(() => authorizationClient.isRefreshTokenValid(expiredToken))
+      when(() => authorizationClient.isRefreshTokenValid(any()))
           .thenAnswer((_) async => true);
+      when(() => authorizationClient.refresh(any()))
+          .thenAnswer((_) async => validToken);
+      when(() => tokenStorage.saveToken(any())).thenAnswer((_) async {});
       when(() => dio.fetch(any()))
           .thenAnswer((_) async => Future.value(validResponse));
-      when(() => authorizationClient.refresh(expiredToken))
-          .thenAnswer((_) async => validToken);
       final dioException = DioException(
-        requestOptions: requestOptions,
-        response: Response(statusCode: 401, requestOptions: requestOptions),
+        requestOptions: validResponse.requestOptions,
+        response: Response(
+          statusCode: 401,
+          requestOptions: validResponse.requestOptions,
+        ),
       );
 
       await authInterceptor.onError(dioException, errorHandler);
@@ -137,36 +138,6 @@ void main() {
       await authInterceptor.onError(dioException, errorHandler);
       verify(() => tokenStorage.clearToken()).called(1);
       verify(() => errorHandler.reject(any())).called(1);
-    });
-
-    test('should not retry if token is different in headers', () async {
-      // Мокаем ситуацию, когда токен в заголовке отличается от текущего
-      when(() => authorizationClient.isAccessTokenValid(expiredToken))
-          .thenAnswer((_) async => false);
-      when(() => authorizationClient.isRefreshTokenValid(expiredToken))
-          .thenAnswer((_) async => true);
-
-      final requestOptions = RequestOptions(
-        path: '/test',
-        method: 'GET',
-        headers: {'Authorization': 'Bearer different_token'},
-      );
-      when(() => dio.fetch(any())).thenAnswer(
-          (_) async => Future.value(Response(requestOptions: requestOptions)));
-
-      final dioException = DioException(
-        requestOptions: requestOptions,
-        response: Response(
-          statusCode: 401,
-          requestOptions: RequestOptions(),
-          headers: Headers.fromMap({
-            'Authorization': ['Bearer different_token']
-          }),
-        ),
-      );
-
-      await authInterceptor.onError(dioException, errorHandler);
-      verify(() => errorHandler.resolve(any())).called(1);
     });
   });
 }

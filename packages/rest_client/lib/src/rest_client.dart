@@ -6,8 +6,14 @@ abstract interface class RestClient {
   Future<RestResponse> post({
     required String path,
     required Map<String, Object?> body,
-    Map<String, Object?> headers,
-    Map<String, Object?> queryParameters,
-    Map<String, dynamic>? extra,
+    Map<String, String>? headers,
+    Map<String, String>? queryParameters,
+    Map<String, String>? extra,
+  });
+
+  Future<RestResponse> get({
+    required String path,
+    Map<String, String>? headers,
+    Map<String, String>? queryParameters,
   });
 }

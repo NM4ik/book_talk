@@ -13,6 +13,7 @@ environment:
 
 workspace:
   - packages/book_talk_ui
+  - packages/rest_client
 
 dependencies:
   flutter:
@@ -27,18 +28,11 @@ dependencies:
   bloc: ^8.1.4
   bloc_concurrency: ^0.2.5
 
-  # Logger
-  l: ^5.0.0
-
   # Router
   octopus: ^0.0.9
 
   # Device local data
   shared_preferences: ^2.3.2
-
-  # UI lib
-  # book_talk_ui:
-  #   path: packages/ui/book_talk_ui
 
   # UI
   cached_network_image: ^3.4.1
@@ -46,12 +40,18 @@ dependencies:
   smooth_page_indicator: ^1.2.0+3
   animations: ^2.0.11
 
+  # Network
+  dio: ^5.8.0+1
+
   # Utils
   uuid: ^4.5.1
   cupertino_icons: ^1.0.8
   window_manager: ^0.4.3
   collection: ^1.18.0
   image_picker: ^1.1.2
+  dart_jsonwebtoken: ^3.1.1
+  talker: ^4.6.12
+  flutter_dotenv: ^5.2.1
 
 dev_dependencies:
   flutter_gen: ^5.8.0
@@ -65,6 +65,7 @@ flutter:
   generate: true
   uses-material-design: true
   assets:
+    - .env
     - lib/l10n/
     - assets/images/
   shaders:

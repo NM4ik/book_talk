@@ -1,4 +1,4 @@
-import 'package:book_talk/src/common/model/app_metadata.dart';
+import 'package:book_talk/common.dart';
 import 'package:book_talk/src/feature/account/bloc/account_bloc.dart';
 import 'package:book_talk/src/feature/account/data/user_repository.dart';
 import 'package:book_talk/src/feature/auth/bloc/auth_bloc.dart';
@@ -7,6 +7,7 @@ import 'package:book_talk/src/feature/settings/bloc/app_settings_bloc.dart';
 
 class DependenciesContainer {
   const DependenciesContainer({
+    required this.config,
     required this.appSettingsBloc,
     required this.appMetadata,
     required this.authBloc,
@@ -14,6 +15,8 @@ class DependenciesContainer {
     required this.roomsBloc,
     required this.accountBloc,
   });
+
+  final Config config;
 
   /// Information about the application and client environment
   final AppMetadata appMetadata;

@@ -5,7 +5,7 @@ import 'package:rest_client/src/rest_client.dart';
 import 'package:rest_client/src/rest_response.dart';
 
 /// The methods supported by a REST client.
-enum RestClientMethod { post }
+enum RestClientMethod { post, $get }
 
 /// The base interface for a REST client.
 abstract class RestClientBase implements RestClient {
@@ -22,9 +22,9 @@ abstract class RestClientBase implements RestClient {
   Future<RestResponse> post({
     required String path,
     required Map<String, Object?> body,
-    Map<String, Object?>? headers,
-    Map<String, Object?>? queryParameters,
-    Map<String, dynamic>? extra,
+    Map<String, String>? headers,
+    Map<String, String>? queryParameters,
+    Map<String, String>? extra,
   }) =>
       send(
         path: path,
@@ -33,6 +33,19 @@ abstract class RestClientBase implements RestClient {
         queryParameters: queryParameters,
         body: body,
         extra: extra,
+      );
+
+  @override
+  Future<RestResponse> get({
+    required String path,
+    Map<String, String>? headers,
+    Map<String, String>? queryParameters,
+  }) =>
+      send(
+        path: path,
+        method: RestClientMethod.$get,
+        headers: headers,
+        queryParameters: queryParameters,
       );
 
   /// Encodes the request body to JSON.
@@ -49,7 +62,7 @@ abstract class RestClientBase implements RestClient {
       );
     }
   }
-  
+
   /// Decodes the response body from JSON.
   Map<String, Object?>? decodeResponse(Object? response) {
     if (response == null) return null;

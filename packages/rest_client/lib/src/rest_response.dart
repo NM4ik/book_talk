@@ -22,4 +22,9 @@ class RestResponse {
 
   /// The status code associated with the response.
   final int? statusCode;
+
+  @override
+  String toString() {
+    return 'RestResponse(success: $success, message: $message, data: $data, errorDescription: $errorDescription, statusCode: $statusCode)';
+  }
 }

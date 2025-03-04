@@ -3,10 +3,11 @@ import 'dart:async';
 import 'package:book_talk/src/feature/auth/data/auth_datasource.dart';
 import 'package:book_talk/src/feature/auth/data/auth_storage.dart';
 import 'package:book_talk/src/feature/auth/model/auth_status.dart';
+import 'package:book_talk/src/feature/auth/model/auth_token.dart';
 
-abstract interface class AuthRepository<T> {
+abstract interface class AuthRepository {
   /// Sign in with email and password
-  Future<T> signInWithEmailAndPassword(String email, String password);
+  Future<AuthToken?> signInWithEmailAndPassword(String email, String password);
 
   /// Sign out
   Future<void> signOut();
@@ -15,23 +16,29 @@ abstract interface class AuthRepository<T> {
   Stream<AuthStatus> get authStatus;
 }
 
-class AuthRepositoryImpl<T> implements AuthRepository<T> {
+class AuthRepositoryImpl implements AuthRepository {
   AuthRepositoryImpl({
-    required AuthStorage<T> authStorage,
-    required AuthDatasource<T> authDatasource,
+    required AuthStorage authStorage,
+    required AuthDatasource authDatasource,
   })  : _authStorage = authStorage,
         _authDatasource = authDatasource;
 
-  final AuthStorage<T> _authStorage;
-  final AuthDatasource<T> _authDatasource;
+  final AuthStorage _authStorage;
+  final AuthDatasource _authDatasource;
 
   @override
-  Future<T> signInWithEmailAndPassword(String email, String password) async {
-    final token = await _authDatasource.signInWithEmailAndPassword(
+  Future<AuthToken?> signInWithEmailAndPassword(
+    String email,
+    String password,
+  ) async {
+    final AuthToken? token = await _authDatasource.signInWithEmailAndPassword(
       email,
       password,
     );
-    await _authStorage.save(token);
+
+    if (token != null) {
+      await _authStorage.save(token);
+    }
 
     return token;
   }
@@ -39,13 +46,13 @@ class AuthRepositoryImpl<T> implements AuthRepository<T> {
   @override
   Future<void> signOut() async {
     await Future.wait([
-      _authDatasource.signOut(),
+      // _authDatasource.signOut(),
       _authStorage.clear(),
     ]);
   }
 
   @override
-  Stream<AuthStatus> get authStatus => _authStorage.authStream.map(
+  Stream<AuthStatus> get authStatus => _authStorage.authTokenStream.map(
         (token) => token != null ? AuthStatus.auth : AuthStatus.unAuth,
       );
 }

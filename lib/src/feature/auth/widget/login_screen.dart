@@ -5,6 +5,7 @@ import 'package:book_talk/src/feature/bootstrap/widget/app_scope.dart';
 import 'package:book_talk_ui/book_talk_ui.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -15,14 +16,18 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
-
   final FocusNode emailFocusNode = FocusNode();
+  final TextEditingController _passwordController = TextEditingController();
   final FocusNode passwordFocusNode = FocusNode();
-
   final PageController _pageController = PageController();
   final ValueNotifier<int> _indexNotifier = ValueNotifier(0);
+
+  @override
+  void initState() {
+    super.initState();
+    _fillDebugCredentials();
+  }
 
   @override
   void dispose() {
@@ -66,15 +71,19 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void _onSignIn(BuildContext context) {
-    final authBloc = AppScope.of(context).authBloc;
+    AppScope.of(context).authBloc.add(
+          AuthEvent.signEmailPassword(
+            _emailController.text,
+            _passwordController.text,
+          ),
+        );
+  }
 
-    if (authBloc.state.isLoading) return;
-    authBloc.add(
-      AuthEvent.signEmailPassword(
-        _emailController.text,
-        _passwordController.text,
-      ),
-    );
+  void _fillDebugCredentials() {
+    if (AppScope.of(context).config.environment.isDev) {
+      _emailController.text = dotenv.env['DEBUG_EMAIL'] ?? '';
+      _passwordController.text = dotenv.env['DEBUG_PASSWORD'] ?? '';
+    }
   }
 }
 

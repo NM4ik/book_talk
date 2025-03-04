@@ -1,5 +1,5 @@
 import 'dart:async';
-
+import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:book_talk/src/common/utils/mixins/emittable_set_state_mixin.dart';
 import 'package:book_talk/src/feature/auth/data/auth_repository.dart';
 import 'package:book_talk/src/feature/auth/model/auth_status.dart';
@@ -17,6 +17,7 @@ final class AuthBloc extends Bloc<AuthEvent, AuthState> with SetStateMixin {
           _onSignEmailPasswordEvent(event, emitter),
         _SignOutAuthEvent() => _onSignOutEvent(event, emitter),
       },
+      transformer: droppable(),
     );
 
     _authStatusSubscription = _authRepository.authStatus
@@ -41,10 +42,8 @@ final class AuthBloc extends Bloc<AuthEvent, AuthState> with SetStateMixin {
 
     try {
       await _authRepository.signInWithEmailAndPassword(
-        event.email,
-        event.password,
-      );
-      emitter(const AuthState.idle(authStatus: AuthStatus.auth));
+          event.email, event.password);
+      emitter(AuthState.idle(authStatus: state.authStatus));
     } on Object catch (e, stackTrace) {
       emitter(AuthState.error(authStatus: AuthStatus.unAuth, error: e));
       onError(e, stackTrace);
@@ -68,7 +67,6 @@ final class AuthBloc extends Bloc<AuthEvent, AuthState> with SetStateMixin {
   @override
   Future<void> close() {
     _authStatusSubscription?.cancel();
-
     return super.close();
   }
 }

@@ -1,5 +1,5 @@
 import 'package:flutter/src/foundation/assertions.dart';
-import 'package:l/l.dart';
+import 'package:talker/talker.dart';
 
 /// Provides a logging interface for different types of logs in the app.
 ///
@@ -25,15 +25,20 @@ abstract class AppLogger {
 
   /// Logs platform dispatcher errors.
   bool logPlatformDispatcherError(Object exception, StackTrace stackTrace);
+
+  void logRed(String message);
+  void logOrange(String message);
 }
 
 /// Default implementation of [AppLogger] that logs messages using a logger.
 final class DefaultAppLogger extends AppLogger {
-  final L _logger = l; // Underlying logger instance.
+  final TalkerLogger _logger = TalkerLogger(
+    settings: TalkerLoggerSettings(maxLineWidth: 100),
+  );
 
   @override
   void logError(Object error, StackTrace stackTrace) {
-    _logger.e(
+    _logger.error(
       '$error'
       '\n'
       '[StackTrace]:\n$stackTrace',
@@ -42,7 +47,7 @@ final class DefaultAppLogger extends AppLogger {
 
   @override
   void logFlutterError(FlutterErrorDetails details) {
-    _logger.e(
+    _logger.error(
       'FlutterError: ${details.exception}'
       '\n'
       'StackTrace: ${details.stack}',
@@ -51,17 +56,27 @@ final class DefaultAppLogger extends AppLogger {
 
   @override
   void logMessage(String message) {
-    _logger.i(message);
+    _logger.info(message);
   }
 
   @override
   bool logPlatformDispatcherError(Object exception, StackTrace stackTrace) {
-    _logger.e(
+    _logger.error(
       'PlatformDispatcherError: ${exception}'
       '\n'
       'StackTrace: ${stackTrace}',
     );
 
     return true;
+  }
+
+  @override
+  void logRed(String message) {
+    _logger.error(message);
+  }
+
+  @override
+  void logOrange(String message) {
+    _logger.warning(message);
   }
 }

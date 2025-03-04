@@ -1,23 +1,34 @@
-import 'package:uuid/uuid.dart';
+import 'package:book_talk/src/common/rest_api/rest_api.dart';
+import 'package:book_talk/src/feature/auth/model/auth_token.dart';
 
-abstract interface class AuthDatasource<T> {
-  Future<T> signInWithEmailAndPassword(String email, String password);
+abstract interface class AuthDatasource {
+  Future<AuthToken?> signInWithEmailAndPassword(String email, String password);
 
-  Future<void> signOut();
+  // Future<void> signOut();
 }
 
-final class AuthDatasourceTemporaryImpl implements AuthDatasource<String> {
+final class AuthDatasourceImpl implements AuthDatasource {
+  const AuthDatasourceImpl({required RestClient restClient})
+      : _restClient = restClient;
+
+  final RestClient _restClient;
+
   @override
-  Future<String> signInWithEmailAndPassword(
+  Future<AuthToken?> signInWithEmailAndPassword(
     String email,
     String password,
   ) async {
-    return await Future.delayed(
-        const Duration(seconds: 1), () => const Uuid().v1());
+    final RestResponse response = await _restClient.post(
+      path: 'auth/login',
+      body: {"email": email, "password": password},
+    );
+
+    if (response.data == null) return null;
+    return AuthToken.fromJson(response.data!);
   }
 
-  @override
-  Future<void> signOut() async {
-    return await Future.delayed(const Duration(seconds: 1));
-  }
+  // @override
+  // Future<void> signOut() async {
+  //   return await Future.delayed(const Duration(seconds: 1));
+  // }
 }

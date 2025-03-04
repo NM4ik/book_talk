@@ -17,6 +17,13 @@ class MockAuthorizationClient extends Mock
 
 class MockRequestOptions extends Mock implements RequestOptions {}
 
+class MockErrorInterceptorHandler extends Mock
+    implements ErrorInterceptorHandler {}
+
+
+class MockRequestInterceptorHandler extends Mock
+    implements RequestInterceptorHandler {}
+
 void main() {
   late Dio dio;
   late MockAuthTokenStorage tokenStorage;
@@ -38,6 +45,10 @@ void main() {
       dio: dio,
       tokenStorage: tokenStorage,
       authorizationClient: authorizationClient,
+      excludedPaths: [
+        'auth/refresh',
+        'auth/login',
+      ],
     );
   });
 
@@ -106,7 +117,7 @@ void main() {
 
     // Create the request options and the handler for interceptors
     final requestOptions = RequestOptions(path: '/test');
-    final handler = RequestInterceptorHandler();
+    final handler = MockRequestInterceptorHandler();
 
     // Execute the interceptor on the request
     await authInterceptor.onRequest(requestOptions, handler);
@@ -116,5 +127,27 @@ void main() {
 
     // Verify that token storage's clearToken method was called
     verify(() => tokenStorage.clearToken()).called(1);
+  });
+
+  test('should not modify request for excluded path', () async {
+    final requestOptions = RequestOptions(path: 'auth/login1');
+    final handler = MockRequestInterceptorHandler();
+
+    await authInterceptor.onRequest(requestOptions, handler);
+
+    verify(() => handler.next(requestOptions)).called(1);
+  });
+
+  test('should not retry request for excluded path on error', () async {
+    final requestOptions = RequestOptions(path: 'auth/refresh');
+    final dioException = DioException(
+      requestOptions: requestOptions,
+      response: Response(statusCode: 401, requestOptions: requestOptions),
+    );
+    final errorHandler = MockErrorInterceptorHandler();
+
+    await authInterceptor.onError(dioException, errorHandler);
+
+    verify(() => errorHandler.next(dioException)).called(1);
   });
 }
