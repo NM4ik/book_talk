@@ -1,23 +1,36 @@
 class User {
   const User({
-    required this.id,
-    required this.name,
-    required this.avatar,
+    required this.email,
+    required this.firstName,
+    required this.lastName,
+    required this.theme,
   });
-  final String id;
-  final String name;
-  final String avatar;
+
+  final String email;
+  final String firstName;
+  final String lastName;
+  final UserTheme theme;
 
   @override
   bool operator ==(covariant User other) {
     if (identical(this, other)) return true;
 
-    return other.id == id && other.name == name && other.avatar == avatar;
+    return other.email == email &&
+        other.firstName == firstName &&
+        other.theme == theme &&
+        other.lastName == lastName;
   }
 
   @override
-  int get hashCode => id.hashCode ^ name.hashCode ^ avatar.hashCode;
+  int get hashCode => Object.hashAll([email, firstName, theme, lastName]);
 
   @override
-  String toString() => 'User(id: $id, name: $name, avatar: $avatar)';
+  String toString() =>
+      'User(email: $email, firstName: $firstName, lastName: $lastName, theme: $theme)';
+}
+
+enum UserTheme {
+  light,
+  dark,
+  system,
 }

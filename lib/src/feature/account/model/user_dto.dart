@@ -1,31 +1,35 @@
-import 'dart:convert';
-
 import 'package:book_talk/src/feature/account/model/user.dart';
 
 class UserDto {
-  const UserDto({
-    required this.id,
-    required this.name,
-    required this.avatar,
+  const UserDto._({
+    required this.email,
+    required this.firstName,
+    required this.lastName,
+    required this.theme,
   });
 
-  factory UserDto.fromJson(String json) {
-    final data = jsonDecode(json);
-
-    return UserDto(
-      id: data['id'],
-      name: data['name'],
-      avatar: data['avatar'],
+  factory UserDto.fromJson(Map<String, Object?> json) {
+    return UserDto._(
+      email: json['email'] as String,
+      firstName: json['firstName']?.toString(),
+      lastName: json['lastName']?.toString(),
+      theme: json['theme']?.toString(),
     );
   }
 
-  final String id;
-  final String name;
-  final String avatar;
+  final String email;
+  final String? firstName;
+  final String? lastName;
+  final String? theme;
 
   User toEntity() => User(
-        id: id,
-        name: name,
-        avatar: avatar,
+        email: email,
+        firstName: firstName ?? '',
+        lastName: lastName ?? '',
+        theme: switch (theme) {
+          'Light' => UserTheme.light,
+          'System' => UserTheme.system,
+          _ => UserTheme.dark,
+        },
       );
 }

@@ -1,6 +1,8 @@
 import 'package:book_talk/src/feature/room_detail/model/file_image.dart';
 import 'package:image_picker/image_picker.dart';
 
+
+// TODO(Mikhailov): move to the widget layer
 abstract interface class RoomImageRepository {
   Future<FileImage?> pickImageFromGallery();
 }

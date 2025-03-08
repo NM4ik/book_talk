@@ -283,8 +283,7 @@ class _SaveRoomButton extends StatelessWidget {
 class _RoomDetailStateListener extends StatelessWidget {
   /// {@macro room_detail_screen}
   const _RoomDetailStateListener({
-    required this.child,
-    super.key, // ignore: unused_element
+    required this.child, // ignore: unused_element
   });
 
   final Widget child;

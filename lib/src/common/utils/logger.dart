@@ -1,5 +1,5 @@
 import 'package:flutter/src/foundation/assertions.dart';
-import 'package:talker/talker.dart';
+import 'package:talker_flutter/talker_flutter.dart';
 
 /// Provides a logging interface for different types of logs in the app.
 ///
@@ -32,8 +32,11 @@ abstract class AppLogger {
 
 /// Default implementation of [AppLogger] that logs messages using a logger.
 final class DefaultAppLogger extends AppLogger {
-  final TalkerLogger _logger = TalkerLogger(
-    settings: TalkerLoggerSettings(maxLineWidth: 100),
+  final _logger = TalkerFlutter.init(
+    settings: TalkerSettings(
+      // TODO(Mikhailov): manage it
+      enabled: true,
+    ),
   );
 
   @override

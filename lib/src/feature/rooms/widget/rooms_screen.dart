@@ -104,9 +104,7 @@ class _AvatarTrailingButton extends StatelessWidget {
 /// {@endtemplate}
 class _CreateRoomButton extends StatelessWidget {
   /// {@macro rooms_screen}
-  const _CreateRoomButton({
-    super.key, // ignore: unused_element
-  });
+  const _CreateRoomButton();
 
   @override
   Widget build(BuildContext context) {
@@ -142,8 +140,7 @@ class _CreateRoomButton extends StatelessWidget {
 class _RoomsGrid extends StatelessWidget {
   /// {@macro rooms_screen}
   const _RoomsGrid({
-    required this.rooms,
-    super.key, // ignore: unused_element
+    required this.rooms, // ignore: unused_element
   });
 
   final List<Room> rooms;
@@ -162,9 +159,7 @@ class _RoomsGrid extends StatelessWidget {
 /// {@endtemplate}
 class _LoadingGrid extends StatelessWidget {
   /// {@macro rooms_screen}
-  const _LoadingGrid({
-    super.key, // ignore: unused_element
-  });
+  const _LoadingGrid();
 
   @override
   Widget build(BuildContext context) => _GridBuilder(
@@ -316,9 +311,7 @@ void _onRoomEdit(BuildContext context, Room? room) {
 /// {@endtemplate}
 class _RoomsError extends StatelessWidget {
   /// {@macro rooms_screen}
-  const _RoomsError({
-    super.key, // ignore: unused_element
-  });
+  const _RoomsError();
 
   @override
   Widget build(BuildContext context) => SliverFillRemaining(

@@ -1,3 +1,4 @@
+import 'package:book_talk/src/feature/booking/model/booking_days.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:animations/animations.dart';
@@ -17,7 +18,7 @@ class BookingCalendarMonthTitleWidget extends StatefulWidget {
   });
 
   final ScrollController scrollController;
-  final List<DateTime> bookingDays;
+  final List<DayInfo> bookingDays;
   final double cardWidth;
 
   @override
@@ -30,7 +31,7 @@ class _BookingCalendarMonthTitleWidgetState
     extends State<BookingCalendarMonthTitleWidget> {
   late final ScrollController _scrollController;
   late final double _cardWidth;
-  late DateTime _dateTime;
+  DateTime? _dateTime;
 
   int _cardIndex = 0;
 
@@ -40,7 +41,10 @@ class _BookingCalendarMonthTitleWidgetState
     super.initState();
     _scrollController = widget.scrollController;
     _cardWidth = widget.cardWidth + 10;
-    _dateTime = widget.bookingDays[_cardIndex];
+
+    if (widget.bookingDays.length > _cardIndex) {
+      _dateTime = widget.bookingDays[_cardIndex].date;
+    }
     _scrollController.addListener(_scrollListener);
   }
 
@@ -53,9 +57,13 @@ class _BookingCalendarMonthTitleWidgetState
 
   @override
   Widget build(BuildContext context) {
-    final String currentMonth = _monthFormatter.format(_dateTime);
-    final String? next = nextMonth(_dateTime);
-    final String? previous = previousMonth(_dateTime);
+    final DateTime? dateTime = _dateTime;
+    if (dateTime == null) return const SizedBox.shrink();
+
+    final String currentMonth = _monthFormatter.format(dateTime);
+    print('currentMonth: $currentMonth');
+    final String? next = nextMonth(dateTime);
+    final String? previous = previousMonth(dateTime);
     final String monthKey = currentMonth + (next ?? '') + (previous ?? '');
 
     return Padding(
@@ -95,10 +103,16 @@ class _BookingCalendarMonthTitleWidgetState
   }
 
   void _updateIndex(int index) {
-    if (index == _cardIndex || !mounted) return;
+    if (index == _cardIndex || !mounted || index >= widget.bookingDays.length) {
+      return;
+    }
+    final day = widget.bookingDays[index].date;
+    if (day.month == _dateTime?.month) return;
+    print('newIndex: ${day}');
+
     setState(() {
       _cardIndex = index;
-      _dateTime = widget.bookingDays[index];
+      _dateTime = day;
     });
   }
 

@@ -26,10 +26,10 @@ class UnexpectedBehaviorException extends DioException {
   UnexpectedBehaviorException({
     String? message,
     RequestOptions? requestOptions,
-    StackTrace? stackTrace,
+    super.stackTrace,
   }) : super(
           requestOptions: requestOptions ?? RequestOptions(),
-          message: message ?? 'The request could not be completed for an unknown reason.',
-          stackTrace: stackTrace,
+          message: message ??
+              'The request could not be completed for an unknown reason.',
         );
 }

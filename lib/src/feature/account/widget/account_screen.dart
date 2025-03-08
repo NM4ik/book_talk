@@ -34,7 +34,7 @@ class AccountScreen extends StatelessWidget {
                   BlocBuilder<AccountBloc, AccountState>(
                     bloc: accountBloc,
                     builder: (context, state) {
-                      return Text(state.user?.name ?? '');
+                      return Text(state.user?.email ?? '');
                     },
                   ),
                 ],

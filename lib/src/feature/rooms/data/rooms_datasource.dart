@@ -1,5 +1,7 @@
-import 'dart:math';
+import 'dart:developer' as dev;
+import 'dart:math' ;
 import 'package:book_talk/src/common/model/room/room.dart';
+import 'package:book_talk/src/common/rest_api/rest_api.dart';
 
 /// Interface for managing room data.
 abstract interface class RoomsDatasource {
@@ -11,8 +13,15 @@ abstract interface class RoomsDatasource {
 }
 
 final class RoomsDatasourceImpl extends RoomsDatasource {
+  RoomsDatasourceImpl({required RestClient restClient})
+      : _restClient = restClient;
+
+  final RestClient _restClient;
+
   @override
   Future<List<RoomDto>> fetchRooms() async {
+    final RestResponse rooms = await _restClient.get(path: '/rooms');
+    dev.log('rooms: $rooms');
     return await Future.delayed(
       const Duration(seconds: 3),
       () async => remoteRoomsMockData

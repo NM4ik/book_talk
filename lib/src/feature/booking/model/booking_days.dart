@@ -1,29 +1,102 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/foundation.dart';
 
-/// Represents booking days.
-///
-/// Consists of a list of [DateTime]s and a [BookingDaysPagination].
 class BookingDays {
   const BookingDays({
-    required this.days,
+    required this.daysInfo,
     required this.pagination,
   });
 
-  /// A list of [DateTime]s.
-  final List<DateTime> days;
-
-  /// A pagination object.
+  final List<DayInfo> daysInfo;
   final BookingDaysPagination pagination;
 
   @override
   bool operator ==(covariant BookingDays other) {
     if (identical(this, other)) return true;
-    return listEquals(other.days, days) && other.pagination == pagination;
+    return listEquals(other.daysInfo, daysInfo) &&
+        other.pagination == pagination;
   }
 
   @override
-  int get hashCode => days.hashCode ^ pagination.hashCode;
+  int get hashCode => daysInfo.hashCode ^ pagination.hashCode;
+
+  // TODO(Mikhailov): Maybe sort should be in repository?
+  List<DayInfo> getSortedUpcomingDays(DateTime dateTime) {
+    daysInfo.sort();
+    return daysInfo.where((day) => day.date.isAfter(dateTime)).toList();
+  }
+
+  @override
+  String toString() => 'BookingDays(days: $daysInfo, pagination: $pagination)';
+}
+
+class BookingDaysDto {
+  const BookingDaysDto({
+    required this.daysInfo,
+    required this.pagination,
+  });
+
+  factory BookingDaysDto.fromJson(Map<String, dynamic> json) {
+    return BookingDaysDto(
+      daysInfo: (json['days'] as List<dynamic>)
+          .whereType<Map<String, dynamic>>()
+          .map((json) => DayInfoDto.fromJson(json))
+          .toList(),
+      pagination: BookingDaysPaginationDto.fromJson(json['pagination']),
+    );
+  }
+
+  final List<DayInfoDto> daysInfo;
+  final BookingDaysPaginationDto pagination;
+
+  BookingDays toEntity() => BookingDays(
+        daysInfo: daysInfo.map((day) => day.toEntity()).toList(),
+        pagination: pagination.toEntity(),
+      );
+}
+
+class DayInfo implements Comparable<DayInfo> {
+  const DayInfo({required this.date, required this.slots});
+
+  final DateTime date;
+  final int slots;
+
+  @override
+  String toString() => 'DayInfo(date: $date, slots: $slots)';
+
+  @override
+  bool operator ==(covariant DayInfo other) {
+    if (identical(this, other)) return true;
+
+    return other.date == date && other.slots == slots;
+  }
+
+  @override
+  int get hashCode => date.hashCode ^ slots.hashCode;
+
+  @override
+  int compareTo(DayInfo other) {
+    return date.compareTo(other.date);
+  }
+}
+
+class DayInfoDto {
+  const DayInfoDto({
+    required this.date,
+    required this.slots,
+  });
+
+  factory DayInfoDto.fromJson(Map<String, dynamic> json) {
+    return DayInfoDto(
+      date: json['date'] as String,
+      slots: json['slots'] as int? ?? 0,
+    );
+  }
+
+  final String date;
+  final int slots;
+
+  DayInfo toEntity() => DayInfo(date: DateTime.parse(date), slots: slots);
 }
 
 class BookingDaysPagination {
@@ -36,28 +109,6 @@ class BookingDaysPagination {
   final int currentPage;
   final int totalPages;
   final int perPage;
-}
-
-class BookingDaysDto {
-  const BookingDaysDto({
-    required this.days,
-    required this.pagination,
-  });
-
-  factory BookingDaysDto.fromJson(Map<String, dynamic> json) {
-    return BookingDaysDto(
-      days: (json['days'] as List<dynamic>).whereType<String>().toList(),
-      pagination: BookingDaysPaginationDto.fromJson(json['pagination']),
-    );
-  }
-
-  final List<String> days;
-  final BookingDaysPaginationDto pagination;
-
-  BookingDays toEntity() => BookingDays(
-        days: days.map((day) => DateTime.parse(day)).toList(),
-        pagination: pagination.toEntity(),
-      );
 }
 
 class BookingDaysPaginationDto {

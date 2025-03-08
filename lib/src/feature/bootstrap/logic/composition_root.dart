@@ -27,6 +27,7 @@ import 'package:book_talk/src/feature/settings/data/app_settings_datasource.dart
 import 'package:book_talk/src/feature/settings/data/app_settings_repository.dart';
 import 'package:clock/clock.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:rxdart/transformers.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 final class CompositionRoot {
@@ -62,27 +63,26 @@ Future<DependenciesContainer> createDependenciesContainer(
   final AppMetadata appMetaData = createAppMetaData(config);
 
   /// datasource
-  final SharedPreferencesStorage sharedPreferences = SharedPreferencesStorage(
+  final PreferencesStorage sharedPreferences = SharedPreferencesStorage(
     sharedPreferences: SharedPreferencesAsync(),
   );
-  final AuthStorage authStorage = AuthStorageImpl(
-    preferencesStorage: sharedPreferences,
-  );
-  await authStorage.get();
+  final AuthStorage authStorage = await createAuthStorage(sharedPreferences);
 
   /// Rest API
   final RestClient restClient = createRestClient(authStorage, appLogger);
-
-  /// repositories
-  final UserRepository userRepository = createUserRepository();
 
   /// BLoC
   final AppSettingsBloc settingsBloc =
       await createAppSettingsBloc(sharedPreferences);
   final AuthBloc authBloc =
       await createAuthBloc(sharedPreferences, authStorage, restClient);
-  final AccountBloc accountBloc =
-      createAccountBloc(authStorage, userRepository);
+  final AccountBloc accountBloc = createAccountBloc(
+    authBloc.stream
+        .map((state) => state.authStatus)
+        .startWith(authBloc.state.authStatus)
+        .distinct(),
+    restClient,
+  );
   final RoomsBloc roomsBloc = createRoomsBloc(restClient);
 
   return DependenciesContainer(
@@ -90,7 +90,6 @@ Future<DependenciesContainer> createDependenciesContainer(
     appSettingsBloc: settingsBloc,
     appMetadata: appMetaData,
     authBloc: authBloc,
-    userRepository: userRepository,
     accountBloc: accountBloc,
     roomsBloc: roomsBloc,
   );
@@ -119,6 +118,16 @@ RestClient createRestClient(AuthStorage authStorage, AppLogger appLogger) {
   );
 
   return restClient;
+}
+
+/// Creates and instance of [AuthStorage] and fetch token from storage.
+Future<AuthStorage> createAuthStorage(
+    PreferencesStorage preferencesStorage) async {
+  final AuthStorage authStorage = AuthStorageImpl(
+    preferencesStorage: preferencesStorage,
+  );
+  await authStorage.get();
+  return authStorage;
 }
 
 /// Creates an instance of [AppSettingsBloc].
@@ -184,18 +193,22 @@ RoomsBloc createRoomsBloc(RestClient restClient) {
 
 /// Creates an instance of [AccountBloc].
 AccountBloc createAccountBloc(
-  AuthStorage authStorage,
-  UserRepository userRepository,
+  Stream<AuthStatus> authStatusStream,
+  RestClient restClient,
 ) {
   return AccountBloc(
-    authStorage: authStorage,
-    userRepository: userRepository,
-  )..add(AccountEvent.load());
+    userRepository: UserRepositoryImpl(
+      userDatasource: UserDatasourceImpl(restClient: restClient),
+    ),
+    authStatusStream: authStatusStream,
+  );
 }
 
 /// Creates an instance of [UserRepository].
-UserRepository createUserRepository() {
-  return UserRepositoryImpl(userDatasource: UserDatasourceImpl());
+UserRepository createUserRepository(RestClient restClient) {
+  return UserRepositoryImpl(
+    userDatasource: UserDatasourceImpl(restClient: restClient),
+  );
 }
 
 /// {@template composition_result}

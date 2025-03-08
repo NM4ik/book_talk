@@ -172,7 +172,7 @@ class UiButton extends ButtonStyleButton {
   ButtonStyle? themeStyleOf(BuildContext context) => null;
 }
 
-class _CommonButtonStyle extends _UiBaseButtonStyle {
+class _CommonButtonStyle extends UiBaseButtonStyle {
   const _CommonButtonStyle({
     required super.colorPalette,
     required super.appTypography,
@@ -205,7 +205,7 @@ class _CommonButtonStyle extends _UiBaseButtonStyle {
       WidgetStatePropertyAll(EdgeInsets.zero);
 }
 
-class _FilledDesctructivePrimaryStyle extends _UiBaseButtonStyle {
+class _FilledDesctructivePrimaryStyle extends UiBaseButtonStyle {
   const _FilledDesctructivePrimaryStyle({
     required super.colorPalette,
     required super.appTypography,
@@ -225,7 +225,7 @@ class _FilledDesctructivePrimaryStyle extends _UiBaseButtonStyle {
   WidgetStateProperty<double>? get elevation => const WidgetStatePropertyAll(0);
 }
 
-class _FilledPrimaryStyle extends _UiBaseButtonStyle {
+class _FilledPrimaryStyle extends UiBaseButtonStyle {
   const _FilledPrimaryStyle({
     required super.colorPalette,
     required super.appTypography,
@@ -263,7 +263,7 @@ class _FilledPrimaryStyle extends _UiBaseButtonStyle {
       });
 }
 
-class _NegativePrimaryStyle extends _UiBaseButtonStyle {
+class _NegativePrimaryStyle extends UiBaseButtonStyle {
   const _NegativePrimaryStyle({
     required super.appTypography,
     required super.colorPalette,
@@ -287,8 +287,8 @@ class _NegativePrimaryStyle extends _UiBaseButtonStyle {
   WidgetStateProperty<double>? get elevation => const WidgetStatePropertyAll(0);
 }
 
-class _UiBaseButtonStyle extends ButtonStyle {
-  const _UiBaseButtonStyle({
+class UiBaseButtonStyle extends ButtonStyle {
+  const UiBaseButtonStyle({
     required this.appTypography,
     required this.colorPalette,
     required this.innerPadding,
@@ -368,6 +368,9 @@ class _UiBaseButtonStyle extends ButtonStyle {
   @override
   WidgetStateProperty<double>? get iconSize =>
       const WidgetStatePropertyAll<double>(18.0);
+
+  @override
+  WidgetStateProperty<double>? get elevation => const WidgetStatePropertyAll(0);
 }
 
 class _ButtonIconAndLabel extends StatelessWidget {

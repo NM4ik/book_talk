@@ -1,25 +1,21 @@
-import 'dart:convert';
-
-import 'package:book_talk/src/feature/account/model/user.dart';
+import 'package:book_talk/src/common/rest_api/rest_api.dart';
 import 'package:book_talk/src/feature/account/model/user_dto.dart';
-import 'package:uuid/uuid.dart';
 
-abstract interface class UserDatasource<T> {
-  Future<User> fetchUser(T token);
+abstract interface class UserDatasource {
+  Future<UserDto?> fetchUser();
 }
 
-final class UserDatasourceImpl<T> extends UserDatasource<T> {
-  @override
-  Future<User> fetchUser(T token) async {
-    return await Future.delayed(
-      const Duration(seconds: 1),
-      () => UserDto.fromJson(jsonEncode(_getMockUser)).toEntity(),
-    );
-  }
+final class UserDatasourceImpl implements UserDatasource {
+  const UserDatasourceImpl({required RestClient restClient})
+      : _restClient = restClient;
 
-  Map<String, dynamic> get _getMockUser => {
-        'id': const Uuid().v6(),
-        'name': 'Nikita Mikhailov',
-        'avatar': 'https://avatars.githubusercontent.com/u/78036389?v=4',
-      };
+  final RestClient _restClient;
+
+  @override
+  Future<UserDto?> fetchUser() async {
+    final response = await _restClient.get(path: 'me');
+    final Object? userJson = response.data?['user'];
+    if (!response.success || userJson is! Map<String, Object?>) return null;
+    return UserDto.fromJson(userJson);
+  }
 }

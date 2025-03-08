@@ -1,63 +1,62 @@
 import 'dart:async';
-
 import 'package:bloc/bloc.dart';
 import 'package:book_talk/src/feature/account/data/user_repository.dart';
 import 'package:book_talk/src/feature/account/model/user.dart';
-import 'package:book_talk/src/feature/auth/data/auth_storage.dart';
+import 'package:book_talk/src/feature/auth/model/auth_status.dart';
 
 part 'account_event.dart';
 part 'account_state.dart';
 
 final class AccountBloc extends Bloc<AccountEvent, AccountState> {
   AccountBloc({
-    required AuthStorage authStorage,
+    required Stream<AuthStatus> authStatusStream,
     required UserRepository userRepository,
   })  : _userRepository = userRepository,
-        _authStorage = authStorage,
         super(const AccountState.idle(user: null)) {
     on<AccountEvent>(
       (event, emitter) => switch (event) {
-        _LoadUserAccountEvent() => _onLoadEvent(event, emitter),
+        _LoadEvent() => _onLoadEvent(event, emitter),
+        _LogoutEvent() => _onLogoutEvent(event, emitter),
       },
     );
 
-    _authStatusSubscription = _authStorage.authStream.listen((_) {
-      add(AccountEvent.load());
-    });
+    _authStatusSub = authStatusStream.listen(
+      (status) {
+        switch (status) {
+          case AuthStatus.auth:
+            add(AccountEvent.load());
+          case AuthStatus.unAuth:
+            add(AccountEvent.logout());
+        }
+      },
+    );
   }
 
   final UserRepository _userRepository;
-  final AuthStorage _authStorage;
-  StreamSubscription? _authStatusSubscription;
+  late final StreamSubscription _authStatusSub;
 
   Future<void> _onLoadEvent(
-    _LoadUserAccountEvent event,
+    _LoadEvent event,
     Emitter<AccountState> emitter,
   ) async {
     emitter(AccountState.processing(user: state.user));
 
     try {
-      final token = await _authStorage.get();
-      if (token == null) {
-        return emitter(const AccountState.idle(user: null));
-      }
-
-      final userResponse = await _userRepository.fetchUser(token);
+      final userResponse = await _userRepository.fetchUser();
       emitter(AccountState.idle(user: userResponse));
-
-      // TODO(mikhailov): handle repository exceptions.
     } on Object catch (error, st) {
       emitter(AccountState.error(user: state.user, error: error));
       onError(error, st);
     }
   }
 
-  @override
-  Future<void> close() async {
-    _authStatusSubscription?.cancel();
-
-    return super.close();
+  void _onLogoutEvent(_LogoutEvent event, Emitter<AccountState> emitter) {
+    emitter(const AccountState.idle(user: null));
   }
 
-  Stream<User?> get userStream => _userRepository.userStream;
+  @override
+  Future<void> close() async {
+    _authStatusSub.cancel();
+    return super.close();
+  }
 }

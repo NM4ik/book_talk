@@ -23,10 +23,10 @@ class UserAvatarWidget extends StatelessWidget {
         final user = state.user;
         Widget? child;
         if (user != null) {
-          child = ClipOval(
-            child: CachedNetworkImage(
-              imageUrl: user.avatar,
-            ),
+          child = const ClipOval(
+            // child: CachedNetworkImage(
+            //   imageUrl: user.avatar,
+            // ),
           );
         }
 
