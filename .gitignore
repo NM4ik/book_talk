@@ -32,6 +32,9 @@ migrate_working_dir/
 .pub/
 /build/
 
+# Documentation
+doc/api/
+
 # Symbolication related
 app.*.symbols
 

@@ -1,10 +1,26 @@
 dartdoc:
+  output: doc/api
+  
+  include:
+    - "book_talk"
+    - "common" 
+  
   categories:
     "COMMON":
       markdown: doc/topics/common.md
+
   categoryOrder: ["COMMON"]
+  
   showUndocumentedCategories: true
-  include: ["common"]
-  exclude: ['unnecessary']  
+  
+  exclude:
+    - "lib/generated"
+    - "lib/l10n"
+  
   ignore:
     - unresolved-doc-reference
+    - missing-parameter-name
+    - missing-return-type
+  
+  show-progress: true
+  include-source: true
