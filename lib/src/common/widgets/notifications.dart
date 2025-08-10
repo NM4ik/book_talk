@@ -1,6 +1,6 @@
+import 'package:book_talk_ui/book_talk_ui.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:book_talk_ui/book_talk_ui.dart';
 
 class SnackManager {
   static void success(
@@ -29,10 +29,9 @@ class SnackManager {
   static Future<bool?> confirm(
     BuildContext context, {
     required String message,
-  }) async {
-    return showCupertinoModalPopup<bool?>(
+  }) async => showCupertinoModalPopup<bool?>(
       context: context,
-      builder: (BuildContext context) => CupertinoActionSheet(
+      builder: (context) => CupertinoActionSheet(
         title: UiText.titleLarge('Delete Room'),
         message: UiText.bodyMedium('Delete `Saint-Petersubrb #45 room`?'),
         actions: <CupertinoActionSheetAction>[
@@ -58,5 +57,4 @@ class SnackManager {
         ],
       ),
     );
-  }
 }

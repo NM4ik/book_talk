@@ -2,6 +2,7 @@ import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:book_talk/src/feature/booking/data/booking_repository.dart';
 import 'package:book_talk/src/feature/booking/model/booking_days.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:meta/meta.dart';
 
 part 'booking_state.dart';
 part 'booking_event.dart';

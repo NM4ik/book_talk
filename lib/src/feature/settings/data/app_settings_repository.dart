@@ -20,7 +20,7 @@ final class AppSettingsRepositoryImpl extends AppSettingsRepository {
   @override
   Future<AppSettings?> getAppSettings() async =>
       (await _appSettingsDatasource.getSettings()) ??
-      const AppSettings(themeMode: ThemeMode.dark, locale: null);
+      const AppSettings(themeMode: ThemeMode.dark);
 
   @override
   Future<void> setAppSettings(AppSettings settings) async =>

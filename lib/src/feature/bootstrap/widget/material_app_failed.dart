@@ -2,13 +2,10 @@ import 'package:flutter/material.dart';
 
 class MaterialAppFailed extends StatelessWidget {
   const MaterialAppFailed({
-    super.key,
-    required this.onRetry,
-    required this.error,
-    required this.stackTrace,
+    required this.onRetry, required this.error, required this.stackTrace, super.key,
   });
 
-  final Function() onRetry;
+  final void Function() onRetry;
   final Object error;
   final StackTrace stackTrace;
 

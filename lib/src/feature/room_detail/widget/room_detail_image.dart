@@ -4,12 +4,12 @@ import 'package:book_talk/generated/assets.gen.dart';
 import 'package:book_talk/src/common/model/room/room.dart';
 import 'package:book_talk/src/feature/room_detail/bloc/room_detail_bloc.dart';
 import 'package:book_talk/src/feature/room_detail/widget/room_detail_scope.dart';
+import 'package:book_talk_ui/book_talk_ui.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:book_talk_ui/book_talk_ui.dart';
 
 class RoomDetailImageWidget extends StatelessWidget {
-  const RoomDetailImageWidget({required this.room});
+  const RoomDetailImageWidget({required this.room, super.key});
 
   final IRoom room;
 
@@ -85,11 +85,11 @@ class _EmptyRoomImage extends StatelessWidget {
               // TODO(Mikhailov): localize
               UiText.titleSmall(
                 // S.of(context).roomSelectImage,
-                "Select",
+                'Select',
               ),
               UiText.titleSmall(
                 // S.of(context).roomSelectImage,
-                "Image",
+                'Image',
               ),
             ],
           ),
@@ -104,13 +104,11 @@ class _RoomPlaceholderImage extends StatelessWidget {
   const _RoomPlaceholderImage();
 
   @override
-  Widget build(BuildContext context) {
-    return Stack(
+  Widget build(BuildContext context) => Stack(
       fit: StackFit.expand,
       children: [
         Assets.images.meetingRoomPlaceholder.image(fit: BoxFit.cover),
         const Placeholder(),
       ],
     );
-  }
 }

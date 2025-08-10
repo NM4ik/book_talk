@@ -1,8 +1,8 @@
 import 'dart:async';
-import 'package:flutter/widgets.dart';
-import 'package:octopus/octopus.dart';
 
 import 'package:book_talk/src/feature/auth/model/auth_status.dart';
+import 'package:flutter/widgets.dart';
+import 'package:octopus/octopus.dart';
 
 /// A guard for managing authentication-based navigation within the app.
 ///
@@ -15,7 +15,7 @@ import 'package:book_talk/src/feature/auth/model/auth_status.dart';
 /// The guard ensures that authenticated users cannot access sign-in routes and
 /// redirects unauthenticated users to sign-in when needed.
 ///
-/// This guard operates by checking the authentication status through [getAuthStatus]
+/// This guard operates by checking the authentication status through `getAuthStatus`
 class AuthenticationGuard extends OctopusGuard {
   AuthenticationGuard({
     required AuthStatus Function() getAuthStatus,
@@ -47,7 +47,7 @@ class AuthenticationGuard extends OctopusGuard {
     OctopusState$Mutable state,
     Map<String, Object?> context,
   ) async {
-    final authStatus = await _getAuthStatus();
+    final authStatus = _getAuthStatus();
     context['authStatus'] = authStatus;
     final isAuthNav =
         state.children.any((child) => _routes.contains(child.name));

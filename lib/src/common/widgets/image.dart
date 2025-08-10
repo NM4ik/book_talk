@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart' as image;
+import 'package:flutter/material.dart';
 
 typedef WidgetBuilder = Widget Function(BuildContext context);
 
@@ -14,8 +14,7 @@ class CachedNetworkImage extends StatelessWidget {
   });
 
   factory CachedNetworkImage.url({
-    Key? key,
-    required String? url,
+    required String? url, Key? key,
     WidgetBuilder? nullOrEmptyBuilder,
     Widget Function(BuildContext, String, image.DownloadProgress)?
         progressIndicatorBuilder,

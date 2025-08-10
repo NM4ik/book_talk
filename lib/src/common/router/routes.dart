@@ -3,7 +3,7 @@ import 'package:book_talk/src/feature/auth/widget/login_screen.dart';
 import 'package:book_talk/src/feature/booking/widget/booking_screen.dart';
 import 'package:book_talk/src/feature/room_detail/widget/room_detail_screen.dart';
 import 'package:book_talk/src/feature/rooms/widget/rooms_screen.dart';
-import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter/widgets.dart';
 import 'package:octopus/octopus.dart';
 
 /// Enum representing navigable routes within the app.
@@ -31,11 +31,9 @@ enum Routes with OctopusRoute {
         Routes.signin => const LoginScreen(),
         Routes.rooms => const RoomsScreen(),
         Routes.account => const AccountScreen(),
-        Routes.roomDetail => RoomDetailScreen(
-            id: node.arguments['id'],
-          ),
+        Routes.roomDetail => RoomDetailScreen(id: node.arguments['id']),
         Routes.booking => BookingScreen(
-            roomId: int.parse(node.arguments['room-id'] as String),
-          )
+          roomId: int.parse(node.arguments['room-id']!),
+        ),
       };
 }

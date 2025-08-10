@@ -6,6 +6,7 @@ import 'package:book_talk/src/common/model/room/room_day_setting.dart';
 import 'package:book_talk/src/feature/room_detail/data/room_detail_repository.dart';
 import 'package:book_talk/src/feature/room_detail/data/room_image_repository.dart';
 import 'package:book_talk/src/feature/room_detail/model/file_image.dart';
+import 'package:meta/meta.dart';
 part 'room_detail_event.dart';
 part 'room_detail_state.dart';
 
@@ -19,7 +20,7 @@ final class RoomDetailBloc extends Bloc<RoomDetailEvent, RoomDetailState> {
         _roomDetailRepository = roomDetailRepository,
         super(
           RoomDetailState.idle(
-            room: room == null ? const EmptyRoom() : room,
+            room: room ?? const EmptyRoom(),
           ),
         ) {
     on<RoomDetailEvent>(
@@ -135,7 +136,7 @@ final class RoomDetailBloc extends Bloc<RoomDetailEvent, RoomDetailState> {
       final FileImage? file = await _roomImageRepository.pickImageFromGallery();
       final IRoom room = state.room;
       if (file == null || room is! EmptyRoom) return;
-      setRoomState(state, (room).copyWith(fileImage: file));
+      setRoomState(state, room.copyWith(fileImage: file));
     } on Object catch (e, st) {
       onError(e, st);
       emitter(RoomDetailState.error(room: state.room, message: e.toString()));

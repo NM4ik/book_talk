@@ -1,5 +1,6 @@
 part of 'account_bloc.dart';
 
+@immutable
 sealed class AccountState {
   const AccountState({required this.user});
 

@@ -19,8 +19,8 @@ scripts:
     description: Format code in all packages
   
   lint:
-    run: melos exec -- "dart fix --apply"
-    description: Apply lint fixes to all packages
+    run: "dart fix --apply && melos exec -- 'dart fix --apply'"
+    description: Apply lint fixes to root project and all packages
 
   generate:
     run: "dart run build_runner build --delete-conflicting-outputs && melos exec --concurrency=1 --depends-on=build_runner -- dart run build_runner build --delete-conflicting-outputs"

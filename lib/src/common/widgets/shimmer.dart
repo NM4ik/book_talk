@@ -95,8 +95,9 @@ final class _ShimmerShaderLoader
       _shader = shader;
     } on Object catch (error, stackTrace) {
       if (kReleaseMode) return; // Dont log errors in release mode.
-      if (error is UnsupportedError)
+      if (error is UnsupportedError) {
         return; // Thats fine for HTML Renderer and unsupported platforms.
+      }
       developer.log(
         'Failed to load shader: $error',
         error: error,
@@ -158,8 +159,8 @@ class _ShimmerState extends State<Shimmer> with SingleTickerProviderStateMixin {
   @override
   void didUpdateWidget(covariant Shimmer oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (widget.color?.value != oldWidget.color?.value ||
-        widget.backgroundColor?.value != oldWidget.backgroundColor?.value ||
+    if (widget.color?.toARGB32() != oldWidget.color?.toARGB32() ||
+        widget.backgroundColor?.toARGB32() != oldWidget.backgroundColor?.toARGB32() ||
         widget.stripeWidth != oldWidget.stripeWidth ||
         widget.size != oldWidget.size ||
         widget.speed != oldWidget.speed ||
@@ -232,7 +233,7 @@ class _ShimmerPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     final rect = Offset.zero & size;
     final paint = Paint();
-    if (shader case ui.FragmentShader shader) {
+    if (shader case final ui.FragmentShader shader) {
       final color = widget.color ?? theme.colorScheme.primary;
       final seed = widget.initialSeed + elapsed.inMicroseconds * widget.speed;
       final backgroundColor =
@@ -241,14 +242,14 @@ class _ShimmerPainter extends CustomPainter {
         ..setFloat(0, size.width)
         ..setFloat(1, size.height)
         ..setFloat(2, seed)
-        ..setFloat(3, color.red / 255)
-        ..setFloat(4, color.green / 255)
-        ..setFloat(5, color.blue / 255)
-        ..setFloat(6, color.alpha / 255)
-        ..setFloat(7, backgroundColor.red / 255)
-        ..setFloat(8, backgroundColor.green / 255)
-        ..setFloat(9, backgroundColor.blue / 255)
-        ..setFloat(10, backgroundColor.alpha / 255)
+        ..setFloat(3, color.r)
+        ..setFloat(4, color.g)
+        ..setFloat(5, color.b)
+        ..setFloat(6, color.a)
+        ..setFloat(7, backgroundColor.r)
+        ..setFloat(8, backgroundColor.g)
+        ..setFloat(9, backgroundColor.b)
+        ..setFloat(10, backgroundColor.a)
         ..setFloat(11, widget.stripeWidth);
       canvas
         ..clipRRect(

@@ -22,11 +22,11 @@ final class RoomsDatasourceImpl extends RoomsDatasource {
   Future<List<RoomDto>> fetchRooms() async {
     final RestResponse rooms = await _restClient.get(path: '/rooms');
     dev.log('rooms: $rooms');
-    return await Future.delayed(
+    return Future.delayed(
       const Duration(seconds: 3),
       () async => remoteRoomsMockData
           .map(
-            (object) => RoomDto.fromMap(object),
+            RoomDto.fromMap,
           )
           .toList(),
     );

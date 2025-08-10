@@ -1,3 +1,6 @@
+import 'package:meta/meta.dart';
+
+@immutable
 class User {
   const User({
     required this.email,
@@ -29,8 +32,4 @@ class User {
       'User(email: $email, firstName: $firstName, lastName: $lastName, theme: $theme)';
 }
 
-enum UserTheme {
-  light,
-  dark,
-  system,
-}
+enum UserTheme { light, dark, system }

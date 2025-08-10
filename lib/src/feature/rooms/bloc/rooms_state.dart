@@ -1,5 +1,6 @@
 part of 'rooms_bloc.dart';
 
+@immutable
 sealed class RoomsState {
   const RoomsState({required this.rooms});
 
@@ -40,10 +41,7 @@ final class _IdleState extends RoomsState {
 }
 
 final class _ErrorState extends RoomsState {
-  const _ErrorState({
-    required super.rooms,
-    required this.error,
-  });
+  const _ErrorState({required super.rooms, required this.error});
 
   final Object error;
 

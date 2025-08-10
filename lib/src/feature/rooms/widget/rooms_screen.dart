@@ -1,11 +1,11 @@
-import 'package:book_talk/generated/l10n.dart';
+import 'package:book_talk/l10n/app_localizations.dart';
 import 'package:book_talk/src/common/model/room/room.dart';
 import 'package:book_talk/src/common/model/room/room_day_setting.dart';
 import 'package:book_talk/src/common/router/routes.dart';
 import 'package:book_talk/src/common/widgets/bloc_builder.dart';
 import 'package:book_talk/src/common/widgets/image.dart';
-import 'package:book_talk/src/common/widgets/user_avatar_widget.dart';
 import 'package:book_talk/src/common/widgets/shimmer.dart';
+import 'package:book_talk/src/common/widgets/user_avatar_widget.dart';
 import 'package:book_talk/src/common/widgets/window_size.dart';
 import 'package:book_talk/src/feature/bootstrap/widget/app_scope.dart';
 import 'package:book_talk/src/feature/rooms/bloc/rooms_bloc.dart';
@@ -73,30 +73,25 @@ class _NavigationTitle extends StatelessWidget {
   const _NavigationTitle();
 
   @override
-  Widget build(BuildContext context) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
+  Widget build(BuildContext context) => Row(
       children: [
-        Text(S.of(context).roomsTitle),
+        Text(AppLocalizations.of(context)!.roomsTitle),
         const SizedBox(width: 10),
         const _CreateRoomButton(),
       ],
     );
-  }
 }
 
 class _AvatarTrailingButton extends StatelessWidget {
   const _AvatarTrailingButton();
 
   @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
+  Widget build(BuildContext context) => GestureDetector(
       onTap: () => context.octopus.push(Routes.account),
       child: const UserAvatarWidget(
         size: 30,
       ),
     );
-  }
 }
 
 /// {@template rooms_screen}
@@ -107,8 +102,7 @@ class _CreateRoomButton extends StatelessWidget {
   const _CreateRoomButton();
 
   @override
-  Widget build(BuildContext context) {
-    return AnimatedBlocBuilder<RoomsBloc, RoomsState>(
+  Widget build(BuildContext context) => AnimatedBlocBuilder<RoomsBloc, RoomsState>(
       bloc: AppScope.of(context).roomsBloc,
       builder: (context, state) {
         final Widget child;
@@ -131,7 +125,6 @@ class _CreateRoomButton extends StatelessWidget {
         );
       },
     );
-  }
 }
 
 /// {@template rooms_screen}
@@ -147,9 +140,7 @@ class _RoomsGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => _GridBuilder(
-        itemBuilder: (context, index) {
-          return _RoomCard(room: rooms[index]);
-        },
+        itemBuilder: (context, index) => _RoomCard(room: rooms[index]),
         itemCount: rooms.length,
       );
 }
@@ -163,13 +154,11 @@ class _LoadingGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => _GridBuilder(
-        itemBuilder: (context, index) {
-          return Shimmer(
+        itemBuilder: (context, index) => Shimmer(
             size: Size.infinite,
             backgroundColor: Colors.grey[600],
             color: Colors.black,
-          );
-        },
+          ),
         itemCount: 9,
       );
 }
@@ -211,7 +200,7 @@ class _GridBuilder extends StatelessWidget {
 }
 
 class _RoomCard extends StatelessWidget {
-  const _RoomCard({required this.room, Key? key}) : super(key: key);
+  const _RoomCard({required this.room});
 
   final Room room;
 
@@ -262,15 +251,12 @@ class _RoomCard extends StatelessWidget {
                       const SizedBox(width: 5),
                       Expanded(
                         child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             // TODO(mikhailov): make open time.
                             // refactor
                             UiText.labelMedium(
-                              currentWeekDay.startTime.format(context) +
-                                  ' - ' +
-                                  currentWeekDay.endTime.format(context),
+                              '${currentWeekDay.startTime.format(context)} - ${currentWeekDay.endTime.format(context)}',
                             ),
                             GestureDetector(
                               onTap: () => _onRoomEdit(context, room),
@@ -319,12 +305,12 @@ class _RoomsError extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             UiText.titleMedium(
-              S.of(context).errorSomethingWentWrong,
+              AppLocalizations.of(context)!.errorSomethingWentWrong,
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 15),
             UiText.bodySmall(
-              S.of(context).retryOrLater,
+              AppLocalizations.of(context)!.retryOrLater,
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 25),
@@ -332,7 +318,7 @@ class _RoomsError extends StatelessWidget {
               onPressed: () {
                 AppScope.of(context).roomsBloc.add(const RoomsEvent.load());
               },
-              label: UiText.bodyMedium(S.of(context).tryAgain),
+              label: UiText.bodyMedium(AppLocalizations.of(context)!.tryAgain),
               innerPadding:
                   const EdgeInsets.symmetric(horizontal: 60, vertical: 15),
             ),

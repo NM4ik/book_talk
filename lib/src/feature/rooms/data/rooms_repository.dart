@@ -26,5 +26,5 @@ final class RoomsRepositoryImpl extends RoomsRepository {
 
   @override
   Future<bool> deleteRoom(int id) async =>
-      await _roomsDatasource.deleteRoom(id);
+      _roomsDatasource.deleteRoom(id);
 }

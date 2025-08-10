@@ -50,8 +50,7 @@ class _BookingCalendarState extends State<BookingCalendar> {
   /* #endregion */
 
   @override
-  Widget build(BuildContext context) {
-    return Column(
+  Widget build(BuildContext context) => Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         BookingCalendarMonthTitleWidget(
@@ -80,5 +79,4 @@ class _BookingCalendarState extends State<BookingCalendar> {
         // ),
       ],
     );
-  }
 }

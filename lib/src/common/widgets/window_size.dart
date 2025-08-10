@@ -6,11 +6,9 @@ import 'package:flutter/widgets.dart';
 ///
 /// This widget listens for size changes and updates its state accordingly,
 /// making it useful for managing layouts across different screen sizes.
+@immutable
 class WindowSizeScope extends StatefulWidget {
-  const WindowSizeScope({
-    required this.child,
-    Key? key,
-  }) : super(key: key);
+  const WindowSizeScope({required this.child, super.key});
 
   final Widget child;
 
@@ -54,12 +52,8 @@ class _WindowSizeScopeState extends State<WindowSizeScope>
   }
 
   @override
-  Widget build(BuildContext context) {
-    return _InheritedWindowSizeScope(
-      child: widget.child,
-      windowSize: _windowSize,
-    );
-  }
+  Widget build(BuildContext context) =>
+      _InheritedWindowSizeScope(windowSize: _windowSize, child: widget.child);
 }
 
 class _InheritedWindowSizeScope extends InheritedWidget {
@@ -95,84 +89,75 @@ sealed class WindowSize extends Size {
     required Size size,
   }) : super(size.width, size.height);
 
-  factory WindowSize.fromSize(Size size) {
-    return switch (size.width) {
-      >= _WindowSizeCompact._minWidth && < _WindowSizeMedium._minWidth =>
-        _WindowSizeCompact(size: size),
-      >= _WindowSizeMedium._minWidth && < _WindowSizeLarge._minWidth =>
-        _WindowSizeMedium(size: size),
-      >= _WindowSizeLarge._minWidth => _WindowSizeLarge(size: size),
-      _ => throw AssertionError('Invalid windowSize - $size')
-    };
-  }
+  factory WindowSize.fromSize(Size size) => switch (size.width) {
+    >= WindowSizeCompact._minWidth && < WindowSizeMedium._minWidth =>
+      WindowSizeCompact(size: size),
+    >= WindowSizeMedium._minWidth && < WindowSizeLarge._minWidth =>
+      WindowSizeMedium(size: size),
+    >= WindowSizeLarge._minWidth => WindowSizeLarge(size: size),
+    _ => throw AssertionError('Invalid windowSize - $size'),
+  };
 
-  /// Returns true if the window is considered large (width >= [minWidth] of [_WindowSizeLarge]).
+  /// Returns true if the window is considered large (width >= [minWidth] of [WindowSizeLarge]).
   bool get isLargeFormat => switch (this) {
-        _WindowSizeLarge() => true,
-        _ => false,
-      };
+    WindowSizeLarge() => true,
+    _ => false,
+  };
 
-  /// Returns true if the window is considered medium (width >= [minWidth] of [_WindowSizeMedium]).
+  /// Returns true if the window is considered medium (width >= [minWidth] of [WindowSizeMedium]).
   bool get isMediumFormat => switch (this) {
-        _WindowSizeMedium() => true,
-        _ => false,
-      };
+    WindowSizeMedium() => true,
+    _ => false,
+  };
 
-  /// Returns true if the window is considered compact (width < [minWidth] of [_WindowSizeCompact]).
+  /// Returns true if the window is considered compact (width < [minWidth] of [WindowSizeCompact]).
   bool get isCompactFormat => switch (this) {
-        _WindowSizeCompact() => true,
-        _ => false,
-      };
+    WindowSizeCompact() => true,
+    _ => false,
+  };
 
   /// Maps the [WindowSize] to a value of type [T].
   T map<T>({
-    required T Function(_WindowSizeCompact) compact,
-    required T Function(_WindowSizeMedium) medium,
-    required T Function(_WindowSizeLarge) large,
-  }) =>
-      switch (this) {
-        final _WindowSizeCompact size => compact(size),
-        final _WindowSizeMedium size => medium(size),
-        final _WindowSizeLarge size => large(size),
-      };
+    required T Function(WindowSizeCompact) compact,
+    required T Function(WindowSizeMedium) medium,
+    required T Function(WindowSizeLarge) large,
+  }) => switch (this) {
+    final WindowSizeCompact size => compact(size),
+    final WindowSizeMedium size => medium(size),
+    final WindowSizeLarge size => large(size),
+  };
 
   /// Lazy maps the [WindowSize] to a value of type [T].
   T maybeMap<T>({
-    T Function(_WindowSizeCompact)? compact,
-    T Function(_WindowSizeMedium)? medium,
-    T Function(_WindowSizeLarge)? large,
     required T Function() orElse,
-  }) =>
-      switch (this) {
-        final _WindowSizeCompact size => compact?.call(size) ?? orElse(),
-        final _WindowSizeMedium size => medium?.call(size) ?? orElse(),
-        final _WindowSizeLarge size => large?.call(size) ?? orElse(),
-      };
+    T Function(WindowSizeCompact)? compact,
+    T Function(WindowSizeMedium)? medium,
+    T Function(WindowSizeLarge)? large,
+  }) => switch (this) {
+    final WindowSizeCompact size => compact?.call(size) ?? orElse(),
+    final WindowSizeMedium size => medium?.call(size) ?? orElse(),
+    final WindowSizeLarge size => large?.call(size) ?? orElse(),
+  };
 
   final double maxWidth;
   final double minWidth;
 }
 
-final class _WindowSizeCompact extends WindowSize {
-  _WindowSizeCompact({
-    required Size size,
-  }) : super(
-          maxWidth: _maxWidth,
-          minWidth: _minWidth,
-          size: size,
-        );
+@immutable
+final class WindowSizeCompact extends WindowSize {
+  WindowSizeCompact({required super.size})
+    : super(maxWidth: _maxWidth, minWidth: _minWidth);
 
   static const _minWidth = 0.0;
   static const _maxWidth = 500.0;
 
   @override
-  bool operator ==(Object other) {
-    return other is _WindowSizeCompact &&
-        minWidth == other.minWidth &&
-        maxWidth == other.maxWidth &&
-        width == other.width &&
-        height == other.height;
-  }
+  bool operator ==(Object other) =>
+      other is WindowSizeCompact &&
+      minWidth == other.minWidth &&
+      maxWidth == other.maxWidth &&
+      width == other.width &&
+      height == other.height;
 
   @override
   int get hashCode => Object.hashAll([minWidth, maxWidth, height, width]);
@@ -181,26 +166,21 @@ final class _WindowSizeCompact extends WindowSize {
   String toString() => '_WindowSizeCompact';
 }
 
-final class _WindowSizeMedium extends WindowSize {
-  _WindowSizeMedium({
-    required Size size,
-  }) : super(
-          maxWidth: _maxWidth,
-          minWidth: _minWidth,
-          size: size,
-        );
+@immutable
+final class WindowSizeMedium extends WindowSize {
+  WindowSizeMedium({required super.size})
+    : super(maxWidth: _maxWidth, minWidth: _minWidth);
 
   static const _minWidth = 501.0;
   static const _maxWidth = 1024.0;
 
   @override
-  bool operator ==(Object other) {
-    return other is _WindowSizeMedium &&
-        minWidth == other.minWidth &&
-        maxWidth == other.maxWidth &&
-        width == other.width &&
-        height == other.height;
-  }
+  bool operator ==(Object other) =>
+      other is WindowSizeMedium &&
+      minWidth == other.minWidth &&
+      maxWidth == other.maxWidth &&
+      width == other.width &&
+      height == other.height;
 
   @override
   int get hashCode => Object.hashAll([minWidth, maxWidth, height, width]);
@@ -209,26 +189,21 @@ final class _WindowSizeMedium extends WindowSize {
   String toString() => '_WindowSizeMedium';
 }
 
-final class _WindowSizeLarge extends WindowSize {
-  _WindowSizeLarge({
-    required Size size,
-  }) : super(
-          maxWidth: _maxWidth,
-          minWidth: _minWidth,
-          size: size,
-        );
+@immutable
+final class WindowSizeLarge extends WindowSize {
+  WindowSizeLarge({required super.size})
+    : super(maxWidth: _maxWidth, minWidth: _minWidth);
 
   static const _minWidth = 1025.0;
   static const _maxWidth = double.infinity;
 
   @override
-  bool operator ==(Object other) {
-    return other is _WindowSizeLarge &&
-        minWidth == other.minWidth &&
-        maxWidth == other.maxWidth &&
-        width == other.width &&
-        height == other.height;
-  }
+  bool operator ==(Object other) =>
+      other is WindowSizeLarge &&
+      minWidth == other.minWidth &&
+      maxWidth == other.maxWidth &&
+      width == other.width &&
+      height == other.height;
 
   @override
   int get hashCode => Object.hashAll([minWidth, maxWidth, height, width]);

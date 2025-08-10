@@ -28,8 +28,6 @@ class AnimatedBlocBuilder<B extends StateStreamable<S>, S>
   final Duration _duration;
 
   @override
-  Widget build(BuildContext context, S state) => AnimatedSwitcher(
-        duration: _duration,
-        child: super.build(context, state),
-      );
+  Widget build(BuildContext context, S state) =>
+      AnimatedSwitcher(duration: _duration, child: super.build(context, state));
 }

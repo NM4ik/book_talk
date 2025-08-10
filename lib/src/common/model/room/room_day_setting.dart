@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 
 /// Represents settings for a specific weekday in a room's schedule.
+@immutable
 class RoomWeekdaySetting {
   /// Creates a setting for a room on a specific day with activation and timing details.
   const RoomWeekdaySetting({
@@ -27,17 +28,11 @@ class RoomWeekdaySetting {
   /// Priority day number of the week.
   final int priority;
 
-  RoomWeekdaySetting toggleActive({required bool? value}) {
-    return this.copyWith(isActive: value ?? !isActive);
-  }
+  RoomWeekdaySetting toggleActive({required bool? value}) => copyWith(isActive: value ?? !isActive);
 
-  RoomWeekdaySetting changeStartTime({required int hour, required int minute}) {
-    return this.copyWith(startTime: TimeOfDay(hour: hour, minute: minute));
-  }
+  RoomWeekdaySetting changeStartTime({required int hour, required int minute}) => copyWith(startTime: TimeOfDay(hour: hour, minute: minute));
 
-  RoomWeekdaySetting changeEndTime({required int hour, required int minute}) {
-    return this.copyWith(endTime: TimeOfDay(hour: hour, minute: minute));
-  }
+  RoomWeekdaySetting changeEndTime({required int hour, required int minute}) => copyWith(endTime: TimeOfDay(hour: hour, minute: minute));
 
   @override
   bool operator ==(Object other) {
@@ -61,20 +56,16 @@ class RoomWeekdaySetting {
     TimeOfDay? startTime,
     TimeOfDay? endTime,
     int? priority,
-  }) {
-    return RoomWeekdaySetting(
+  }) => RoomWeekdaySetting(
       day: day ?? this.day,
       isActive: isActive ?? this.isActive,
       startTime: startTime ?? this.startTime,
       endTime: endTime ?? this.endTime,
       priority: priority ?? this.priority,
     );
-  }
 
   @override
-  String toString() {
-    return 'RoomWeekdaySetting(day: $day, isActive: $isActive, startTime: $startTime, endTime: $endTime, priority: $priority)';
-  }
+  String toString() => 'RoomWeekdaySetting(day: $day, isActive: $isActive, startTime: $startTime, endTime: $endTime, priority: $priority)';
 }
 
 class RoomWeekdaySettingDto {
@@ -86,25 +77,21 @@ class RoomWeekdaySettingDto {
     required this.priority,
   });
 
-  factory RoomWeekdaySettingDto.fromMap(Map<String, Object?> map) {
-    return RoomWeekdaySettingDto(
-      day: map['day'] as String,
-      isActive: map['isActive'] as bool,
-      startTime: _parseTimeOfDay(map['startTime'] as String),
-      endTime: _parseTimeOfDay(map['endTime'] as String),
-      priority: map['priority'] as int,
+  factory RoomWeekdaySettingDto.fromMap(Map<String, Object?> map) => RoomWeekdaySettingDto(
+      day: map['day']! as String,
+      isActive: map['isActive']! as bool,
+      startTime: _parseTimeOfDay(map['startTime']! as String),
+      endTime: _parseTimeOfDay(map['endTime']! as String),
+      priority: map['priority']! as int,
     );
-  }
 
-  factory RoomWeekdaySettingDto.fromEntity(RoomWeekdaySetting setting) {
-    return RoomWeekdaySettingDto(
+  factory RoomWeekdaySettingDto.fromEntity(RoomWeekdaySetting setting) => RoomWeekdaySettingDto(
       day: setting.day,
       isActive: setting.isActive,
       startTime: setting.startTime,
       endTime: setting.endTime,
       priority: setting.priority,
     );
-  }
 
   final String day;
   final bool isActive;
@@ -128,13 +115,11 @@ class RoomWeekdaySettingDto {
         priority: priority,
       );
 
-  Map<String, Object?> toMap() {
-    return {
+  Map<String, Object?> toMap() => {
       'day': day,
       'isActive': isActive,
       'startTime': '${startTime.hour}:${startTime.minute}',
       'endTime': '${endTime.hour}:${endTime.minute}',
       'priority': priority,
     };
-  }
 }

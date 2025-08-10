@@ -1,5 +1,6 @@
 part of 'room_detail_bloc.dart';
 
+@immutable
 sealed class RoomDetailState {
   const RoomDetailState({required this.room});
 
@@ -54,11 +55,8 @@ final class _RoomDetailSuccessState extends RoomDetailState {
   }
 
   @override
-  _RoomDetailSuccessState copyWith({IRoom? room}) {
-    return _RoomDetailSuccessState(
-      room: room ?? this.room,
-    );
-  }
+  _RoomDetailSuccessState copyWith({IRoom? room}) =>
+      _RoomDetailSuccessState(room: room ?? this.room);
 }
 
 final class _RoomDetailIdleState extends RoomDetailState {
@@ -75,17 +73,12 @@ final class _RoomDetailIdleState extends RoomDetailState {
   }
 
   @override
-  RoomDetailState copyWith({IRoom? room}) {
-    return _RoomDetailIdleState(
-      room: room ?? this.room,
-    );
-  }
+  RoomDetailState copyWith({IRoom? room}) =>
+      _RoomDetailIdleState(room: room ?? this.room);
 }
 
 final class _RoomDetailProcessingState extends RoomDetailState {
-  const _RoomDetailProcessingState({
-    required super.room,
-  });
+  const _RoomDetailProcessingState({required super.room});
 
   @override
   int get hashCode => room.hashCode;
@@ -98,18 +91,12 @@ final class _RoomDetailProcessingState extends RoomDetailState {
   }
 
   @override
-  _RoomDetailProcessingState copyWith({IRoom? room}) {
-    return _RoomDetailProcessingState(
-      room: room ?? this.room,
-    );
-  }
+  _RoomDetailProcessingState copyWith({IRoom? room}) =>
+      _RoomDetailProcessingState(room: room ?? this.room);
 }
 
 final class _RoomDetailErrorState extends RoomDetailState {
-  const _RoomDetailErrorState({
-    required super.room,
-    this.message,
-  });
+  const _RoomDetailErrorState({required super.room, this.message});
 
   final String? message;
 
@@ -126,13 +113,9 @@ final class _RoomDetailErrorState extends RoomDetailState {
   }
 
   @override
-  _RoomDetailErrorState copyWith({
-    IRoom? room,
-    String? message,
-  }) {
-    return _RoomDetailErrorState(
-      room: room ?? this.room,
-      message: message ?? this.message,
-    );
-  }
+  _RoomDetailErrorState copyWith({IRoom? room, String? message}) =>
+      _RoomDetailErrorState(
+        room: room ?? this.room,
+        message: message ?? this.message,
+      );
 }

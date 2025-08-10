@@ -75,7 +75,7 @@ class TimeSlotDto {
   });
 
   factory TimeSlotDto.fromJson(Map<String, dynamic> json) => TimeSlotDto(
-        time: DateTime.parse(json['time']),
+        time: DateTime.parse(json['time'].toString()),
         status: json['status'] as String,
         user: json['user'] as String?,
         department: json['department'] as String?,

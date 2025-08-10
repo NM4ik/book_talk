@@ -1,4 +1,4 @@
-import 'package:book_talk/generated/l10n.dart';
+import 'package:book_talk/l10n/app_localizations.dart';
 import 'package:book_talk/src/common/router/router_mixin.dart';
 import 'package:book_talk/src/feature/bootstrap/widget/app_debug_widget.dart';
 import 'package:book_talk/src/feature/settings/widget/settings_scope.dart';
@@ -33,12 +33,12 @@ class _MaterialAppContextState extends State<MaterialAppContext>
 
       // Localization
       localizationsDelegates: const <LocalizationsDelegate<Object?>>[
-        S.delegate,
+        AppLocalizations.delegate,
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
-      supportedLocales: S.delegate.supportedLocales,
+      supportedLocales: AppLocalizations.supportedLocales,
 
       locale: settings?.locale,
       darkTheme: bookTalkUI.darkTheme,
@@ -59,7 +59,6 @@ class _MaterialAppContextState extends State<MaterialAppContext>
             textScaler: TextScaler.noScaling,
           ),
           child: OctopusTools(
-            enable: true,
             octopus: router,
             child: childWidget,
           ),

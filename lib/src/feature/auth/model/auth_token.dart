@@ -4,12 +4,10 @@ class AuthToken {
     required this.refreshToken,
   });
 
-  factory AuthToken.fromJson(Map<String, dynamic> json) {
-    return AuthToken(
-      accessToken: json['accessToken'],
-      refreshToken: json['refreshToken'],
+  factory AuthToken.fromJson(Map<String, dynamic> json) => AuthToken(
+      accessToken: json['accessToken'] as String,
+      refreshToken: json['refreshToken'] as String,
     );
-  }
 
   final String accessToken;
   final String refreshToken;

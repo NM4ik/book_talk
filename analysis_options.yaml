@@ -1,1 +1,11 @@
 include: package:lint_rules/analysis_options.yaml
+
+exclude:
+  - lib/generated/**
+  - lib/generated/l10n.dart
+  - test/mocks/**
+  - lib/**/*.g.dart
+  - lib/**/*.freezed.dart
+  - build/**
+  - .dart_tool/**
+  - packages/**

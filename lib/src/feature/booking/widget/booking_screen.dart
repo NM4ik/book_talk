@@ -1,4 +1,4 @@
-import 'package:book_talk/generated/l10n.dart';
+import 'package:book_talk/l10n/app_localizations.dart';
 import 'package:book_talk/src/common/model/room/room.dart';
 import 'package:book_talk/src/common/widgets/bloc_builder.dart';
 import 'package:book_talk/src/feature/booking/bloc/booking_bloc.dart';
@@ -7,10 +7,10 @@ import 'package:book_talk/src/feature/booking/widget/booking_calendar.dart';
 import 'package:book_talk/src/feature/booking/widget/booking_error.dart';
 import 'package:book_talk/src/feature/booking/widget/booking_scope.dart';
 import 'package:book_talk/src/feature/bootstrap/widget/app_scope.dart';
+import 'package:book_talk_ui/book_talk_ui.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:book_talk_ui/book_talk_ui.dart';
 
 /// {@template booking_screen}
 /// BookingScreen widget.
@@ -32,7 +32,7 @@ class BookingScreen extends StatelessWidget {
         .rooms
         ?.firstWhereOrNull((room) => room.id == roomId);
 
-    final String roomName = room?.name ?? S.of(context).roomNotFound;
+    final String roomName = room?.name ?? AppLocalizations.of(context)!.roomNotFound;
 
     return BookingScope(
       child: Scaffold(
@@ -53,9 +53,7 @@ class BookingScreen extends StatelessWidget {
 /// {@endtemplate}
 class _BookingBody extends StatelessWidget {
   /// {@macro booking_screen}
-  const _BookingBody({
-    super.key, // ignore: unused_element
-  });
+  const _BookingBody();
 
   @override
   Widget build(BuildContext context) =>

@@ -20,7 +20,7 @@ final class AuthDatasourceImpl implements AuthDatasource {
   ) async {
     final RestResponse response = await _restClient.post(
       path: 'auth/login',
-      body: {"email": email, "password": password},
+      body: {'email': email, 'password': password},
     );
 
     if (response.data == null) return null;

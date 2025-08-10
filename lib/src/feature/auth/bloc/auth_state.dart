@@ -1,5 +1,6 @@
 part of 'auth_bloc.dart';
 
+@immutable
 sealed class AuthState {
   const AuthState({required this.authStatus});
 
@@ -17,9 +18,9 @@ sealed class AuthState {
   final AuthStatus authStatus;
 
   bool get isLoading => switch (this) {
-        _ProcessingAuthState() => true,
-        _ => false,
-      };
+    _ProcessingAuthState() => true,
+    _ => false,
+  };
 }
 
 final class _IdleAuthState extends AuthState {
@@ -57,10 +58,7 @@ final class _ProcessingAuthState extends AuthState {
 }
 
 final class _ErrorAuthState extends AuthState {
-  const _ErrorAuthState({
-    required super.authStatus,
-    required this.error,
-  });
+  const _ErrorAuthState({required super.authStatus, required this.error});
 
   final Object error;
 

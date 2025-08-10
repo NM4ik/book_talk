@@ -2,19 +2,18 @@
 // ignore_for_file: use_raw_strings, avoid_classes_with_only_static_members
 // ignore_for_file: avoid_escaping_inner_quotes, prefer_single_quotes
 
-/// GENERATED CODE - DO NOT MODIFY BY HAND
-
-library pubspec;
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// dart format width=80
+// dart format off
+// coverage:ignore-file
 
 // *****************************************************************************
-// *                             pubspec_generator                             *
+// *                https://pub.dev/packages/pubspec_generator                 *
 // *****************************************************************************
 
 /*
 
   MIT License
-
-  Copyright (c) 2025 Plague Fox
 
   Permission is hereby granted, free of charge, to any person obtaining a copy
   of this software and associated documentation files (the "Software"), to deal
@@ -126,11 +125,11 @@ sealed class Pubspec {
     2025,
     8,
     10,
-    19,
-    13,
-    54,
-    232,
-    979,
+    23,
+    1,
+    34,
+    371,
+    466,
   );
 
   /// Name
@@ -186,7 +185,7 @@ sealed class Pubspec {
   /// Repository
   /// The optional repository field should contain the URL for your package’s
   /// source code repository—for example,
-  /// https://github.com/<user>/<repository>.
+  /// https://github.com/user/repository
   /// If you publish your package to the pub.dev site,
   /// then your package’s page displays the repository URL.
   /// While providing a repository is optional,
@@ -204,7 +203,7 @@ sealed class Pubspec {
   /// to each package’s issue tracker, using the value of this field.
   /// If issue_tracker is missing but repository is present and points to GitHub,
   /// then the pub.dev site uses the default issue tracker
-  /// (https://github.com/<user>/<repository>/issues).
+  /// https://github.com/user/repository/issues
   static const String issueTracker = r'';
 
   /// Documentation
@@ -320,7 +319,9 @@ sealed class Pubspec {
   ///
   /// Current app [topics]
   ///
-  /// Package authors can use the topics field to categorize their package. Topics can be used to assist discoverability during search with filters on pub.dev. Pub.dev displays the topics on the package page as well as in the search results.
+  /// Package authors can use the topics field to categorize their package.
+  /// Topics can be used to assist discoverability during search with filters on pub.dev.
+  /// Pub.dev displays the topics on the package page as well as in the search results.
   ///
   /// The field consists of a list of names. For example:
   ///
@@ -420,11 +421,17 @@ sealed class Pubspec {
     'bloc_concurrency': r'^0.2.5',
     'octopus': r'^0.0.9',
     'shared_preferences': r'^2.3.2',
+    'book_talk_ui': <String, Object>{
+      'path': r'packages/book_talk_ui',
+    },
     'cached_network_image': r'^3.4.1',
     'carousel_slider': r'^5.0.0',
     'smooth_page_indicator': r'^1.2.0+3',
     'animations': r'^2.0.11',
     'dio': r'^5.8.0+1',
+    'rest_client': <String, Object>{
+      'path': r'packages/rest_client',
+    },
     'uuid': r'^4.5.1',
     'cupertino_icons': r'^1.0.8',
     'window_manager': r'^0.4.3',
@@ -433,6 +440,8 @@ sealed class Pubspec {
     'dart_jsonwebtoken': r'^3.1.1',
     'talker_flutter': r'^4.6.14',
     'flutter_dotenv': r'^5.2.1',
+    'meta': r'^1.16.0',
+    'clock': r'',
   };
 
   /// Developer dependencies
@@ -444,6 +453,12 @@ sealed class Pubspec {
     'dart_code_metrics_presets': r'^2.17.0',
     'dartdoc': r'^8.1.0',
     'melos': r'^6.3.3',
+    'lint_rules': <String, Object>{
+      'git': <String, Object>{
+        'url': r'https://github.com/NM4ik/handbook',
+        'path': r'lint_rules',
+      },
+    },
   };
 
   /// Dependency overrides
@@ -513,9 +528,6 @@ sealed class Pubspec {
       'shaders': <Object>[
         r'assets/shaders/shimmer.frag',
       ],
-    },
-    'flutter_intl': <String, Object>{
-      'enabled': true,
     },
   };
 

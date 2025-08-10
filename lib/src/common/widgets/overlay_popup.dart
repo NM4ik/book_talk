@@ -33,7 +33,7 @@ class OverlayPopup {
   }) {
     // Remove the existing _overlayEntry.
     removeHighlightOverlay();
-    assert(_overlayEntry == null);
+    assert(_overlayEntry == null, 'Overlay entry is not null');
 
     final renderBox = context.findRenderObject() as RenderBox?;
     if (renderBox == null) {
@@ -98,8 +98,7 @@ class _AnimatedPopupContainer extends StatelessWidget {
   final Widget child;
 
   @override
-  Widget build(BuildContext context) {
-    return _FadePopupTransitionContainer(
+  Widget build(BuildContext context) => _FadePopupTransitionContainer(
       duration: const Duration(milliseconds: 200),
       child: ClipRRect(
         clipBehavior: Clip.hardEdge,
@@ -112,7 +111,6 @@ class _AnimatedPopupContainer extends StatelessWidget {
         ),
       ),
     );
-  }
 }
 
 class _BarrierHandler extends StatelessWidget {
@@ -121,8 +119,7 @@ class _BarrierHandler extends StatelessWidget {
   final VoidCallback onTapOutside;
 
   @override
-  Widget build(BuildContext context) {
-    return _FadePopupTransitionContainer(
+  Widget build(BuildContext context) => _FadePopupTransitionContainer(
       duration: const Duration(milliseconds: 200),
       child: GestureDetector(
         onTap: onTapOutside,
@@ -131,7 +128,6 @@ class _BarrierHandler extends StatelessWidget {
         ),
       ),
     );
-  }
 }
 
 class _FadePopupTransitionContainer extends StatefulWidget {
@@ -174,10 +170,8 @@ class _FadePopupTransitionContainerState
   }
 
   @override
-  Widget build(BuildContext context) {
-    return FadeTransition(
+  Widget build(BuildContext context) => FadeTransition(
       opacity: _fadeAnimation,
       child: widget.child,
     );
-  }
 }

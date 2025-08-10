@@ -16,7 +16,7 @@ Future<void> _mobileInitialization() async {}
 Future<void> _desktopInitialization() async {
   // Must add this line.
   await windowManager.ensureInitialized();
-  final windowOptions = const WindowOptions(
+  const windowOptions = WindowOptions(
     minimumSize: Size(360, 480),
     // size: Size(960, 800),
     // maximumSize: Size(1440, 1080),

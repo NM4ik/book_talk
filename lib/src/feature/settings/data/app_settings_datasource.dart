@@ -21,11 +21,11 @@ final class AppSettingsDatasourceImpl implements AppSettingsDatasource {
 
   @override
   Future<AppSettings?> getSettings() async =>
-      await _appSettingsPreferencesEntry.get();
+      _appSettingsPreferencesEntry.get();
 
   @override
   Future<void> saveSettings(AppSettings settings) async =>
-      await _appSettingsPreferencesEntry.set(settings);
+      _appSettingsPreferencesEntry.set(settings);
 }
 
 final class _AppSettingsPreferencesEntry
@@ -50,6 +50,6 @@ final class _AppSettingsPreferencesEntry
   Future<void> set(AppSettings value) async {
     final json = AppSettingsDto.fromEntity(value).toJson();
 
-    return await preferencesStorage.setString(key, json);
+    return preferencesStorage.setString(key, json);
   }
 }

@@ -1,17 +1,15 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:book_talk/src/common/model/room/room_day_setting.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
-
-import 'package:book_talk/src/common/model/room/room_day_setting.dart';
 
 /// {@template RoomWeekSettings}
 /// Holds weekly settings for a room, mapping each day to its specific settings.
 /// {@endtemplate}
+@immutable
 class RoomWeekSettings {
   /// Creates a weekly settings configuration for a room.
-  const RoomWeekSettings({
-    required this.days,
-  });
+  const RoomWeekSettings({required this.days});
 
   // TODO(Mikhailov): redoc
   /// A map of days to their specific settings for room availability.
@@ -37,34 +35,33 @@ class RoomWeekSettings {
   @override
   int get hashCode => days.hashCode;
 
-  RoomWeekSettings copyWith({List<RoomWeekdaySetting>? days}) {
-    return RoomWeekSettings(days: days ?? this.days);
-  }
+  RoomWeekSettings copyWith({List<RoomWeekdaySetting>? days}) =>
+      RoomWeekSettings(days: days ?? this.days);
 }
 
 class RoomWeekSettingsDto {
   const RoomWeekSettingsDto({required this.days});
 
-  factory RoomWeekSettingsDto.fromMap(List<dynamic> days) {
-    return RoomWeekSettingsDto(
-      days:
-          days.map((object) => RoomWeekdaySettingDto.fromMap(object)).toList(),
-    );
-  }
+  factory RoomWeekSettingsDto.fromMap(List<dynamic> days) =>
+      RoomWeekSettingsDto(
+        days: days
+            .map(
+              (object) =>
+                  RoomWeekdaySettingDto.fromMap(object as Map<String, dynamic>),
+            )
+            .toList(),
+      );
 
-  factory RoomWeekSettingsDto.fromEntity(RoomWeekSettings settings) {
-    return RoomWeekSettingsDto(
-      days: settings.days
-          .map((setting) => RoomWeekdaySettingDto.fromEntity(setting))
-          .toList(),
-    );
-  }
+  factory RoomWeekSettingsDto.fromEntity(RoomWeekSettings settings) =>
+      RoomWeekSettingsDto(
+        days: settings.days.map(RoomWeekdaySettingDto.fromEntity).toList(),
+      );
 
   final List<RoomWeekdaySettingDto> days;
 
   RoomWeekSettings toEntity() => RoomWeekSettings(
-        days: days.map((setting) => setting.toEntity()).toList(),
-      );
+    days: days.map((setting) => setting.toEntity()).toList(),
+  );
 
   List<dynamic> toMap() => days.map((setting) => setting.toMap()).toList();
 }

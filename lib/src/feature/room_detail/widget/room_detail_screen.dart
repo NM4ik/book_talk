@@ -1,7 +1,5 @@
 import 'package:book_talk/common.dart';
-import 'package:book_talk/generated/l10n.dart';
-import 'package:book_talk/src/common/model/room/room.dart';
-import 'package:book_talk/src/common/widgets/notifications.dart';
+import 'package:book_talk/l10n/app_localizations.dart';
 import 'package:book_talk/src/feature/bootstrap/widget/app_scope.dart';
 import 'package:book_talk/src/feature/bootstrap/widget/sized_box.dart';
 import 'package:book_talk/src/feature/room_detail/bloc/room_detail_bloc.dart';
@@ -18,41 +16,36 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:octopus/octopus.dart';
 
 class RoomDetailScreen extends StatelessWidget {
-  const RoomDetailScreen({
-    super.key,
-    required this.id,
-  });
+  const RoomDetailScreen({required this.id, super.key});
 
   final Object? id;
 
   @override
   Widget build(BuildContext context) {
     final roomId = switch (id) {
-      int id => id,
-      String id => int.tryParse(id),
+      final int id => id,
+      final String id => int.tryParse(id),
       _ => null,
     };
 
-    final room = AppScope.of(context).roomsBloc.state.rooms?.firstWhereOrNull(
-          (Room? room) => room?.id == roomId,
-        );
+    final room = AppScope.of(
+      context,
+    ).roomsBloc.state.rooms?.firstWhereOrNull((room) => room.id == roomId);
 
     return RoomDetailScope(
       room: room,
       child: Scaffold(
         appBar: CupertinoNavigationBar(
-          leading: Theme.of(context)
-              .actionIconTheme!
-              .backButtonIconBuilder!(context),
+          leading: Theme.of(context).actionIconTheme!.backButtonIconBuilder!(
+            context,
+          ),
           middle: UiText.titleMedium(
             room == null
-                ? S.of(context).roomCreateTitle
-                : S.of(context).roomEditTitle,
+                ? AppLocalizations.of(context)!.roomCreateTitle
+                : AppLocalizations.of(context)!.roomEditTitle,
           ),
         ),
-        body: const _RoomDetailStateListener(
-          child: _RoomDetail(),
-        ),
+        body: const _RoomDetailStateListener(child: _RoomDetail()),
       ),
     );
   }
@@ -135,11 +128,8 @@ class _RoomDetail extends StatelessWidget {
                             const Expanded(flex: 2, child: _SaveRoomButton()),
                             if (room is Room) ...[
                               const SizedBox(width: 20),
-                              const Expanded(
-                                flex: 1,
-                                child: const _DeleteRoomButton(),
-                              ),
-                            ]
+                              const Expanded(child: _DeleteRoomButton()),
+                            ],
                           ],
                         ),
                       ),
@@ -180,19 +170,18 @@ class _RoomTitleState extends State<_RoomTitle> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 40),
-      child: UiTextField.standart(
-        controller: _textEditingController,
-        hintText: S.of(context).title,
-        onChanged: (value) {
-          RoomDetailScope.of(context)
-              .add(RoomDetailEvent.changeTitle(value: value));
-        },
-      ),
-    );
-  }
+  Widget build(BuildContext context) => Padding(
+    padding: const EdgeInsets.only(top: 40),
+    child: UiTextField.standart(
+      controller: _textEditingController,
+      hintText: AppLocalizations.of(context)!.title,
+      onChanged: (value) {
+        RoomDetailScope.of(
+          context,
+        ).add(RoomDetailEvent.changeTitle(value: value));
+      },
+    ),
+  );
 }
 
 class _RoomAvailableToggle extends StatelessWidget {
@@ -213,9 +202,8 @@ class _RoomAvailableToggle extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                UiText.labelMedium(S.of(context).roomIsActiveStatus),
+                UiText.labelMedium(AppLocalizations.of(context)!.roomIsActiveStatus),
                 const SizedBox(width: 5),
                 AnimatedSwitcher(
                   duration: const Duration(milliseconds: 200),
@@ -244,37 +232,33 @@ class _DeleteRoomButton extends StatelessWidget {
   const _DeleteRoomButton();
 
   @override
-  Widget build(BuildContext context) {
-    return UiButton.filledDesctructive(
-      label: UiText.bodyMedium('Delete'),
-      onPressed: () async {
-        final isConfirmed = await SnackManager.confirm(context, message: '123');
+  Widget build(BuildContext context) => UiButton.filledDesctructive(
+    label: UiText.bodyMedium('Delete'),
+    onPressed: () async {
+      final isConfirmed = await SnackManager.confirm(context, message: '123');
 
-        if (isConfirmed ?? false) {
-          RoomDetailScope.of(context).add(const RoomDetailEvent.deleteRoom());
-        }
-      },
-    );
-  }
+      if ((isConfirmed ?? false) && context.mounted) {
+        RoomDetailScope.of(context).add(const RoomDetailEvent.deleteRoom());
+      }
+    },
+  );
 }
 
 class _SaveRoomButton extends StatelessWidget {
   const _SaveRoomButton();
 
   @override
-  Widget build(BuildContext context) {
-    return UiButton.filledPrimary(
-      label: UiText.bodyMedium('Save'),
-      onPressed: () {
-        final RoomDetailBloc roomDetailBloc = RoomDetailScope.of(context);
-        roomDetailBloc.add(
-          roomDetailBloc.state.room is Room
-              ? const RoomDetailEvent.editRoom()
-              : const RoomDetailEvent.createRoom(),
-        );
-      },
-    );
-  }
+  Widget build(BuildContext context) => UiButton.filledPrimary(
+    label: UiText.bodyMedium('Save'),
+    onPressed: () {
+      final RoomDetailBloc roomDetailBloc = RoomDetailScope.of(context);
+      roomDetailBloc.add(
+        roomDetailBloc.state.room is Room
+            ? const RoomDetailEvent.editRoom()
+            : const RoomDetailEvent.createRoom(),
+      );
+    },
+  );
 }
 
 /// {@template room_detail_screen}
@@ -296,8 +280,9 @@ class _RoomDetailStateListener extends StatelessWidget {
           state.$maybeWhen(
             orElse: () {},
             error: (message) {
-              if (message != null)
+              if (message != null) {
                 SnackManager.error(context, message: message);
+              }
             },
             success: () {
               SnackManager.success(
@@ -306,18 +291,13 @@ class _RoomDetailStateListener extends StatelessWidget {
               );
 
               AppScope.of(context).roomsBloc.add(const RoomsEvent.load());
-              Octopus.of(context).setState(
-                (state) {
-                  state
-                    ..clear()
-                    ..putIfAbsent(
-                      Routes.rooms.name,
-                      () => Routes.rooms.node(),
-                    );
+              Octopus.of(context).setState((state) {
+                state
+                  ..clear()
+                  ..putIfAbsent(Routes.rooms.name, () => Routes.rooms.node());
 
-                  return state;
-                },
-              );
+                return state;
+              });
             },
           );
         },

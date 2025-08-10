@@ -8,14 +8,12 @@ class UserDto {
     required this.theme,
   });
 
-  factory UserDto.fromJson(Map<String, Object?> json) {
-    return UserDto._(
-      email: json['email'] as String,
+  factory UserDto.fromJson(Map<String, Object?> json) => UserDto._(
+      email: json['email']! as String,
       firstName: json['firstName']?.toString(),
       lastName: json['lastName']?.toString(),
       theme: json['theme']?.toString(),
     );
-  }
 
   final String email;
   final String? firstName;

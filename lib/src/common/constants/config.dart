@@ -1,3 +1,5 @@
+// ignore_for_file: do_not_use_environment
+
 /// {@category common}
 /// [Config] provides the main configuration for the application.
 class Config {
@@ -5,9 +7,8 @@ class Config {
   const Config();
 
   /// {@macro environment}
-  Environment get environment => Environment.from(
-        const String.fromEnvironment('ENVIRONMENT'),
-      );
+  Environment get environment =>
+      Environment.from(const String.fromEnvironment('ENVIRONMENT'));
 }
 
 /// {@template environment}
@@ -20,10 +21,10 @@ enum Environment {
 
   /// Returns an [Environment] instance based on the given environment string.
   static Environment from(String env) => switch (env) {
-        'dev' => Environment.dev,
-        'prod' => Environment.prod,
-        _ => Environment.unknown,
-      };
+    'dev' => Environment.dev,
+    'prod' => Environment.prod,
+    _ => Environment.unknown,
+  };
 
   /// True if the app is running in development mode.
   bool get isDev => this == dev;

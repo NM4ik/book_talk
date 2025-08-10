@@ -24,8 +24,7 @@ final class RestApiAuthStorage implements AuthTokenStorage {
   }
 
   @override
-  Stream<Token?> tokenStream() {
-    return _authStorage.authTokenStream.map(
+  Stream<Token?> tokenStream() => _authStorage.authTokenStream.map(
       (token) => token == null
           ? null
           : Token(
@@ -33,5 +32,4 @@ final class RestApiAuthStorage implements AuthTokenStorage {
               refreshToken: token.refreshToken,
             ),
     );
-  }
 }

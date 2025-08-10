@@ -12,17 +12,15 @@ final class RestApiAuthorizationClient<T extends Token>
   final AuthenticationRefreshRepository _authenticationRefreshRepository;
 
   @override
-  Future<bool> isAccessTokenValid(T token) async {
-    return _checkTokenValid(token.accessToken);
-  }
+  Future<bool> isAccessTokenValid(T token) async =>
+      _checkTokenValid(token.accessToken);
 
   @override
-  Future<bool> isRefreshTokenValid(T token) async {
-    return _checkTokenValid(token.refreshToken);
-  }
+  Future<bool> isRefreshTokenValid(T token) async =>
+      _checkTokenValid(token.refreshToken);
 
   @override
-  Future<T> refresh(token) async {
+  Future<T> refresh(T token) async {
     final AuthToken? authToken = await _authenticationRefreshRepository.refresh(
       AuthToken(
         accessToken: token.accessToken,
@@ -37,14 +35,15 @@ final class RestApiAuthorizationClient<T extends Token>
     }
 
     return Token(
-      accessToken: authToken.accessToken,
-      refreshToken: authToken.refreshToken,
-    ) as T;
+          accessToken: authToken.accessToken,
+          refreshToken: authToken.refreshToken,
+        )
+        as T;
   }
 
   bool _checkTokenValid(String token) {
     final JWT? jwt = JWT.tryDecode(token);
-    final Object? exp = jwt?.payload['exp'];
+    final Object? exp = (jwt?.payload as Map<String, dynamic>?)?['exp'];
 
     if (exp is! int) return false;
 

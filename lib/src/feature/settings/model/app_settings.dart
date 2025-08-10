@@ -1,23 +1,16 @@
 import 'package:flutter/material.dart';
 
+@immutable
 class AppSettings {
-  const AppSettings({
-    required this.themeMode,
-    this.locale,
-  });
+  const AppSettings({required this.themeMode, this.locale});
 
   final ThemeMode themeMode;
   final Locale? locale;
 
-  AppSettings copyWith({
-    ThemeMode? themeMode,
-    Locale? locale,
-  }) {
-    return AppSettings(
-      themeMode: themeMode ?? this.themeMode,
-      locale: locale ?? this.locale,
-    );
-  }
+  AppSettings copyWith({ThemeMode? themeMode, Locale? locale}) => AppSettings(
+    themeMode: themeMode ?? this.themeMode,
+    locale: locale ?? this.locale,
+  );
 
   @override
   String toString() => 'AppSettings(themeMode: $themeMode, locale: $locale)';

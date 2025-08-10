@@ -11,12 +11,12 @@ import 'package:book_talk/src/common/rest_api/rest_api.dart';
 import 'package:book_talk/src/common/utils/logger.dart';
 import 'package:book_talk/src/common/utils/preferences_storage/preferences_storage.dart';
 import 'package:book_talk/src/feature/account/bloc/account_bloc.dart';
+import 'package:book_talk/src/feature/account/data/user_datasource.dart';
 import 'package:book_talk/src/feature/account/data/user_repository.dart';
 import 'package:book_talk/src/feature/auth/bloc/auth_bloc.dart';
 import 'package:book_talk/src/feature/auth/data/auth_datasource.dart';
 import 'package:book_talk/src/feature/auth/data/auth_repository.dart';
 import 'package:book_talk/src/feature/auth/data/auth_storage.dart';
-import 'package:book_talk/src/feature/account/data/user_datasource.dart';
 import 'package:book_talk/src/feature/auth/model/auth_status.dart';
 import 'package:book_talk/src/feature/bootstrap/model/dependencies_container.dart';
 import 'package:book_talk/src/feature/rooms/bloc/rooms_bloc.dart';
@@ -111,7 +111,7 @@ RestClient createRestClient(AuthStorage authStorage, AppLogger appLogger) {
   );
 
   // TODO(Mikhailov): ifDebug
-  (restClient).injectInterceptor(
+  restClient.injectInterceptor(
     interceptor: LoggerInterceptor(
       appLogger: appLogger,
     ),
@@ -150,14 +150,12 @@ Future<AppSettingsBloc> createAppSettingsBloc(
 }
 
 /// Creates an instance of [AppMetadata].
-AppMetadata createAppMetaData(Config config) {
-  return AppMetadata(
+AppMetadata createAppMetaData(Config config) => AppMetadata(
     environment: config.environment.name,
     appVersion: Pubspec.version.canonical,
     operatingSystem: Platform.operatingSystem,
     locale: Platform.localeName,
   );
-}
 
 /// Creates an instance of [AuthBloc].
 Future<AuthBloc> createAuthBloc(
@@ -182,34 +180,28 @@ Future<AuthBloc> createAuthBloc(
 }
 
 /// Creates an instance of [RoomsBloc].
-RoomsBloc createRoomsBloc(RestClient restClient) {
-  return RoomsBloc(
+RoomsBloc createRoomsBloc(RestClient restClient) => RoomsBloc(
     const RoomsState.idle(rooms: null),
     roomsRepository: RoomsRepositoryImpl(
       roomsDatasource: RoomsDatasourceImpl(restClient: restClient),
     ),
   );
-}
 
 /// Creates an instance of [AccountBloc].
 AccountBloc createAccountBloc(
   Stream<AuthStatus> authStatusStream,
   RestClient restClient,
-) {
-  return AccountBloc(
+) => AccountBloc(
     userRepository: UserRepositoryImpl(
       userDatasource: UserDatasourceImpl(restClient: restClient),
     ),
     authStatusStream: authStatusStream,
   );
-}
 
 /// Creates an instance of [UserRepository].
-UserRepository createUserRepository(RestClient restClient) {
-  return UserRepositoryImpl(
+UserRepository createUserRepository(RestClient restClient) => UserRepositoryImpl(
     userDatasource: UserDatasourceImpl(restClient: restClient),
   );
-}
 
 /// {@template composition_result}
 /// Result of composition

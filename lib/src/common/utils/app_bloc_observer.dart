@@ -7,18 +7,19 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 /// instances and logs them via the provided [AppLogger]. This is useful for
 /// tracking BLoC state changes and diagnosing errors during development.
 final class AppBlocObserver extends BlocObserver {
-  const AppBlocObserver({
-    required AppLogger logger,
-  }) : _logger = logger;
+  const AppBlocObserver({required AppLogger logger}) : _logger = logger;
 
   final AppLogger _logger;
 
   /// - [onTransition] logs each transition, showing the BLoC type, the previous
   ///   and next state types, and the event type.
   @override
-  void onTransition(Bloc bloc, Transition transition) {
+  void onTransition(
+    Bloc<dynamic, dynamic> bloc,
+    Transition<dynamic, dynamic> transition,
+  ) {
     _logger.logMessage(
-      'BLoC: ${bloc.runtimeType}. | ${transition.currentState.runtimeType} -> ${transition.nextState.runtimeType} |'
+      'BLoC: ${bloc.runtimeType}. | ${transition.currentState.runtimeType} -> ${transition.nextState.runtimeType} | '
       'Event: ${transition.event.runtimeType}',
     );
     super.onTransition(bloc, transition);
@@ -26,7 +27,7 @@ final class AppBlocObserver extends BlocObserver {
 
   /// - [onError] logs errors along with the stack trace for troubleshooting.
   @override
-  void onError(BlocBase bloc, Object error, StackTrace stackTrace) {
+  void onError(BlocBase<dynamic> bloc, Object error, StackTrace stackTrace) {
     _logger.logError('${bloc.runtimeType} | $error', stackTrace);
     super.onError(bloc, error, stackTrace);
   }

@@ -73,15 +73,13 @@ final class RoomDetailRepositoryImpl implements RoomDetailRepository {
             'https://cdn.shopify.com/s/files/1/0605/0136/0804/files/Modern_meeting_room_with_advanced_technology.jpg?v=1703751846',
         'isActive': emptyRoom.isActive,
         'roomWeekSettings': emptyRoom.roomWeekSettings.days.map(
-          (day) {
-            return {
+          (day) => {
               'priority': day.priority,
               'day': day.day,
               'isActive': day.isActive,
               'startTime': '${day.startTime.hour}:${day.startTime.minute}',
               'endTime': '${day.endTime.hour}:${day.endTime.minute}',
-            };
-          },
+            },
         ).toList()
       },
     );

@@ -3,6 +3,7 @@ import 'package:bloc/bloc.dart';
 import 'package:book_talk/src/feature/account/data/user_repository.dart';
 import 'package:book_talk/src/feature/account/model/user.dart';
 import 'package:book_talk/src/feature/auth/model/auth_status.dart';
+import 'package:meta/meta.dart';
 
 part 'account_event.dart';
 part 'account_state.dart';
@@ -11,8 +12,8 @@ final class AccountBloc extends Bloc<AccountEvent, AccountState> {
   AccountBloc({
     required Stream<AuthStatus> authStatusStream,
     required UserRepository userRepository,
-  })  : _userRepository = userRepository,
-        super(const AccountState.idle(user: null)) {
+  }) : _userRepository = userRepository,
+       super(const AccountState.idle(user: null)) {
     on<AccountEvent>(
       (event, emitter) => switch (event) {
         _LoadEvent() => _onLoadEvent(event, emitter),
@@ -20,20 +21,18 @@ final class AccountBloc extends Bloc<AccountEvent, AccountState> {
       },
     );
 
-    _authStatusSub = authStatusStream.listen(
-      (status) {
-        switch (status) {
-          case AuthStatus.auth:
-            add(AccountEvent.load());
-          case AuthStatus.unAuth:
-            add(AccountEvent.logout());
-        }
-      },
-    );
+    _authStatusSub = authStatusStream.listen((status) {
+      switch (status) {
+        case AuthStatus.auth:
+          add(AccountEvent.load());
+        case AuthStatus.unAuth:
+          add(AccountEvent.logout());
+      }
+    });
   }
 
   final UserRepository _userRepository;
-  late final StreamSubscription _authStatusSub;
+  late final StreamSubscription<AuthStatus> _authStatusSub;
 
   Future<void> _onLoadEvent(
     _LoadEvent event,
@@ -56,7 +55,7 @@ final class AccountBloc extends Bloc<AccountEvent, AccountState> {
 
   @override
   Future<void> close() async {
-    _authStatusSub.cancel();
+    await _authStatusSub.cancel();
     return super.close();
   }
 }

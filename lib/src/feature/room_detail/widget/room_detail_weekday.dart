@@ -25,10 +25,7 @@ class RoomDetailWeekdayWidget extends StatelessWidget {
             for (final day in weekSettings.days)
               Padding(
                 padding: const EdgeInsets.only(bottom: 15),
-                child: _RoomWeekdayCard(
-                  key: ValueKey(day.day),
-                  day: day,
-                ),
+                child: _RoomWeekdayCard(key: ValueKey(day.day), day: day),
               ),
           ],
         );
@@ -38,10 +35,7 @@ class RoomDetailWeekdayWidget extends StatelessWidget {
 }
 
 class _RoomWeekdayCard extends StatelessWidget {
-  const _RoomWeekdayCard({
-    required this.day,
-    super.key,
-  });
+  const _RoomWeekdayCard({required this.day, super.key});
 
   final RoomWeekdaySetting day;
 
@@ -59,10 +53,7 @@ class _RoomWeekdayCard extends StatelessWidget {
             AnimatedSwitcher(
               duration: const Duration(milliseconds: 200),
               child: isActive
-                  ? UiText.labelMedium(
-                      key: ValueKey(isActive),
-                      dayName,
-                    )
+                  ? UiText.labelMedium(key: ValueKey(isActive), dayName)
                   : UiText.labelMedium(
                       dayName,
                       color: Theme.of(context).colorPalette?.muted,
@@ -71,10 +62,8 @@ class _RoomWeekdayCard extends StatelessWidget {
             const SizedBox(width: 5),
             _DayActiveCheckbox(
               isActive: isActive,
-              onTap: ({bool? value}) => _onActiveChange(
-                roomDetailBloc: roomDetailBloc,
-                value: value,
-              ),
+              onTap: ({value}) =>
+                  _onActiveChange(roomDetailBloc: roomDetailBloc, value: value),
             ),
           ],
         ),
@@ -97,10 +86,7 @@ class _RoomWeekdayCard extends StatelessWidget {
               const SizedBox(width: 10),
               _DayTimeButton(
                 onTimeChanged: (time) {
-                  _onTimeChange(
-                    time: time,
-                    roomDetailBloc: roomDetailBloc,
-                  );
+                  _onTimeChange(time: time, roomDetailBloc: roomDetailBloc);
                 },
                 timeOfDay: day.endTime,
                 isEndDay: true,
@@ -132,10 +118,7 @@ class _RoomWeekdayCard extends StatelessWidget {
     required RoomDetailBloc roomDetailBloc,
   }) {
     roomDetailBloc.add(
-      RoomDetailEvent.changeDayActive(
-        day: day,
-        value: value ?? false,
-      ),
+      RoomDetailEvent.changeDayActive(day: day, value: value ?? false),
     );
   }
 }
@@ -147,7 +130,7 @@ class _DayTimeButton extends StatefulWidget {
     required this.isEndDay,
   });
 
-  final Function(TimeOfDay) onTimeChanged;
+  final void Function(TimeOfDay) onTimeChanged;
   final TimeOfDay timeOfDay;
   final bool isEndDay;
 
@@ -165,96 +148,85 @@ class _DayTimeButtonState extends State<_DayTimeButton> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return UiButton.negativePrimary(
-      onPressed: () {
-        _overlayPopup.createCalendarOverlay(
-          context,
-          child: _DayTimePicker(
-            onTap: (time) {
-              _overlayPopup.removeHighlightOverlay();
-              widget.onTimeChanged(time);
-            },
+  Widget build(BuildContext context) => UiButton.negativePrimary(
+    onPressed: () {
+      _overlayPopup.createCalendarOverlay(
+        context,
+        child: _DayTimePicker(
+          onTap: (time) {
+            _overlayPopup.removeHighlightOverlay();
+            widget.onTimeChanged(time);
+          },
+        ),
+      );
+    },
+    innerPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 16),
+    label: Row(
+      children: [
+        Icon(
+          Icons.access_time_rounded,
+          size: 18,
+          color: Theme.of(context).colorPalette?.muted,
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              UiText.labelSmall(widget.isEndDay ? 'End with' : 'Start with'),
+              const SizedBox(height: 2),
+              UiText.labelMedium(widget.timeOfDay.format(context)),
+            ],
           ),
-        );
-      },
-      innerPadding: const EdgeInsets.symmetric(
-        horizontal: 10,
-        vertical: 16,
-      ),
-      label: Row(
-        children: [
-          Icon(
-            Icons.access_time_rounded,
-            size: 18,
-            color: Theme.of(context).colorPalette?.muted,
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                UiText.labelSmall(widget.isEndDay ? 'End with' : 'Start with'),
-                const SizedBox(height: 2),
-                UiText.labelMedium(widget.timeOfDay.format(context)),
-              ],
-            ),
-          ),
-          Icon(
-            Icons.keyboard_arrow_down_rounded,
-            size: 18,
-            color: Theme.of(context).colorPalette?.muted,
-          )
-        ],
-      ),
-    );
-  }
+        ),
+        Icon(
+          Icons.keyboard_arrow_down_rounded,
+          size: 18,
+          color: Theme.of(context).colorPalette?.muted,
+        ),
+      ],
+    ),
+  );
 }
 
 class _DayActiveCheckbox extends StatelessWidget {
   const _DayActiveCheckbox({required this.isActive, required this.onTap});
   final bool isActive;
-  final Function({bool? value}) onTap;
+  final void Function({bool? value}) onTap;
 
   @override
-  Widget build(BuildContext context) {
-    return Checkbox(
-      value: isActive,
-      onChanged: (value) => onTap(value: value),
-    );
-  }
+  Widget build(BuildContext context) => Checkbox(
+    value: isActive,
+    onChanged: (value) => onTap(value: value),
+  );
 }
 
 class _DayTimePicker extends StatelessWidget {
-  const _DayTimePicker({
-    required this.onTap,
-  });
+  const _DayTimePicker({required this.onTap});
 
-  final Function(TimeOfDay time) onTap;
+  final void Function(TimeOfDay time) onTap;
 
   @override
-  Widget build(BuildContext context) {
-    return ColoredBox(
-      color: Theme.of(context).colorPalette?.secondary ?? Colors.transparent,
-      child: ListView.builder(
-        padding: const EdgeInsets.symmetric(vertical: 3),
-        itemCount: 48,
-        itemBuilder: (context, index) {
-          final hour = index ~/ 2;
-          final minutes = (index % 2) * 30;
-          final timeText =
-              '${hour.toString().padLeft(2, '0')}:${minutes.toString().padLeft(2, '0')}';
+  Widget build(BuildContext context) => ColoredBox(
+    color: Theme.of(context).colorPalette?.secondary ?? Colors.transparent,
+    child: ListView.builder(
+      padding: const EdgeInsets.symmetric(vertical: 3),
+      itemCount: 48,
+      itemBuilder: (context, index) {
+        final hour = index ~/ 2;
+        final minutes = (index % 2) * 30;
+        final timeText =
+            '${hour.toString().padLeft(2, '0')}:${minutes.toString().padLeft(2, '0')}';
 
-          return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
-            child: UiButton.filledPrimary(
-              innerPadding: EdgeInsets.zero,
-              onPressed: () => onTap(TimeOfDay(hour: hour, minute: minutes)),
-              label: UiText.bodyMedium(timeText),
-            ),
-          );
-        },
-      ),
-    );
-  }
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
+          child: UiButton.filledPrimary(
+            innerPadding: EdgeInsets.zero,
+            onPressed: () => onTap(TimeOfDay(hour: hour, minute: minutes)),
+            label: UiText.bodyMedium(timeText),
+          ),
+        );
+      },
+    ),
+  );
 }

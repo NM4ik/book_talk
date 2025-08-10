@@ -1,11 +1,8 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/foundation.dart';
 
+@immutable
 class BookingDays {
-  const BookingDays({
-    required this.daysInfo,
-    required this.pagination,
-  });
+  const BookingDays({required this.daysInfo, required this.pagination});
 
   final List<DayInfo> daysInfo;
   final BookingDaysPagination pagination;
@@ -31,30 +28,28 @@ class BookingDays {
 }
 
 class BookingDaysDto {
-  const BookingDaysDto({
-    required this.daysInfo,
-    required this.pagination,
-  });
+  const BookingDaysDto({required this.daysInfo, required this.pagination});
 
-  factory BookingDaysDto.fromJson(Map<String, dynamic> json) {
-    return BookingDaysDto(
-      daysInfo: (json['days'] as List<dynamic>)
-          .whereType<Map<String, dynamic>>()
-          .map((json) => DayInfoDto.fromJson(json))
-          .toList(),
-      pagination: BookingDaysPaginationDto.fromJson(json['pagination']),
-    );
-  }
+  factory BookingDaysDto.fromJson(Map<String, dynamic> json) => BookingDaysDto(
+    daysInfo: (json['days'] as List<dynamic>)
+        .whereType<Map<String, dynamic>>()
+        .map(DayInfoDto.fromJson)
+        .toList(),
+    pagination: BookingDaysPaginationDto.fromJson(
+      json['pagination'] as Map<String, dynamic>,
+    ),
+  );
 
   final List<DayInfoDto> daysInfo;
   final BookingDaysPaginationDto pagination;
 
   BookingDays toEntity() => BookingDays(
-        daysInfo: daysInfo.map((day) => day.toEntity()).toList(),
-        pagination: pagination.toEntity(),
-      );
+    daysInfo: daysInfo.map((day) => day.toEntity()).toList(),
+    pagination: pagination.toEntity(),
+  );
 }
 
+@immutable
 class DayInfo implements Comparable<DayInfo> {
   const DayInfo({required this.date, required this.slots});
 
@@ -75,23 +70,16 @@ class DayInfo implements Comparable<DayInfo> {
   int get hashCode => date.hashCode ^ slots.hashCode;
 
   @override
-  int compareTo(DayInfo other) {
-    return date.compareTo(other.date);
-  }
+  int compareTo(DayInfo other) => date.compareTo(other.date);
 }
 
 class DayInfoDto {
-  const DayInfoDto({
-    required this.date,
-    required this.slots,
-  });
+  const DayInfoDto({required this.date, required this.slots});
 
-  factory DayInfoDto.fromJson(Map<String, dynamic> json) {
-    return DayInfoDto(
-      date: json['date'] as String,
-      slots: json['slots'] as int? ?? 0,
-    );
-  }
+  factory DayInfoDto.fromJson(Map<String, dynamic> json) => DayInfoDto(
+    date: json['date'] as String,
+    slots: json['slots'] as int? ?? 0,
+  );
 
   final String date;
   final int slots;
@@ -118,21 +106,20 @@ class BookingDaysPaginationDto {
     required this.perPage,
   });
 
-  factory BookingDaysPaginationDto.fromJson(Map<String, dynamic> json) {
-    return BookingDaysPaginationDto(
-      currentPage: json['current_page'] as int,
-      totalPages: json['total_pages'] as int,
-      perPage: json['per_page'] as int,
-    );
-  }
+  factory BookingDaysPaginationDto.fromJson(Map<String, dynamic> json) =>
+      BookingDaysPaginationDto(
+        currentPage: json['current_page'] as int,
+        totalPages: json['total_pages'] as int,
+        perPage: json['per_page'] as int,
+      );
 
   final int currentPage;
   final int totalPages;
   final int perPage;
 
   BookingDaysPagination toEntity() => BookingDaysPagination(
-        currentPage: currentPage,
-        totalPages: totalPages,
-        perPage: perPage,
-      );
+    currentPage: currentPage,
+    totalPages: totalPages,
+    perPage: perPage,
+  );
 }

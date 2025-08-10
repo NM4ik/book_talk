@@ -1,6 +1,6 @@
 import 'package:book_talk/src/feature/booking/model/booking_days.dart';
-import 'package:flutter/material.dart';
 import 'package:book_talk_ui/book_talk_ui.dart';
+import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 /// {@template booking_days_picker}
@@ -33,16 +33,14 @@ class _BookingDaysPickerWidgetState extends State<BookingDaysPickerWidget> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return SizedBox(
+  Widget build(BuildContext context) => SizedBox(
       height: 100,
       child: ListView.separated(
         controller: widget.scrollController,
         padding: const EdgeInsets.only(left: 12, right: 12),
         scrollDirection: Axis.horizontal,
         itemCount: widget.bookingDays.length,
-        itemBuilder: (context, index) {
-          return SizedBox(
+        itemBuilder: (context, index) => SizedBox(
             width: 65,
             child: ButtonTest(
               onPressed: () {
@@ -53,13 +51,11 @@ class _BookingDaysPickerWidgetState extends State<BookingDaysPickerWidget> {
               isSelected: index == _selectedIndex,
               child: _DayCard(dayInfo: widget.bookingDays[index], index: index),
             ),
-          );
-        },
-        separatorBuilder: (BuildContext context, int index) =>
+          ),
+        separatorBuilder: (context, index) =>
             const SizedBox(width: 10),
       ),
     );
-  }
 }
 
 /// {@template booking_calendar}
@@ -77,11 +73,11 @@ class _DayCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _dayFormatter =
+    final dayFormatter =
         DateFormat('EEE', Localizations.localeOf(context).languageCode);
 
     final int slots = dayInfo.slots.clamp(0, 10);
-    Color slotColor = switch (slots) {
+    final Color slotColor = switch (slots) {
       > 5 => Colors.green,
       >= 3 => Colors.orange,
       _ => Colors.red,
@@ -92,7 +88,7 @@ class _DayCard extends StatelessWidget {
       children: [
         const SizedBox(height: 15),
         UiText.bodyMedium(
-          _dayFormatter.format(dayInfo.date),
+          dayFormatter.format(dayInfo.date),
           color: const Color(0xFf9485BB),
         ),
         UiText.bodyLarge(
@@ -127,10 +123,7 @@ class _DayCard extends StatelessWidget {
 }
 
 class ButtonTest extends ButtonStyleButton {
-  const ButtonTest({
-    required this.isSelected,
-    required super.onPressed,
-    required super.child,
+  const ButtonTest({required this.isSelected, required super.onPressed, required super.child, super.key,
     super.onLongPress,
     super.onHover,
     super.onFocusChange,
@@ -143,17 +136,13 @@ class ButtonTest extends ButtonStyleButton {
   final bool isSelected;
 
   @override
-  ButtonStyle defaultStyleOf(BuildContext context) {
-    return BaseButtonStyle(
+  ButtonStyle defaultStyleOf(BuildContext context) => BaseButtonStyle(
       colorPalette: Theme.of(context).colorPalette!,
       isSelected: isSelected,
     );
-  }
 
   @override
-  ButtonStyle? themeStyleOf(BuildContext context) {
-    return null;
-  }
+  ButtonStyle? themeStyleOf(BuildContext context) => null;
 }
 
 class BaseButtonStyle extends ButtonStyle {
@@ -170,8 +159,7 @@ class BaseButtonStyle extends ButtonStyle {
       const WidgetStatePropertyAll(EdgeInsets.zero);
 
   @override
-  WidgetStateProperty<Color?>? get backgroundColor {
-    return WidgetStateProperty.resolveWith((Set<WidgetState> states) {
+  WidgetStateProperty<Color?>? get backgroundColor => WidgetStateProperty.resolveWith((states) {
       if (states.contains(WidgetState.disabled)) {
         return null;
       } else if (isSelected) {
@@ -180,7 +168,6 @@ class BaseButtonStyle extends ButtonStyle {
         return const Color(0xFF302C3E);
       }
     });
-  }
 
   @override
   WidgetStateProperty<OutlinedBorder?>? get shape =>
@@ -188,26 +175,20 @@ class BaseButtonStyle extends ButtonStyle {
           borderRadius: BorderRadius.all(Radius.circular(10))));
 
   @override
-  WidgetStateProperty<BorderSide?>? get side {
-    return WidgetStateProperty.resolveWith((Set<WidgetState> states) {
-      return BorderSide(
+  WidgetStateProperty<BorderSide?>? get side => WidgetStateProperty.resolveWith((states) => BorderSide(
         color: colorPalette.primary.withAlpha(
           states.contains(WidgetState.disabled) ? 50 : 255,
         ),
         width: 1.5,
-      );
-    });
-  }
+      ));
 
   @override
-  WidgetStateProperty<Color?>? get overlayColor {
-    return WidgetStateProperty.resolveWith((Set<WidgetState> states) {
+  WidgetStateProperty<Color?>? get overlayColor => WidgetStateProperty.resolveWith((states) {
       if (states.contains(WidgetState.hovered)) {
         return colorPalette.secondary;
       }
       return null;
     });
-  }
 
   @override
   Duration? get animationDuration => const Duration(milliseconds: 200);
@@ -231,7 +212,7 @@ class BaseButtonStyle extends ButtonStyle {
 
   @override
   WidgetStateProperty<MouseCursor?>? get mouseCursor =>
-      WidgetStateProperty.resolveWith((Set<WidgetState> states) {
+      WidgetStateProperty.resolveWith((states) {
         if (states.contains(WidgetState.disabled)) {
           return SystemMouseCursors.basic;
         }

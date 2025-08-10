@@ -3,9 +3,7 @@ import 'package:book_talk/src/feature/bootstrap/model/dependencies_container.dar
 import 'package:flutter/material.dart';
 
 final class AppScope extends InheritedWidget {
-  const AppScope({
-    required super.child,
-    required this.dependenciesContainer,
+  const AppScope({required super.child, required this.dependenciesContainer, super.key,
   });
 
   final DependenciesContainer dependenciesContainer;

@@ -16,14 +16,11 @@ class AccountScreen extends StatelessWidget {
     final accountBloc = AppScope.of(context).accountBloc;
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Profile'),
-      ),
+      appBar: AppBar(title: const Text('Profile')),
       body: SafeArea(
         top: false,
         minimum: const EdgeInsets.only(bottom: 40),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Padding(
               padding: const EdgeInsets.all(20),
@@ -33,9 +30,7 @@ class AccountScreen extends StatelessWidget {
                   const SizedBox(width: 20),
                   BlocBuilder<AccountBloc, AccountState>(
                     bloc: accountBloc,
-                    builder: (context, state) {
-                      return Text(state.user?.email ?? '');
-                    },
+                    builder: (context, state) => Text(state.user?.email ?? ''),
                   ),
                 ],
               ),
@@ -55,42 +50,31 @@ class AccountScreen extends StatelessWidget {
     );
   }
 
-  _onLogout(BuildContext context) {
+  void _onLogout(BuildContext context) {
     AppScope.of(context).authBloc.add(AuthEvent.signOut());
   }
 }
 
 class _AppThemeSwitcher extends StatelessWidget {
-  const _AppThemeSwitcher({Key? key}) : super(key: key);
+  const _AppThemeSwitcher();
 
   @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        UiButton.negativePrimary(
-          label: UiText.titleSmall('light'),
-          onPressed: () => _onSwitchTheme(
-            context,
-            ThemeMode.light,
-          ),
-        ),
-        UiButton.negativePrimary(
-          label: UiText.titleSmall('dark'),
-          onPressed: () => _onSwitchTheme(
-            context,
-            ThemeMode.dark,
-          ),
-        ),
-        UiButton.negativePrimary(
-          label: UiText.titleSmall('system'),
-          onPressed: () => _onSwitchTheme(
-            context,
-            ThemeMode.system,
-          ),
-        ),
-      ],
-    );
-  }
+  Widget build(BuildContext context) => Row(
+    children: [
+      UiButton.negativePrimary(
+        label: UiText.titleSmall('light'),
+        onPressed: () => _onSwitchTheme(context, ThemeMode.light),
+      ),
+      UiButton.negativePrimary(
+        label: UiText.titleSmall('dark'),
+        onPressed: () => _onSwitchTheme(context, ThemeMode.dark),
+      ),
+      UiButton.negativePrimary(
+        label: UiText.titleSmall('system'),
+        onPressed: () => _onSwitchTheme(context, ThemeMode.system),
+      ),
+    ],
+  );
 
   void _onSwitchTheme(BuildContext context, ThemeMode themeMode) {
     final appSettingsBloc = AppScope.of(context).appSettingsBloc;
@@ -98,10 +82,7 @@ class _AppThemeSwitcher extends StatelessWidget {
     if (appSettingsBloc.state.isLoading || currentSettings == null) return;
     appSettingsBloc.add(
       AppSettingsEvent.update(
-        AppSettings(
-          themeMode: themeMode,
-          locale: currentSettings.locale,
-        ),
+        AppSettings(themeMode: themeMode, locale: currentSettings.locale),
       ),
     );
   }

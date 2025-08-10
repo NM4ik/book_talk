@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:book_talk/src/common/router/guards/authentication_guard.dart';
 import 'package:book_talk/src/common/router/routes.dart';
+import 'package:book_talk/src/feature/auth/bloc/auth_bloc.dart';
 import 'package:book_talk/src/feature/auth/model/auth_status.dart';
 import 'package:book_talk/src/feature/bootstrap/widget/app_scope.dart';
 import 'package:flutter/material.dart';
@@ -9,7 +10,7 @@ import 'package:octopus/octopus.dart';
 
 mixin RouterMixin<T extends StatefulWidget> on State<T> {
   late final Octopus router;
-  late final StreamSubscription _authStreamSubscription;
+  late final StreamSubscription<AuthState> _authStreamSubscription;
 
   /// Listenable for [AuthenticationGuard]
   late final ValueNotifier<AuthStatus> notifier;
@@ -31,9 +32,7 @@ mixin RouterMixin<T extends StatefulWidget> on State<T> {
       guards: <IOctopusGuard>[
         AuthenticationGuard(
           getAuthStatus: () => notifier.value,
-          routes: <String>{
-            Routes.signin.name,
-          },
+          routes: <String>{Routes.signin.name},
           signinNavigation: OctopusState.single(Routes.signin.node()),
           homeNavigation: OctopusState.single(Routes.rooms.node()),
           buildContext: context,

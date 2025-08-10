@@ -1,4 +1,4 @@
-import 'package:flutter/src/foundation/assertions.dart';
+import 'package:flutter/foundation.dart';
 import 'package:talker_flutter/talker_flutter.dart';
 
 /// Provides a logging interface for different types of logs in the app.
@@ -32,12 +32,7 @@ abstract class AppLogger {
 
 /// Default implementation of [AppLogger] that logs messages using a logger.
 final class DefaultAppLogger extends AppLogger {
-  final _logger = TalkerFlutter.init(
-    settings: TalkerSettings(
-      // TODO(Mikhailov): manage it
-      enabled: true,
-    ),
-  );
+  final _logger = TalkerFlutter.init(settings: TalkerSettings());
 
   @override
   void logError(Object error, StackTrace stackTrace) {
@@ -65,9 +60,9 @@ final class DefaultAppLogger extends AppLogger {
   @override
   bool logPlatformDispatcherError(Object exception, StackTrace stackTrace) {
     _logger.error(
-      'PlatformDispatcherError: ${exception}'
+      'PlatformDispatcherError: $exception'
       '\n'
-      'StackTrace: ${stackTrace}',
+      'StackTrace: $stackTrace',
     );
 
     return true;

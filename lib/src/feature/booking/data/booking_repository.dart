@@ -15,12 +15,8 @@ final class BookingRepositoryImpl implements BookingRepository {
   final BookingDataSource _bookingDataSource;
 
   @override
-  Future<BookingDays?> fetchBookingDays() async {
-    return (await _bookingDataSource.fetchBookingDays())?.toEntity();
-  }
+  Future<BookingDays?> fetchBookingDays() async => (await _bookingDataSource.fetchBookingDays())?.toEntity();
 
   @override
-  Future<BookingDay?> fetchTimeSlotsForDay(String date) async {
-    return (await _bookingDataSource.fetchTimeSlotsForDay(date))?.toEntity();
-  }
+  Future<BookingDay?> fetchTimeSlotsForDay(String date) async => (await _bookingDataSource.fetchTimeSlotsForDay(date))?.toEntity();
 }

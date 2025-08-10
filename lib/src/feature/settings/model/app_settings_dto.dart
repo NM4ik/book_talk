@@ -16,7 +16,7 @@ class AppSettingsDto {
     final languageCode = data['locale.language_code'] as String?;
 
     return AppSettingsDto(
-      themeMode: ThemeModeCodec().decode(data['themeMode'] as String),
+      themeMode: ThemeModeCodec().decode(data['themeMode']! as String),
       locale: languageCode != null
           ? Locale(
               languageCode,
@@ -34,8 +34,7 @@ class AppSettingsDto {
   final ThemeMode themeMode;
   final Locale? locale;
 
-  String toJson() {
-    return jsonEncode(
+  String toJson() => jsonEncode(
       {
         'themeMode': ThemeModeCodec().encode(themeMode),
         if (locale != null) ...{
@@ -44,7 +43,6 @@ class AppSettingsDto {
         }
       },
     );
-  }
 
   AppSettings toEntity() => AppSettings(
         themeMode: themeMode,

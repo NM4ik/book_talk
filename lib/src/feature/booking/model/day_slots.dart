@@ -16,12 +16,10 @@ class BookingDay {
 class BookingDayDto {
   const BookingDayDto({required this.date, required this.slots});
 
-  factory BookingDayDto.fromJson(String date, List<dynamic> slots) {
-    return BookingDayDto(
+  factory BookingDayDto.fromJson(String date, List<dynamic> slots) => BookingDayDto(
       date: DateTime.parse(date),
-      slots: slots.map((object) => TimeSlotDto.fromJson(object)).toList(),
+      slots: slots.map((object) => TimeSlotDto.fromJson(object as Map<String, dynamic>)).toList(),
     );
-  }
 
   final DateTime date;
 

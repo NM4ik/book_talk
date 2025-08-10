@@ -1,3 +1,4 @@
+import 'package:bloc_concurrency/bloc_concurrency.dart' as bloc_concurrency;
 import 'package:book_talk/src/common/constants/config.dart';
 import 'package:book_talk/src/common/utils/app_bloc_observer.dart';
 import 'package:book_talk/src/common/utils/error_tracking.dart';
@@ -9,7 +10,6 @@ import 'package:book_talk/src/feature/bootstrap/widget/material_app_failed.dart'
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:bloc_concurrency/bloc_concurrency.dart' as bloc_concurrency;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 final class AppBootstrap {
@@ -39,12 +39,10 @@ final class AppBootstrap {
       final root = await CompositionRoot(config, appLogger).compose();
       runApp(App(dependenciesContainer: root.dependencies));
     } on Object catch (e, stackTrace) {
-      runApp(MaterialAppFailed(
-        onRetry: _runApp,
-        error: e,
-        stackTrace: stackTrace,
-      ));
-      ErrorTracking.trackError(e, stackTrace);
+      runApp(
+        MaterialAppFailed(onRetry: _runApp, error: e, stackTrace: stackTrace),
+      );
+      ErrorTracking.trackError(e, stackTrace).ignore();
     }
   }
 }

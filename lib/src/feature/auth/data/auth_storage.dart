@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:developer';
 import 'package:book_talk/src/common/utils/interface/closable.dart';
 import 'package:book_talk/src/common/utils/preferences_storage/preferences_entry.dart';
 import 'package:book_talk/src/common/utils/preferences_storage/preferences_storage.dart';
@@ -39,7 +38,7 @@ final class AuthStorageImpl implements AuthStorage {
     final String? json = await _tokenEntry.get();
     if (json == null || json.isEmpty) return null;
     final AuthToken token = AuthToken.fromJson(
-      Map<String, Object?>.from(jsonDecode(json)),
+      Map<String, Object?>.from(jsonDecode(json) as Map<String, Object?>),
     );
     _authTokenBehaviorSubject.add(token);
     return token;

@@ -1,9 +1,10 @@
 import 'package:book_talk/src/common/model/room/room_day_setting.dart';
 import 'package:book_talk/src/common/model/room/room_week_settings.dart';
 import 'package:book_talk/src/feature/room_detail/model/file_image.dart'
-    as fileImageInternal;
+    as file_image_internal;
 import 'package:flutter/material.dart';
 
+@immutable
 sealed class IRoom {
   const IRoom({
     required this.name,
@@ -44,37 +45,35 @@ class EmptyRoom extends IRoom {
     this.fileImage,
   });
 
-  final fileImageInternal.FileImage? fileImage;
+  final file_image_internal.FileImage? fileImage;
 
+  @override
   EmptyRoom copyWith({
     int? capacity,
     String? name,
     RoomWeekSettings? roomWeekSettings,
     bool? isActive,
-    fileImageInternal.FileImage? fileImage,
-  }) {
-    return EmptyRoom(
-      capacity: capacity ?? this.capacity,
-      name: name ?? this.name,
-      roomWeekSettings: roomWeekSettings ?? this.roomWeekSettings,
-      isActive: isActive ?? this.isActive,
-      fileImage: fileImage ?? this.fileImage,
-    );
-  }
+    file_image_internal.FileImage? fileImage,
+  }) => EmptyRoom(
+    capacity: capacity ?? this.capacity,
+    name: name ?? this.name,
+    roomWeekSettings: roomWeekSettings ?? this.roomWeekSettings,
+    isActive: isActive ?? this.isActive,
+    fileImage: fileImage ?? this.fileImage,
+  );
 
   @override
   int get hashCode =>
       Object.hashAll([name, capacity, roomWeekSettings, isActive, fileImage]);
 
   @override
-  bool operator ==(Object other) {
-    return other is EmptyRoom &&
-        other.name == name &&
-        other.capacity == capacity &&
-        other.roomWeekSettings == roomWeekSettings &&
-        other.isActive == isActive &&
-        other.fileImage == fileImage;
-  }
+  bool operator ==(Object other) =>
+      other is EmptyRoom &&
+      other.name == name &&
+      other.capacity == capacity &&
+      other.roomWeekSettings == roomWeekSettings &&
+      other.isActive == isActive &&
+      other.fileImage == fileImage;
 }
 
 /// Represents a room with properties including ID, capacity, and weekly settings.
@@ -109,15 +108,15 @@ class Room extends IRoom {
   }
 
   @override
-  int get hashCode {
-    return id.hashCode ^
-        capacity.hashCode ^
-        avatar.hashCode ^
-        name.hashCode ^
-        roomWeekSettings.hashCode ^
-        isActive.hashCode;
-  }
+  int get hashCode =>
+      id.hashCode ^
+      capacity.hashCode ^
+      avatar.hashCode ^
+      name.hashCode ^
+      roomWeekSettings.hashCode ^
+      isActive.hashCode;
 
+  @override
   Room copyWith({
     int? id,
     int? capacity,
@@ -125,16 +124,14 @@ class Room extends IRoom {
     String? name,
     RoomWeekSettings? roomWeekSettings,
     bool? isActive,
-  }) {
-    return Room(
-      id: id ?? this.id,
-      capacity: capacity ?? this.capacity,
-      avatar: avatar ?? this.avatar,
-      name: name ?? this.name,
-      roomWeekSettings: roomWeekSettings ?? this.roomWeekSettings,
-      isActive: isActive ?? this.isActive,
-    );
-  }
+  }) => Room(
+    id: id ?? this.id,
+    capacity: capacity ?? this.capacity,
+    avatar: avatar ?? this.avatar,
+    name: name ?? this.name,
+    roomWeekSettings: roomWeekSettings ?? this.roomWeekSettings,
+    isActive: isActive ?? this.isActive,
+  );
 }
 
 class RoomDto {
@@ -147,31 +144,25 @@ class RoomDto {
     required this.isActive,
   });
 
-  factory RoomDto.fromMap(Map<String, Object?> map) {
-    print(
-        'roomSettings - ${map['roomWeekSettings'].runtimeType}, : ${map['roomWeekSettings']}');
-    return RoomDto(
-      id: map['id'] as int,
-      capacity: map['capacity'] as int,
-      avatar: map['avatar'] as String,
-      name: map['name'] as String,
-      roomWeekSettings: RoomWeekSettingsDto.fromMap(
-        map['roomWeekSettings'] as List<dynamic>,
-      ),
-      isActive: map['isActive'] as bool,
-    );
-  }
+  factory RoomDto.fromMap(Map<String, Object?> map) => RoomDto(
+    id: map['id']! as int,
+    capacity: map['capacity']! as int,
+    avatar: map['avatar']! as String,
+    name: map['name']! as String,
+    roomWeekSettings: RoomWeekSettingsDto.fromMap(
+      map['roomWeekSettings']! as List<dynamic>,
+    ),
+    isActive: map['isActive']! as bool,
+  );
 
-  factory RoomDto.fromEntity(Room room) {
-    return RoomDto(
-      id: room.id,
-      capacity: room.capacity,
-      avatar: room.avatar,
-      name: room.name,
-      roomWeekSettings: RoomWeekSettingsDto.fromEntity(room.roomWeekSettings),
-      isActive: room.isActive,
-    );
-  }
+  factory RoomDto.fromEntity(Room room) => RoomDto(
+    id: room.id,
+    capacity: room.capacity,
+    avatar: room.avatar,
+    name: room.name,
+    roomWeekSettings: RoomWeekSettingsDto.fromEntity(room.roomWeekSettings),
+    isActive: room.isActive,
+  );
 
   final int id;
   final int capacity;
@@ -181,29 +172,26 @@ class RoomDto {
   final bool isActive;
 
   Room toEntity() => Room(
-        id: id,
-        capacity: capacity,
-        avatar: avatar,
-        name: name,
-        roomWeekSettings: roomWeekSettings.toEntity(),
-        isActive: isActive,
-      );
+    id: id,
+    capacity: capacity,
+    avatar: avatar,
+    name: name,
+    roomWeekSettings: roomWeekSettings.toEntity(),
+    isActive: isActive,
+  );
 
-  Map<String, Object?> toMap() {
-    return {
-      'id': id,
-      'capacity': capacity,
-      'avatar': avatar,
-      'name': name,
-      'roomWeekSettings': roomWeekSettings.toMap(),
-      'isActive': isActive,
-    };
-  }
+  Map<String, Object?> toMap() => {
+    'id': id,
+    'capacity': capacity,
+    'avatar': avatar,
+    'name': name,
+    'roomWeekSettings': roomWeekSettings.toMap(),
+    'isActive': isActive,
+  };
 
   @override
-  String toString() {
-    return 'RoomDto(id: $id, capacity: $capacity, avatar: $avatar, name: $name, roomWeekSettings: $roomWeekSettings, isActive: $isActive)';
-  }
+  String toString() =>
+      'RoomDto(id: $id, capacity: $capacity, avatar: $avatar, name: $name, roomWeekSettings: $roomWeekSettings, isActive: $isActive)';
 }
 
 const _start = TimeOfDay(hour: 8, minute: 0);

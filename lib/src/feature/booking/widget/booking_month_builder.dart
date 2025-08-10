@@ -1,9 +1,9 @@
-import 'package:book_talk/src/feature/booking/model/booking_days.dart';
-import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:animations/animations.dart';
 import 'package:book_talk/src/common/utils/extensions/build_context_extension.dart';
+import 'package:book_talk/src/feature/booking/model/booking_days.dart';
 import 'package:book_talk_ui/book_talk_ui.dart';
+import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 /// {@template booking_calendar}
 /// _MonthBuilder widget.
@@ -61,7 +61,6 @@ class _BookingCalendarMonthTitleWidgetState
     if (dateTime == null) return const SizedBox.shrink();
 
     final String currentMonth = _monthFormatter.format(dateTime);
-    print('currentMonth: $currentMonth');
     final String? next = nextMonth(dateTime);
     final String? previous = previousMonth(dateTime);
     final String monthKey = currentMonth + (next ?? '') + (previous ?? '');
@@ -108,8 +107,6 @@ class _BookingCalendarMonthTitleWidgetState
     }
     final day = widget.bookingDays[index].date;
     if (day.month == _dateTime?.month) return;
-    print('newIndex: ${day}');
-
     setState(() {
       _cardIndex = index;
       _dateTime = day;
@@ -148,8 +145,7 @@ class _BookingCalendarMonthTitleWidgetState
 class _MonthSwitcher extends StatelessWidget {
   /// {@macro booking_calendar}
   const _MonthSwitcher({
-    required this.child,
-    super.key, // ignore: unused_element
+    required this.child, // ignore: unused_element
   });
 
   final Widget child;
@@ -162,9 +158,9 @@ class _MonthSwitcher extends StatelessWidget {
           children: entries,
         ),
         transitionBuilder: (
-          Widget child,
-          Animation<double> primaryAnimation,
-          Animation<double> secondaryAnimation,
+          child,
+          primaryAnimation,
+          secondaryAnimation,
         ) =>
             SharedAxisTransition(
           animation: primaryAnimation,

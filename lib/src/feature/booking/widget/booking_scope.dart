@@ -47,8 +47,8 @@ class _BookingScopeState extends State<BookingScope> {
 
   @override
   Widget build(BuildContext context) => _InheritedBookingScope(
-        child: widget.child,
         bookingBloc: _bookingBloc,
+        child: widget.child,
       );
 }
 
@@ -59,8 +59,7 @@ class _InheritedBookingScope extends InheritedWidget {
   /// {@macro booking_scope}
   const _InheritedBookingScope({
     required super.child,
-    required this.bookingBloc,
-    super.key, // ignore: unused_element
+    required this.bookingBloc, // ignore: unused_element
   });
 
   final BookingBloc bookingBloc;

@@ -1,13 +1,12 @@
 import 'package:book_talk/src/feature/account/bloc/account_bloc.dart';
 import 'package:book_talk/src/feature/bootstrap/widget/app_scope.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 const double avatarSize = 35;
 
 class UserAvatarWidget extends StatelessWidget {
-  const UserAvatarWidget({
+  const UserAvatarWidget({super.key, 
     this.size = avatarSize,
   });
 

@@ -1,4 +1,4 @@
-import 'package:book_talk/generated/l10n.dart';
+import 'package:book_talk/l10n/app_localizations.dart';
 import 'package:book_talk/src/feature/room_detail/bloc/room_detail_bloc.dart';
 import 'package:book_talk/src/feature/room_detail/widget/room_detail_scope.dart';
 import 'package:book_talk_ui/book_talk_ui.dart';
@@ -7,7 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class RoomCapacitySelector extends StatefulWidget {
-  const RoomCapacitySelector();
+  const RoomCapacitySelector({super.key});
 
   @override
   State<RoomCapacitySelector> createState() => _RoomCapacitySelectorState();
@@ -41,7 +41,7 @@ class _RoomCapacitySelectorState extends State<RoomCapacitySelector> {
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        UiText.labelMedium(S.of(context).roomCapacityNumber),
+        UiText.labelMedium(AppLocalizations.of(context)!.roomCapacityNumber),
         UiDivider(margin: const EdgeInsets.only(bottom: 5)),
         BlocBuilder<RoomDetailBloc, RoomDetailState>(
           bloc: roomDetailBloc,

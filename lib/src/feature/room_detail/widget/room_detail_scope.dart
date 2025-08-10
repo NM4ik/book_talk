@@ -12,9 +12,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class RoomDetailScope extends StatefulWidget {
   /// {@macro room_detail_scope}
   const RoomDetailScope({
-    super.key,
-    required this.room,
-    required this.child,
+    required this.room, required this.child, super.key,
   });
 
   static RoomDetailBloc of(BuildContext context, {bool listen = true}) =>
@@ -45,15 +43,13 @@ class _RoomDetailScopeState extends State<RoomDetailScope> {
   /* #endregion */
 
   @override
-  Widget build(BuildContext context) {
-    return BlocBuilder(
+  Widget build(BuildContext context) => BlocBuilder(
       bloc: _roomDetailBloc,
       builder: (context, state) => _InhertiedRoomScope(
-        child: widget.child,
         roomDetailBloc: _roomDetailBloc,
+        child: widget.child,
       ),
     );
-  }
 }
 
 /// {@template room_detail_scope}

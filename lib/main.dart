@@ -9,5 +9,5 @@ import 'package:book_talk/src/feature/bootstrap/logic/app_bootstrap.dart';
 /// uncaught errors and send them to the error tracking service.
 void main() => runZonedGuarded(
       () => AppBootstrap().initializeApp(),
-      (error, stackTrace) => ErrorTracking.trackError(error, stackTrace),
+      ErrorTracking.trackError,
     );

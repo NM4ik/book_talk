@@ -2,13 +2,12 @@ import 'package:book_talk/src/common/constants/pubspec.yaml.g.dart';
 import 'package:flutter/material.dart';
 
 class AppDebugWidget extends StatelessWidget {
-  const AppDebugWidget({super.key, required this.child});
+  const AppDebugWidget({required this.child, super.key});
 
   final Widget child;
 
   @override
-  Widget build(BuildContext context) {
-    return Material(
+  Widget build(BuildContext context) => Material(
       child: Stack(
         alignment: Alignment.bottomRight,
         children: [
@@ -23,5 +22,4 @@ class AppDebugWidget extends StatelessWidget {
         ],
       ),
     );
-  }
 }
