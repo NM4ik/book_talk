@@ -1,0 +1,39 @@
+name: book_talk
+
+packages:
+  - packages/**
+
+sdkPath: .fvm/flutter_sdk
+
+scripts:
+  analyze:
+    run: melos exec -- "flutter analyze ."
+    description: Analyze all packages for issues
+  
+  test:
+    run: melos exec -- "flutter test"
+    description: Run tests for all packages
+  
+  format:
+    run: melos exec -- "dart format . --line-length 80"
+    description: Format code in all packages
+  
+  lint:
+    run: melos exec -- "dart fix --apply"
+    description: Apply lint fixes to all packages
+
+  generate:
+    run: "dart run build_runner build --delete-conflicting-outputs && melos exec --concurrency=1 --depends-on=build_runner -- dart run build_runner build --delete-conflicting-outputs"
+    description: Generate code for root project and packages with build_runner
+
+  clean:
+    run: melos exec -- "flutter clean"
+    description: Clean all packages
+
+  get:
+    run: melos exec --concurrency=1 -- "flutter pub get"
+    description: Get dependencies for all packages (sequential execution to avoid Flutter lock conflicts)
+
+ide:
+  vscode:
+    enabled: true

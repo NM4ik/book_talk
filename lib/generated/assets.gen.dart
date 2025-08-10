@@ -39,11 +39,17 @@ class $AssetsImagesGen {
 class $LibL10nGen {
   const $LibL10nGen();
 
+  /// File path: lib/l10n/app_localizations.dart
+  String get appLocalizations => 'lib/l10n/app_localizations.dart';
+
+  /// File path: lib/l10n/app_localizations_en.dart
+  String get appLocalizationsEn => 'lib/l10n/app_localizations_en.dart';
+
   /// File path: lib/l10n/intl_en.arb
   String get intlEn => 'lib/l10n/intl_en.arb';
 
   /// List of all assets
-  List<String> get values => [intlEn];
+  List<String> get values => [appLocalizations, appLocalizationsEn, intlEn];
 }
 
 class Assets {

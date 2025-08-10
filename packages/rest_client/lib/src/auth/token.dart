@@ -5,5 +5,6 @@ class Token {
   final String refreshToken;
 
   @override
-  String toString() => 'Token(accessToken: $accessToken, refreshToken: $refreshToken)';
+  String toString() =>
+      'Token(accessToken: $accessToken, refreshToken: $refreshToken)';
 }

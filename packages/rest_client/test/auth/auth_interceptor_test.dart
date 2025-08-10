@@ -20,7 +20,6 @@ class MockRequestOptions extends Mock implements RequestOptions {}
 class MockErrorInterceptorHandler extends Mock
     implements ErrorInterceptorHandler {}
 
-
 class MockRequestInterceptorHandler extends Mock
     implements RequestInterceptorHandler {}
 

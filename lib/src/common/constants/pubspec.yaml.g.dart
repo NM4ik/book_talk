@@ -124,13 +124,13 @@ sealed class Pubspec {
   /// Build date and time (UTC)
   static final DateTime timestamp = DateTime.utc(
     2025,
-    1,
-    7,
-    16,
-    5,
-    30,
-    315,
-    792,
+    8,
+    10,
+    19,
+    13,
+    54,
+    232,
+    979,
   );
 
   /// Name
@@ -165,8 +165,7 @@ sealed class Pubspec {
   /// Think of the description as the sales pitch for your package.
   /// Users see it when they [browse for packages](https://pub.dev/packages).
   /// The description is plain text: no markdown or HTML.
-  static const String description =
-      r'BookTalk: an app for booking meeting rooms in the office.';
+  static const String description = r'BookTalk: an app for booking meeting rooms in the office.';
 
   /// Homepage
   ///
@@ -347,8 +346,8 @@ sealed class Pubspec {
 
   /// Environment
   static const Map<String, String> environment = <String, String>{
-    'sdk': '>=3.6.0 <4.0.0',
-    'flutter': '>=3.6.0 <4.0.0',
+    'sdk': '>=3.8.0 <4.0.0',
+    'flutter': '>=3.8.0 <4.0.0',
   };
 
   /// Platforms
@@ -418,18 +417,22 @@ sealed class Pubspec {
     'rxdart': r'^0.28.0',
     'flutter_bloc': r'^8.1.6',
     'bloc': r'^8.1.4',
-    'l': r'^5.0.0',
-    'octopus': r'^0.0.9',
     'bloc_concurrency': r'^0.2.5',
+    'octopus': r'^0.0.9',
     'shared_preferences': r'^2.3.2',
     'cached_network_image': r'^3.4.1',
     'carousel_slider': r'^5.0.0',
     'smooth_page_indicator': r'^1.2.0+3',
+    'animations': r'^2.0.11',
+    'dio': r'^5.8.0+1',
     'uuid': r'^4.5.1',
     'cupertino_icons': r'^1.0.8',
     'window_manager': r'^0.4.3',
     'collection': r'^1.18.0',
     'image_picker': r'^1.1.2',
+    'dart_jsonwebtoken': r'^3.1.1',
+    'talker_flutter': r'^4.6.14',
+    'flutter_dotenv': r'^5.2.1',
   };
 
   /// Developer dependencies
@@ -440,6 +443,7 @@ sealed class Pubspec {
     'build_runner': r'^2.4.13',
     'dart_code_metrics_presets': r'^2.17.0',
     'dartdoc': r'^8.1.0',
+    'melos': r'^6.3.3',
   };
 
   /// Dependency overrides
@@ -496,11 +500,13 @@ sealed class Pubspec {
     'dependency_overrides': dependencyOverrides,
     'workspace': <Object>[
       r'packages/book_talk_ui',
+      r'packages/rest_client',
     ],
     'flutter': <String, Object>{
       'generate': true,
       'uses-material-design': true,
       'assets': <Object>[
+        r'.env',
         r'lib/l10n/',
         r'assets/images/',
       ],
@@ -512,4 +518,5 @@ sealed class Pubspec {
       'enabled': true,
     },
   };
+
 }

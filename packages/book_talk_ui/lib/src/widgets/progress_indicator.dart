@@ -104,9 +104,7 @@ class __DefferedProgressIndicatorState
 /// {@endtemplate}
 class _ProgressIndicator extends StatelessWidget {
   /// {@macro progress_indicator}
-  const _ProgressIndicator({
-    super.key, // ignore: unused_element
-  });
+  const _ProgressIndicator();
 
   @override
   Widget build(BuildContext context) =>
