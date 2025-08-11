@@ -20,8 +20,8 @@ class AuthRepositoryImpl implements AuthRepository {
   AuthRepositoryImpl({
     required AuthStorage authStorage,
     required AuthDatasource authDatasource,
-  })  : _authStorage = authStorage,
-        _authDatasource = authDatasource;
+  }) : _authStorage = authStorage,
+       _authDatasource = authDatasource;
 
   final AuthStorage _authStorage;
   final AuthDatasource _authDatasource;
@@ -53,6 +53,6 @@ class AuthRepositoryImpl implements AuthRepository {
 
   @override
   Stream<AuthStatus> get authStatus => _authStorage.authTokenStream.map(
-        (token) => token != null ? AuthStatus.auth : AuthStatus.unAuth,
-      );
+    (token) => token != null ? AuthStatus.auth : AuthStatus.unAuth,
+  );
 }

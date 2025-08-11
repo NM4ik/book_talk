@@ -14,7 +14,7 @@ abstract interface class RoomsRepository {
 
 final class RoomsRepositoryImpl extends RoomsRepository {
   const RoomsRepositoryImpl({required RoomsDatasource roomsDatasource})
-      : _roomsDatasource = roomsDatasource;
+    : _roomsDatasource = roomsDatasource;
 
   final RoomsDatasource _roomsDatasource;
 
@@ -25,6 +25,5 @@ final class RoomsRepositoryImpl extends RoomsRepository {
   }
 
   @override
-  Future<bool> deleteRoom(int id) async =>
-      _roomsDatasource.deleteRoom(id);
+  Future<bool> deleteRoom(int id) async => _roomsDatasource.deleteRoom(id);
 }

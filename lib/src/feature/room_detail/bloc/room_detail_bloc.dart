@@ -1,11 +1,11 @@
 import 'dart:async';
-import 'package:bloc/bloc.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:book_talk/src/common/model/room/room.dart';
 import 'package:book_talk/src/common/model/room/room_day_setting.dart';
 import 'package:book_talk/src/feature/room_detail/data/room_detail_repository.dart';
 import 'package:book_talk/src/feature/room_detail/data/room_image_repository.dart';
 import 'package:book_talk/src/feature/room_detail/model/file_image.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
 part 'room_detail_event.dart';
 part 'room_detail_state.dart';
@@ -16,23 +16,27 @@ final class RoomDetailBloc extends Bloc<RoomDetailEvent, RoomDetailState> {
     required IRoom? room,
     required RoomImageRepository roomImageRepository,
     required RoomDetailRepository roomDetailRepository,
-  })  : _roomImageRepository = roomImageRepository,
-        _roomDetailRepository = roomDetailRepository,
-        super(
-          RoomDetailState.idle(
-            room: room ?? const EmptyRoom(),
-          ),
-        ) {
+  }) : _roomImageRepository = roomImageRepository,
+       _roomDetailRepository = roomDetailRepository,
+       super(RoomDetailState.idle(room: room ?? const EmptyRoom())) {
     on<RoomDetailEvent>(
       (event, emitter) => switch (event) {
-        _RoomDetailChangeActiveEvent() =>
-          _onChangeRoomActiveEvent(event, emitter),
-        _RoomDetailChangeCapacityEvent() =>
-          _onChangeRoomCapacityEvent(event, emitter),
-        _RoomDetailChangeTitleEvent() =>
-          _onChangeRoomTitleEvent(event, emitter),
-        _RoomDetailChangeDayActiveEvent() =>
-          _onChangeDayActiveEvent(event, emitter),
+        _RoomDetailChangeActiveEvent() => _onChangeRoomActiveEvent(
+          event,
+          emitter,
+        ),
+        _RoomDetailChangeCapacityEvent() => _onChangeRoomCapacityEvent(
+          event,
+          emitter,
+        ),
+        _RoomDetailChangeTitleEvent() => _onChangeRoomTitleEvent(
+          event,
+          emitter,
+        ),
+        _RoomDetailChangeDayActiveEvent() => _onChangeDayActiveEvent(
+          event,
+          emitter,
+        ),
         _RoomDetailChangeTimeEvent() => _onChangeTimeEvent(event, emitter),
         _RoomDetailPickImageEvent() => _onPickImageEvent(event, emitter),
         _CreateRoomEvent() => _onCreateRoomEvent(event, emitter),
@@ -124,10 +128,8 @@ final class RoomDetailBloc extends Bloc<RoomDetailEvent, RoomDetailState> {
     );
   }
 
-  /// TODO(Mikhailov):
-  /// Think about it - loading state
-  ///
-  /// Make script-comment for new laptop
+  // TODO(Mikhailov): Think about it - loading state
+  // Make script-comment for new laptop
   Future<void> _onPickImageEvent(
     _RoomDetailPickImageEvent event,
     Emitter<RoomDetailState> emitter,
@@ -153,9 +155,7 @@ final class RoomDetailBloc extends Bloc<RoomDetailEvent, RoomDetailState> {
       emitter(RoomDetailState.success(room: state.room));
     } on Object catch (e, st) {
       onError(e, st);
-      emitter(
-        RoomDetailState.error(room: state.room, message: e.toString()),
-      );
+      emitter(RoomDetailState.error(room: state.room, message: e.toString()));
     }
   }
 
@@ -169,9 +169,7 @@ final class RoomDetailBloc extends Bloc<RoomDetailEvent, RoomDetailState> {
       emitter(RoomDetailState.success(room: state.room));
     } on Object catch (e, st) {
       onError(e, st);
-      emitter(
-        RoomDetailState.error(room: state.room, message: e.toString()),
-      );
+      emitter(RoomDetailState.error(room: state.room, message: e.toString()));
     }
   }
 

@@ -9,7 +9,7 @@ abstract interface class AuthDatasource {
 
 final class AuthDatasourceImpl implements AuthDatasource {
   const AuthDatasourceImpl({required RestClient restClient})
-      : _restClient = restClient;
+    : _restClient = restClient;
 
   final RestClient _restClient;
 

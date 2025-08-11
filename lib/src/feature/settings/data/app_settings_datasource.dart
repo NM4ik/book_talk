@@ -10,7 +10,7 @@ abstract interface class AppSettingsDatasource {
 
 final class AppSettingsDatasourceImpl implements AppSettingsDatasource {
   AppSettingsDatasourceImpl({required PreferencesStorage preferencesStorage})
-      : _preferencesStorage = preferencesStorage;
+    : _preferencesStorage = preferencesStorage;
 
   final PreferencesStorage _preferencesStorage;
 

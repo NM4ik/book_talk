@@ -48,9 +48,7 @@ class RoomDetailImageWidget extends StatelessWidget {
 }
 
 class _EmptyRoomImage extends StatelessWidget {
-  const _EmptyRoomImage({
-    required this.emptyRoom,
-  });
+  const _EmptyRoomImage({required this.emptyRoom});
 
   final EmptyRoom emptyRoom;
 
@@ -59,10 +57,7 @@ class _EmptyRoomImage extends StatelessWidget {
     final fileImage = emptyRoom.fileImage;
 
     if (fileImage != null) {
-      return Image.file(
-        File(fileImage.path),
-        fit: BoxFit.cover,
-      );
+      return Image.file(File(fileImage.path), fit: BoxFit.cover);
     }
 
     // return const _RoomPlaceholderImage();
@@ -74,10 +69,7 @@ class _EmptyRoomImage extends StatelessWidget {
       label: Row(
         children: [
           const SizedBox(width: 20),
-          const Icon(
-            Icons.image,
-            size: 70,
-          ),
+          const Icon(Icons.image, size: 70),
           Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -105,10 +97,10 @@ class _RoomPlaceholderImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Stack(
-      fit: StackFit.expand,
-      children: [
-        Assets.images.meetingRoomPlaceholder.image(fit: BoxFit.cover),
-        const Placeholder(),
-      ],
-    );
+    fit: StackFit.expand,
+    children: [
+      Assets.images.meetingRoomPlaceholder.image(fit: BoxFit.cover),
+      const Placeholder(),
+    ],
+  );
 }

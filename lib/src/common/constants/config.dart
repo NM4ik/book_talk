@@ -16,14 +16,13 @@ class Config {
 /// {@endtemplate}
 enum Environment {
   dev,
-  prod,
-  unknown;
+  prod;
 
   /// Returns an [Environment] instance based on the given environment string.
   static Environment from(String env) => switch (env) {
     'dev' => Environment.dev,
     'prod' => Environment.prod,
-    _ => Environment.unknown,
+    _ => throw ArgumentError.value(env, 'Environment', 'Invalid environment'),
   };
 
   /// True if the app is running in development mode.

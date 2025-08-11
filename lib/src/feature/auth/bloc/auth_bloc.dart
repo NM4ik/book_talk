@@ -11,11 +11,13 @@ part 'auth_event.dart';
 
 final class AuthBloc extends Bloc<AuthEvent, AuthState> with SetStateMixin {
   AuthBloc(super.initialState, {required AuthRepository authRepository})
-      : _authRepository = authRepository {
+    : _authRepository = authRepository {
     on<AuthEvent>(
       (event, emitter) => switch (event) {
-        _SignEmailPasswordAuthEvent() =>
-          _onSignEmailPasswordEvent(event, emitter),
+        _SignEmailPasswordAuthEvent() => _onSignEmailPasswordEvent(
+          event,
+          emitter,
+        ),
         _SignOutAuthEvent() => _onSignOutEvent(event, emitter),
       },
       transformer: droppable(),
@@ -23,13 +25,11 @@ final class AuthBloc extends Bloc<AuthEvent, AuthState> with SetStateMixin {
 
     _authStatusSubscription = _authRepository.authStatus
         .map((status) => AuthState.idle(authStatus: status))
-        .listen(
-      ($state) {
-        if ($state != state) {
-          setState($state);
-        }
-      },
-    );
+        .listen(($state) {
+          if ($state != state) {
+            setState($state);
+          }
+        });
   }
 
   final AuthRepository _authRepository;
@@ -43,7 +43,9 @@ final class AuthBloc extends Bloc<AuthEvent, AuthState> with SetStateMixin {
 
     try {
       await _authRepository.signInWithEmailAndPassword(
-          event.email, event.password);
+        event.email,
+        event.password,
+      );
       emitter(AuthState.idle(authStatus: state.authStatus));
     } on Object catch (e, stackTrace) {
       emitter(AuthState.error(authStatus: AuthStatus.unAuth, error: e));

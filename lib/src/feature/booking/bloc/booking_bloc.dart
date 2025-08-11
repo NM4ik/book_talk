@@ -8,10 +8,9 @@ part 'booking_state.dart';
 part 'booking_event.dart';
 
 final class BookingBloc extends Bloc<BookingEvent, BookingState> {
-  BookingBloc({
-    required BookingRepository bookingRepository,
-  })  : _bookingRepository = bookingRepository,
-        super(const BookingState.processing(bookingDays: null)) {
+  BookingBloc({required BookingRepository bookingRepository})
+    : _bookingRepository = bookingRepository,
+      super(const BookingState.processing(bookingDays: null)) {
     on<BookingEvent>(
       (event, emitter) => switch (event) {
         _Load() => _onLoadEvent(event, emitter),
@@ -23,11 +22,10 @@ final class BookingBloc extends Bloc<BookingEvent, BookingState> {
   final BookingRepository _bookingRepository;
 
   Future<void> _onLoadEvent(_Load event, Emitter<BookingState> emitter) async {
-    try {
-      emitter(BookingState.processing(bookingDays: state.bookingDays));
+    emitter(BookingState.processing(bookingDays: state.bookingDays));
 
-      final BookingDays? bookingDays =
-          await _bookingRepository.fetchBookingDays();
+    try {
+      final bookingDays = await _bookingRepository.fetchBookingDays();
 
       if (bookingDays != null) {
         emitter(BookingState.idle(bookingDays: bookingDays));

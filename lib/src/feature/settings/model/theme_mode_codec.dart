@@ -15,11 +15,11 @@ final class _DecodeConverter extends Converter<String, ThemeMode> {
 
   @override
   ThemeMode convert(String input) => switch (input) {
-        'ThemeMode.system' => ThemeMode.system,
-        'ThemeMode.light' => ThemeMode.light,
-        'ThemeMode.dark' => ThemeMode.dark,
-        _ => throw ArgumentError('_DecodeConverter invalid value'),
-      };
+    'ThemeMode.system' => ThemeMode.system,
+    'ThemeMode.light' => ThemeMode.light,
+    'ThemeMode.dark' => ThemeMode.dark,
+    _ => throw ArgumentError('_DecodeConverter invalid value'),
+  };
 }
 
 final class _EncodeConverter extends Converter<ThemeMode, String> {
@@ -27,8 +27,8 @@ final class _EncodeConverter extends Converter<ThemeMode, String> {
 
   @override
   String convert(ThemeMode input) => switch (input) {
-        ThemeMode.system => 'ThemeMode.system',
-        ThemeMode.light => 'ThemeMode.light',
-        ThemeMode.dark => 'ThemeMode.dark'
-      };
+    ThemeMode.system => 'ThemeMode.system',
+    ThemeMode.light => 'ThemeMode.light',
+    ThemeMode.dark => 'ThemeMode.dark',
+  };
 }

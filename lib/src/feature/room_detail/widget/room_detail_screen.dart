@@ -1,7 +1,7 @@
 import 'package:book_talk/common.dart';
 import 'package:book_talk/l10n/app_localizations.dart';
+import 'package:book_talk/src/common/widgets/sized_box.dart';
 import 'package:book_talk/src/feature/bootstrap/widget/app_scope.dart';
-import 'package:book_talk/src/feature/bootstrap/widget/sized_box.dart';
 import 'package:book_talk/src/feature/room_detail/bloc/room_detail_bloc.dart';
 import 'package:book_talk/src/feature/room_detail/widget/room_detail_capacity.dart';
 import 'package:book_talk/src/feature/room_detail/widget/room_detail_image.dart';
@@ -203,7 +203,9 @@ class _RoomAvailableToggle extends StatelessWidget {
           children: [
             Row(
               children: [
-                UiText.labelMedium(AppLocalizations.of(context)!.roomIsActiveStatus),
+                UiText.labelMedium(
+                  AppLocalizations.of(context)!.roomIsActiveStatus,
+                ),
                 const SizedBox(width: 5),
                 AnimatedSwitcher(
                   duration: const Duration(milliseconds: 200),

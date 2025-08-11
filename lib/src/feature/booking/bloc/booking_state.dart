@@ -22,16 +22,16 @@ sealed class BookingState {
     required T Function({
       required BookingDays? bookingDays,
       required String? message,
-    }) error,
-  }) =>
-      switch (this) {
-        _Idle() => idle(bookingDays: bookingDays),
-        _Processing() => processing(),
-        _Error() => error(
-            bookingDays: bookingDays,
-            message: (this as _Error).message,
-          ),
-      };
+    })
+    error,
+  }) => switch (this) {
+    _Idle() => idle(bookingDays: bookingDays),
+    _Processing() => processing(),
+    _Error() => error(
+      bookingDays: bookingDays,
+      message: (this as _Error).message,
+    ),
+  };
 
   bool get isProcessing => this is _Processing;
 

@@ -17,8 +17,8 @@ abstract class PreferencesStorage {
 
 /// A concrete implementation of [PreferencesStorage] using `SharedPreferencesAsync`.
 /// Uses an instance of [SharedPreferencesAsync] to persist and manage data.
-final class SharedPreferencesStorage extends PreferencesStorage {
-  const SharedPreferencesStorage({
+final class PreferencesStorage$SharedPref extends PreferencesStorage {
+  const PreferencesStorage$SharedPref({
     required SharedPreferencesAsync sharedPreferences,
   }) : _sharedPreferences = sharedPreferences;
 

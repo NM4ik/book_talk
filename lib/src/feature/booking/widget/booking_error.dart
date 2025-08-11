@@ -16,30 +16,32 @@ class BookingErrorWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Padding(
-        padding: const EdgeInsets.all(24),
-        child: Center(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              UiText.titleMedium(
-                AppLocalizations.of(context)!.bookingSheduleError,
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 15),
-              UiText.bodySmall(
-                AppLocalizations.of(context)!.retryOrLater,
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 25),
-              UiButton.filledPrimary(
-                onPressed: onPressed,
-                label: UiText.bodyMedium(AppLocalizations.of(context)!.tryAgain),
-                innerPadding:
-                    const EdgeInsets.symmetric(horizontal: 50, vertical: 15),
-              ),
-            ],
+    padding: const EdgeInsets.all(24),
+    child: Center(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          UiText.titleMedium(
+            AppLocalizations.of(context)!.bookingSheduleError,
+            textAlign: TextAlign.center,
           ),
-        ),
-      );
+          const SizedBox(height: 15),
+          UiText.bodySmall(
+            AppLocalizations.of(context)!.retryOrLater,
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: 25),
+          UiButton.filledPrimary(
+            onPressed: onPressed,
+            label: UiText.bodyMedium(AppLocalizations.of(context)!.tryAgain),
+            innerPadding: const EdgeInsets.symmetric(
+              horizontal: 50,
+              vertical: 15,
+            ),
+          ),
+        ],
+      ),
+    ),
+  );
 }

@@ -40,33 +40,33 @@ class _RoomsScreenState extends State<RoomsScreen> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-        body: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 12),
-          child: CustomScrollView(
-            slivers: [
-              const CupertinoSliverNavigationBar(
-                largeTitle: _NavigationTitle(),
-                trailing: _AvatarTrailingButton(),
-              ),
-              BlocBuilder<RoomsBloc, RoomsState>(
-                bloc: AppScope.of(context).roomsBloc,
-                builder: (context, state) {
-                  final List<Room>? rooms = state.rooms;
-                  if (rooms != null) {
-                    return _RoomsGrid(rooms: rooms);
-                  }
-
-                  if (state.isProcessing) {
-                    return const _LoadingGrid();
-                  }
-
-                  return const _RoomsError();
-                },
-              ),
-            ],
+    body: Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 12),
+      child: CustomScrollView(
+        slivers: [
+          const CupertinoSliverNavigationBar(
+            largeTitle: _NavigationTitle(),
+            trailing: _AvatarTrailingButton(),
           ),
-        ),
-      );
+          BlocBuilder<RoomsBloc, RoomsState>(
+            bloc: AppScope.of(context).roomsBloc,
+            builder: (context, state) {
+              final List<Room>? rooms = state.rooms;
+              if (rooms != null) {
+                return _RoomsGrid(rooms: rooms);
+              }
+
+              if (state.isProcessing) {
+                return const _LoadingGrid();
+              }
+
+              return const _RoomsError();
+            },
+          ),
+        ],
+      ),
+    ),
+  );
 }
 
 class _NavigationTitle extends StatelessWidget {
@@ -74,12 +74,12 @@ class _NavigationTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Row(
-      children: [
-        Text(AppLocalizations.of(context)!.roomsTitle),
-        const SizedBox(width: 10),
-        const _CreateRoomButton(),
-      ],
-    );
+    children: [
+      Text(AppLocalizations.of(context)!.roomsTitle),
+      const SizedBox(width: 10),
+      const _CreateRoomButton(),
+    ],
+  );
 }
 
 class _AvatarTrailingButton extends StatelessWidget {
@@ -87,11 +87,9 @@ class _AvatarTrailingButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => GestureDetector(
-      onTap: () => context.octopus.push(Routes.account),
-      child: const UserAvatarWidget(
-        size: 30,
-      ),
-    );
+    onTap: () => context.octopus.push(Routes.account),
+    child: const UserAvatarWidget(size: 30),
+  );
 }
 
 /// {@template rooms_screen}
@@ -102,29 +100,27 @@ class _CreateRoomButton extends StatelessWidget {
   const _CreateRoomButton();
 
   @override
-  Widget build(BuildContext context) => AnimatedBlocBuilder<RoomsBloc, RoomsState>(
-      bloc: AppScope.of(context).roomsBloc,
-      builder: (context, state) {
-        final Widget child;
+  Widget build(BuildContext context) =>
+      AnimatedBlocBuilder<RoomsBloc, RoomsState>(
+        bloc: AppScope.of(context).roomsBloc,
+        builder: (context, state) {
+          final Widget child;
 
-        if (state.isIdle) {
-          child = GestureDetector(
-            onTap: () => _onRoomEdit(context, null),
-            child: Icon(
-              Icons.add_circle_rounded,
-              color: Theme.of(context).colorPalette?.primary,
-            ),
-          );
-        } else {
-          child = const SizedBox.shrink();
-        }
+          if (state.isIdle) {
+            child = GestureDetector(
+              onTap: () => _onRoomEdit(context, null),
+              child: Icon(
+                Icons.add_circle_rounded,
+                color: Theme.of(context).colorPalette?.primary,
+              ),
+            );
+          } else {
+            child = const SizedBox.shrink();
+          }
 
-        return AnimatedSwitcher(
-          duration: Durations.medium2,
-          child: child,
-        );
-      },
-    );
+          return AnimatedSwitcher(duration: Durations.medium2, child: child);
+        },
+      );
 }
 
 /// {@template rooms_screen}
@@ -140,9 +136,9 @@ class _RoomsGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => _GridBuilder(
-        itemBuilder: (context, index) => _RoomCard(room: rooms[index]),
-        itemCount: rooms.length,
-      );
+    itemBuilder: (context, index) => _RoomCard(room: rooms[index]),
+    itemCount: rooms.length,
+  );
 }
 
 /// {@template rooms_screen}
@@ -154,20 +150,17 @@ class _LoadingGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => _GridBuilder(
-        itemBuilder: (context, index) => Shimmer(
-            size: Size.infinite,
-            backgroundColor: Colors.grey[600],
-            color: Colors.black,
-          ),
-        itemCount: 9,
-      );
+    itemBuilder: (context, index) => Shimmer(
+      size: Size.infinite,
+      backgroundColor: Colors.grey[600],
+      color: Colors.black,
+    ),
+    itemCount: 9,
+  );
 }
 
 class _GridBuilder extends StatelessWidget {
-  const _GridBuilder({
-    required this.itemBuilder,
-    required this.itemCount,
-  });
+  const _GridBuilder({required this.itemBuilder, required this.itemCount});
 
   final Widget? Function(BuildContext, int) itemBuilder;
   final int itemCount;
@@ -180,8 +173,8 @@ class _GridBuilder extends StatelessWidget {
     final crossAxisCount = windowSize.isLargeFormat
         ? 3
         : windowWidth < 650
-            ? 1
-            : 2;
+        ? 1
+        : 2;
 
     return SliverPadding(
       padding: const EdgeInsets.only(top: 20),
@@ -212,10 +205,9 @@ class _RoomCard extends StatelessWidget {
 
     return UiButton.common(
       onPressed: () {
-        Octopus.of(context).push(
-          Routes.booking,
-          arguments: {'room-id': room.id.toString()},
-        );
+        Octopus.of(
+          context,
+        ).push(Routes.booking, arguments: {'room-id': room.id.toString()});
       },
       bgColor: Theme.of(context).colorPalette?.secondary,
       hoverColor: Theme.of(context).colorPalette?.muted,
@@ -264,12 +256,12 @@ class _RoomCard extends StatelessWidget {
                                 CupertinoIcons.settings,
                                 size: 20,
                               ),
-                            )
+                            ),
                           ],
                         ),
                       ),
                     ],
-                  )
+                  ),
                 ],
               ),
             ),
@@ -281,15 +273,15 @@ class _RoomCard extends StatelessWidget {
 }
 
 void _onRoomEdit(BuildContext context, Room? room) {
-  Octopus.of(context).setState((state) => state
-    ..removeByName(Routes.roomDetail.name)
-    ..add(
-      Routes.roomDetail.node(
-        arguments: {
-          if (room != null) 'id': room.id.toString(),
-        },
+  Octopus.of(context).setState(
+    (state) => state
+      ..removeByName(Routes.roomDetail.name)
+      ..add(
+        Routes.roomDetail.node(
+          arguments: {if (room != null) 'id': room.id.toString()},
+        ),
       ),
-    ));
+  );
 }
 
 /// {@template rooms_screen}
@@ -301,28 +293,30 @@ class _RoomsError extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => SliverFillRemaining(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            UiText.titleMedium(
-              AppLocalizations.of(context)!.errorSomethingWentWrong,
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 15),
-            UiText.bodySmall(
-              AppLocalizations.of(context)!.retryOrLater,
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 25),
-            UiButton.filledPrimary(
-              onPressed: () {
-                AppScope.of(context).roomsBloc.add(const RoomsEvent.load());
-              },
-              label: UiText.bodyMedium(AppLocalizations.of(context)!.tryAgain),
-              innerPadding:
-                  const EdgeInsets.symmetric(horizontal: 60, vertical: 15),
-            ),
-          ],
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        UiText.titleMedium(
+          AppLocalizations.of(context)!.errorSomethingWentWrong,
+          textAlign: TextAlign.center,
         ),
-      );
+        const SizedBox(height: 15),
+        UiText.bodySmall(
+          AppLocalizations.of(context)!.retryOrLater,
+          textAlign: TextAlign.center,
+        ),
+        const SizedBox(height: 25),
+        UiButton.filledPrimary(
+          onPressed: () {
+            AppScope.of(context).roomsBloc.add(const RoomsEvent.load());
+          },
+          label: UiText.bodyMedium(AppLocalizations.of(context)!.tryAgain),
+          innerPadding: const EdgeInsets.symmetric(
+            horizontal: 60,
+            vertical: 15,
+          ),
+        ),
+      ],
+    ),
+  );
 }

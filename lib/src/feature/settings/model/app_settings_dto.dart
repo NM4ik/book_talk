@@ -5,10 +5,7 @@ import 'package:book_talk/src/feature/settings/model/theme_mode_codec.dart';
 import 'package:flutter/material.dart';
 
 class AppSettingsDto {
-  const AppSettingsDto({
-    required this.themeMode,
-    required this.locale,
-  });
+  const AppSettingsDto({required this.themeMode, required this.locale});
 
   factory AppSettingsDto.fromJson(String json) {
     final data = jsonDecode(json) as Map<String, Object?>;
@@ -18,34 +15,24 @@ class AppSettingsDto {
     return AppSettingsDto(
       themeMode: ThemeModeCodec().decode(data['themeMode']! as String),
       locale: languageCode != null
-          ? Locale(
-              languageCode,
-              data['locale.country_code'] as String?,
-            )
+          ? Locale(languageCode, data['locale.country_code'] as String?)
           : null,
     );
   }
 
-  factory AppSettingsDto.fromEntity(AppSettings entity) => AppSettingsDto(
-        themeMode: entity.themeMode,
-        locale: entity.locale,
-      );
+  factory AppSettingsDto.fromEntity(AppSettings entity) =>
+      AppSettingsDto(themeMode: entity.themeMode, locale: entity.locale);
 
   final ThemeMode themeMode;
   final Locale? locale;
 
-  String toJson() => jsonEncode(
-      {
-        'themeMode': ThemeModeCodec().encode(themeMode),
-        if (locale != null) ...{
-          'locale.language_code': locale?.languageCode,
-          'locale.country_code': locale?.countryCode,
-        }
-      },
-    );
+  String toJson() => jsonEncode({
+    'themeMode': ThemeModeCodec().encode(themeMode),
+    if (locale != null) ...{
+      'locale.language_code': locale?.languageCode,
+      'locale.country_code': locale?.countryCode,
+    },
+  });
 
-  AppSettings toEntity() => AppSettings(
-        themeMode: themeMode,
-        locale: locale,
-      );
+  AppSettings toEntity() => AppSettings(themeMode: themeMode, locale: locale);
 }

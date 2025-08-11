@@ -7,7 +7,7 @@ abstract interface class UserDatasource {
 
 final class UserDatasourceImpl implements UserDatasource {
   const UserDatasourceImpl({required RestClient restClient})
-      : _restClient = restClient;
+    : _restClient = restClient;
 
   final RestClient _restClient;
 

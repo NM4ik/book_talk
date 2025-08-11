@@ -1,6 +1,6 @@
-import 'package:bloc/bloc.dart';
 import 'package:book_talk/src/feature/settings/data/app_settings_repository.dart';
 import 'package:book_talk/src/feature/settings/model/app_settings.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
 
 part 'app_settings_event.dart';

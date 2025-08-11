@@ -9,11 +9,11 @@ class UserDto {
   });
 
   factory UserDto.fromJson(Map<String, Object?> json) => UserDto._(
-      email: json['email']! as String,
-      firstName: json['firstName']?.toString(),
-      lastName: json['lastName']?.toString(),
-      theme: json['theme']?.toString(),
-    );
+    email: json['email']! as String,
+    firstName: json['firstName']?.toString(),
+    lastName: json['lastName']?.toString(),
+    theme: json['theme']?.toString(),
+  );
 
   final String email;
   final String? firstName;
@@ -21,13 +21,13 @@ class UserDto {
   final String? theme;
 
   User toEntity() => User(
-        email: email,
-        firstName: firstName ?? '',
-        lastName: lastName ?? '',
-        theme: switch (theme) {
-          'Light' => UserTheme.light,
-          'System' => UserTheme.system,
-          _ => UserTheme.dark,
-        },
-      );
+    email: email,
+    firstName: firstName ?? '',
+    lastName: lastName ?? '',
+    theme: switch (theme) {
+      'Light' => UserTheme.light,
+      'System' => UserTheme.system,
+      _ => UserTheme.dark,
+    },
+  );
 }

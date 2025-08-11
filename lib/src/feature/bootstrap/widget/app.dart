@@ -1,25 +1,105 @@
+import 'package:book_talk/l10n/app_localizations.dart';
+import 'package:book_talk/src/common/constants/pubspec.yaml.g.dart'
+    show Pubspec;
+import 'package:book_talk/src/common/router/router_mixin.dart';
 import 'package:book_talk/src/common/widgets/window_size.dart';
 import 'package:book_talk/src/feature/bootstrap/model/dependencies_container.dart';
 import 'package:book_talk/src/feature/bootstrap/widget/app_scope.dart';
-import 'package:book_talk/src/feature/bootstrap/widget/material_app_context.dart';
 import 'package:book_talk/src/feature/settings/widget/settings_scope.dart';
+import 'package:book_talk_ui/book_talk_ui.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:octopus/octopus.dart';
 
 class App extends StatelessWidget {
-  const App({
-    required this.dependenciesContainer,
-    super.key,
-  });
+  const App({required this.dependenciesContainer, super.key});
 
   final DependenciesContainer dependenciesContainer;
 
   @override
   Widget build(BuildContext context) => AppScope(
-      dependenciesContainer: dependenciesContainer,
-      child: const SettingsScope(
-        child: WindowSizeScope(
-          child: MaterialAppContext(),
-        ),
-      ),
+    dependenciesContainer: dependenciesContainer,
+    child: const SettingsScope(
+      child: WindowSizeScope(child: MaterialAppContext()),
+    ),
+  );
+}
+
+class MaterialAppContext extends StatefulWidget {
+  const MaterialAppContext({super.key});
+
+  @override
+  State<MaterialAppContext> createState() => _MaterialAppContextState();
+}
+
+class _MaterialAppContextState extends State<MaterialAppContext>
+    with RouterMixin {
+  final _materialAppKey = GlobalKey();
+
+  @override
+  Widget build(BuildContext context) {
+    final settings = SettingsScope.settingsOf(context);
+    final bookTalkUI = BookTalkTheme();
+
+    return MaterialApp.router(
+      title: 'BookTalk',
+      debugShowCheckedModeBanner: false,
+
+      // App Router
+      routerConfig: router.config,
+
+      // Localization
+      localizationsDelegates: const <LocalizationsDelegate<Object?>>[
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: AppLocalizations.supportedLocales,
+
+      locale: settings?.locale,
+      darkTheme: bookTalkUI.darkTheme,
+      theme: bookTalkUI.lightTheme,
+      themeMode: settings?.themeMode ?? ThemeMode.system,
+
+      builder: (context, child) {
+        final safeChild = child ?? const SizedBox.shrink();
+        final childWidget = kReleaseMode
+            ? safeChild
+            : _DebugWidget(child: safeChild);
+
+        return MediaQuery(
+          key: _materialAppKey,
+          data: MediaQuery.of(
+            context,
+          ).copyWith(textScaler: TextScaler.noScaling),
+          child: OctopusTools(octopus: router, child: childWidget),
+        );
+      },
     );
+  }
+}
+
+class _DebugWidget extends StatelessWidget {
+  const _DebugWidget({required this.child});
+
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) => Material(
+    child: Stack(
+      alignment: Alignment.bottomRight,
+      children: [
+        child,
+        SafeArea(
+          minimum: const EdgeInsets.all(20),
+          child: Text(
+            'version: ${Pubspec.version.canonical}',
+            style: const TextStyle(color: Colors.red),
+          ),
+        ),
+      ],
+    ),
+  );
 }

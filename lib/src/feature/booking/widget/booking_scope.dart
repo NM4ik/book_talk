@@ -46,10 +46,8 @@ class _BookingScopeState extends State<BookingScope> {
   /* #endregion */
 
   @override
-  Widget build(BuildContext context) => _InheritedBookingScope(
-        bookingBloc: _bookingBloc,
-        child: widget.child,
-      );
+  Widget build(BuildContext context) =>
+      _InheritedBookingScope(bookingBloc: _bookingBloc, child: widget.child);
 }
 
 /// {@template booking_scope}

@@ -1,5 +1,5 @@
 import 'dart:developer' as dev;
-import 'dart:math' ;
+import 'dart:math';
 import 'package:book_talk/src/common/model/room/room.dart';
 import 'package:book_talk/src/common/rest_api/rest_api.dart';
 
@@ -14,7 +14,7 @@ abstract interface class RoomsDatasource {
 
 final class RoomsDatasourceImpl extends RoomsDatasource {
   RoomsDatasourceImpl({required RestClient restClient})
-      : _restClient = restClient;
+    : _restClient = restClient;
 
   final RestClient _restClient;
 
@@ -24,11 +24,7 @@ final class RoomsDatasourceImpl extends RoomsDatasource {
     dev.log('rooms: $rooms');
     return Future.delayed(
       const Duration(seconds: 3),
-      () async => remoteRoomsMockData
-          .map(
-            RoomDto.fromMap,
-          )
-          .toList(),
+      () async => remoteRoomsMockData.map(RoomDto.fromMap).toList(),
     );
   }
 

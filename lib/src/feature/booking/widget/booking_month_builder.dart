@@ -133,10 +133,8 @@ class _BookingCalendarMonthTitleWidgetState
     }
   }
 
-  DateFormat get _monthFormatter => DateFormat(
-        'MMMM',
-        Localizations.localeOf(context).languageCode,
-      );
+  DateFormat get _monthFormatter =>
+      DateFormat('MMMM', Localizations.localeOf(context).languageCode);
 }
 
 /// {@template booking_calendar}
@@ -152,23 +150,17 @@ class _MonthSwitcher extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => PageTransitionSwitcher(
-        duration: const Duration(milliseconds: 1000),
-        layoutBuilder: (entries) => Stack(
-          alignment: Alignment.centerLeft,
-          children: entries,
-        ),
-        transitionBuilder: (
-          child,
-          primaryAnimation,
-          secondaryAnimation,
-        ) =>
-            SharedAxisTransition(
+    duration: const Duration(milliseconds: 1000),
+    layoutBuilder: (entries) =>
+        Stack(alignment: Alignment.centerLeft, children: entries),
+    transitionBuilder: (child, primaryAnimation, secondaryAnimation) =>
+        SharedAxisTransition(
           animation: primaryAnimation,
           secondaryAnimation: secondaryAnimation,
           fillColor: Colors.transparent,
           transitionType: SharedAxisTransitionType.horizontal,
           child: child,
         ),
-        child: child,
-      );
+    child: child,
+  );
 }

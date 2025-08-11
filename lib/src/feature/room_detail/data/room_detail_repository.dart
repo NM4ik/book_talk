@@ -64,31 +64,32 @@ final class RoomDetailRepositoryImpl implements RoomDetailRepository {
 
   @visibleForTesting
   void addToMockData(EmptyRoom emptyRoom) {
-    remoteRoomsMockData.add(
-      {
-        'id': Random().nextInt(99999),
-        'name': emptyRoom.name,
-        'capacity': emptyRoom.capacity,
-        'avatar':
-            'https://cdn.shopify.com/s/files/1/0605/0136/0804/files/Modern_meeting_room_with_advanced_technology.jpg?v=1703751846',
-        'isActive': emptyRoom.isActive,
-        'roomWeekSettings': emptyRoom.roomWeekSettings.days.map(
-          (day) => {
+    remoteRoomsMockData.add({
+      'id': Random().nextInt(99999),
+      'name': emptyRoom.name,
+      'capacity': emptyRoom.capacity,
+      'avatar':
+          'https://cdn.shopify.com/s/files/1/0605/0136/0804/files/Modern_meeting_room_with_advanced_technology.jpg?v=1703751846',
+      'isActive': emptyRoom.isActive,
+      'roomWeekSettings': emptyRoom.roomWeekSettings.days
+          .map(
+            (day) => {
               'priority': day.priority,
               'day': day.day,
               'isActive': day.isActive,
               'startTime': '${day.startTime.hour}:${day.startTime.minute}',
               'endTime': '${day.endTime.hour}:${day.endTime.minute}',
             },
-        ).toList()
-      },
-    );
+          )
+          .toList(),
+    });
   }
 
   @visibleForTesting
   void updateMockData(Map<String, dynamic> roomData) {
-    final index =
-        remoteRoomsMockData.indexWhere((room) => room['id'] == roomData['id']);
+    final index = remoteRoomsMockData.indexWhere(
+      (room) => room['id'] == roomData['id'],
+    );
 
     if (index == -1) {
       throw Exception('Room not found in mock data');
@@ -99,8 +100,9 @@ final class RoomDetailRepositoryImpl implements RoomDetailRepository {
 
   @visibleForTesting
   void deleteMockData(Room room) {
-    final index =
-        remoteRoomsMockData.indexWhere((data) => data['id'] == room.id);
+    final index = remoteRoomsMockData.indexWhere(
+      (data) => data['id'] == room.id,
+    );
 
     if (index == -1) {
       throw Exception('Room ${room.name} not found in mock data');

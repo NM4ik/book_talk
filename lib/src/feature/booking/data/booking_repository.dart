@@ -10,13 +10,15 @@ abstract interface class BookingRepository {
 
 final class BookingRepositoryImpl implements BookingRepository {
   const BookingRepositoryImpl({required BookingDataSource bookingDataSource})
-      : _bookingDataSource = bookingDataSource;
+    : _bookingDataSource = bookingDataSource;
 
   final BookingDataSource _bookingDataSource;
 
   @override
-  Future<BookingDays?> fetchBookingDays() async => (await _bookingDataSource.fetchBookingDays())?.toEntity();
+  Future<BookingDays?> fetchBookingDays() async =>
+      (await _bookingDataSource.fetchBookingDays())?.toEntity();
 
   @override
-  Future<BookingDay?> fetchTimeSlotsForDay(String date) async => (await _bookingDataSource.fetchTimeSlotsForDay(date))?.toEntity();
+  Future<BookingDay?> fetchTimeSlotsForDay(String date) async =>
+      (await _bookingDataSource.fetchTimeSlotsForDay(date))?.toEntity();
 }

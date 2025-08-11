@@ -1,12 +1,12 @@
 import 'dart:async';
 import 'dart:convert';
-import 'package:book_talk/src/common/utils/interface/closable.dart';
+import 'package:book_talk/src/common/utils/disposable.dart' show Disposable;
 import 'package:book_talk/src/common/utils/preferences_storage/preferences_entry.dart';
 import 'package:book_talk/src/common/utils/preferences_storage/preferences_storage.dart';
 import 'package:book_talk/src/feature/auth/model/auth_token.dart';
 import 'package:rxdart/rxdart.dart';
 
-abstract interface class AuthStorage implements Closable {
+abstract interface class AuthStorage implements Disposable {
   /// Load auth token from storage
   ///
   /// If null -> user not authenticated
@@ -24,10 +24,10 @@ abstract interface class AuthStorage implements Closable {
 
 final class AuthStorageImpl implements AuthStorage {
   AuthStorageImpl({required PreferencesStorage preferencesStorage})
-      : _tokenEntry = StringPreferencesStorageEntry(
-          preferencesStorage: preferencesStorage,
-          key: 'auth.token',
-        );
+    : _tokenEntry = StringPreferencesStorageEntry(
+        preferencesStorage: preferencesStorage,
+        key: 'auth.token',
+      );
 
   final PreferencesStorageEntry<String> _tokenEntry;
   final BehaviorSubject<AuthToken?> _authTokenBehaviorSubject =
@@ -57,7 +57,7 @@ final class AuthStorageImpl implements AuthStorage {
   }
 
   @override
-  Future<void> close() async {
+  Future<void> dispose() async {
     await _authTokenBehaviorSubject.close();
   }
 

@@ -8,7 +8,7 @@ abstract interface class UserRepository {
 
 final class UserRepositoryImpl extends UserRepository {
   UserRepositoryImpl({required UserDatasource userDatasource})
-      : _userDatasource = userDatasource;
+    : _userDatasource = userDatasource;
 
   final UserDatasource _userDatasource;
 

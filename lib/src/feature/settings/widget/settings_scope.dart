@@ -5,10 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class SettingsScope extends StatefulWidget {
-  const SettingsScope({
-    required this.child,
-    super.key,
-  });
+  const SettingsScope({required this.child, super.key});
 
   static AppSettings? settingsOf(BuildContext context, {bool listen = true}) {
     final settingsScope = listen

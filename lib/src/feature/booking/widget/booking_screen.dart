@@ -26,20 +26,19 @@ class BookingScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Room? room = AppScope.of(context)
-        .roomsBloc
-        .state
-        .rooms
-        ?.firstWhereOrNull((room) => room.id == roomId);
+    final Room? room = AppScope.of(
+      context,
+    ).roomsBloc.state.rooms?.firstWhereOrNull((room) => room.id == roomId);
 
-    final String roomName = room?.name ?? AppLocalizations.of(context)!.roomNotFound;
+    final String roomName =
+        room?.name ?? AppLocalizations.of(context)!.roomNotFound;
 
     return BookingScope(
       child: Scaffold(
         appBar: CupertinoNavigationBar(
-          leading: Theme.of(context)
-              .actionIconTheme!
-              .backButtonIconBuilder!(context),
+          leading: Theme.of(context).actionIconTheme!.backButtonIconBuilder!(
+            context,
+          ),
           middle: UiText.titleMedium(roomName, textAlign: TextAlign.center),
         ),
         body: const _BookingBody(),

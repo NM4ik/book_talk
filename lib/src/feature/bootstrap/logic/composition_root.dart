@@ -63,7 +63,7 @@ Future<DependenciesContainer> createDependenciesContainer(
   final AppMetadata appMetaData = createAppMetaData(config);
 
   /// datasource
-  final PreferencesStorage sharedPreferences = SharedPreferencesStorage(
+  final PreferencesStorage sharedPreferences = PreferencesStorage$SharedPref(
     sharedPreferences: SharedPreferencesAsync(),
   );
   final AuthStorage authStorage = await createAuthStorage(sharedPreferences);
@@ -72,10 +72,14 @@ Future<DependenciesContainer> createDependenciesContainer(
   final RestClient restClient = createRestClient(authStorage, appLogger);
 
   /// BLoC
-  final AppSettingsBloc settingsBloc =
-      await createAppSettingsBloc(sharedPreferences);
-  final AuthBloc authBloc =
-      await createAuthBloc(sharedPreferences, authStorage, restClient);
+  final AppSettingsBloc settingsBloc = await createAppSettingsBloc(
+    sharedPreferences,
+  );
+  final AuthBloc authBloc = await createAuthBloc(
+    sharedPreferences,
+    authStorage,
+    restClient,
+  );
   final AccountBloc accountBloc = createAccountBloc(
     authBloc.stream
         .map((state) => state.authStatus)
@@ -100,6 +104,8 @@ RestClient createRestClient(AuthStorage authStorage, AppLogger appLogger) {
     baseUrl: dotenv.env['API_BASE_URL'] ?? '',
     headers: {},
   );
+
+  // TODO(Mikhailov): separate logic of dio interceptor
   (restClient as RestClientDio).injectAuthenticationInterceptor(
     tokenStorage: RestApiAuthStorage(authStorage: authStorage),
     authorizationClient: RestApiAuthorizationClient(
@@ -112,9 +118,7 @@ RestClient createRestClient(AuthStorage authStorage, AppLogger appLogger) {
 
   // TODO(Mikhailov): ifDebug
   restClient.injectInterceptor(
-    interceptor: LoggerInterceptor(
-      appLogger: appLogger,
-    ),
+    interceptor: LoggerInterceptor(appLogger: appLogger),
   );
 
   return restClient;
@@ -122,10 +126,9 @@ RestClient createRestClient(AuthStorage authStorage, AppLogger appLogger) {
 
 /// Creates and instance of [AuthStorage] and fetch token from storage.
 Future<AuthStorage> createAuthStorage(
-    PreferencesStorage preferencesStorage) async {
-  final AuthStorage authStorage = AuthStorageImpl(
-    preferencesStorage: preferencesStorage,
-  );
+  PreferencesStorage preferencesStorage,
+) async {
+  final authStorage = AuthStorageImpl(preferencesStorage: preferencesStorage);
   await authStorage.get();
   return authStorage;
 }
@@ -151,11 +154,11 @@ Future<AppSettingsBloc> createAppSettingsBloc(
 
 /// Creates an instance of [AppMetadata].
 AppMetadata createAppMetaData(Config config) => AppMetadata(
-    environment: config.environment.name,
-    appVersion: Pubspec.version.canonical,
-    operatingSystem: Platform.operatingSystem,
-    locale: Platform.localeName,
-  );
+  environment: config.environment.name,
+  appVersion: Pubspec.version.canonical,
+  operatingSystem: Platform.operatingSystem,
+  locale: Platform.localeName,
+);
 
 /// Creates an instance of [AuthBloc].
 Future<AuthBloc> createAuthBloc(
@@ -163,10 +166,8 @@ Future<AuthBloc> createAuthBloc(
   AuthStorage authStorage,
   RestClient restClient,
 ) async {
-  final AuthDatasource authDatasource = AuthDatasourceImpl(
-    restClient: restClient,
-  );
-  final AuthRepository authRepository = AuthRepositoryImpl(
+  final authDatasource = AuthDatasourceImpl(restClient: restClient);
+  final authRepository = AuthRepositoryImpl(
     authStorage: authStorage,
     authDatasource: authDatasource,
   );
@@ -181,27 +182,28 @@ Future<AuthBloc> createAuthBloc(
 
 /// Creates an instance of [RoomsBloc].
 RoomsBloc createRoomsBloc(RestClient restClient) => RoomsBloc(
-    const RoomsState.idle(rooms: null),
-    roomsRepository: RoomsRepositoryImpl(
-      roomsDatasource: RoomsDatasourceImpl(restClient: restClient),
-    ),
-  );
+  const RoomsState.idle(rooms: null),
+  roomsRepository: RoomsRepositoryImpl(
+    roomsDatasource: RoomsDatasourceImpl(restClient: restClient),
+  ),
+);
 
 /// Creates an instance of [AccountBloc].
 AccountBloc createAccountBloc(
   Stream<AuthStatus> authStatusStream,
   RestClient restClient,
 ) => AccountBloc(
-    userRepository: UserRepositoryImpl(
-      userDatasource: UserDatasourceImpl(restClient: restClient),
-    ),
-    authStatusStream: authStatusStream,
-  );
+  userRepository: UserRepositoryImpl(
+    userDatasource: UserDatasourceImpl(restClient: restClient),
+  ),
+  authStatusStream: authStatusStream,
+);
 
 /// Creates an instance of [UserRepository].
-UserRepository createUserRepository(RestClient restClient) => UserRepositoryImpl(
-    userDatasource: UserDatasourceImpl(restClient: restClient),
-  );
+UserRepository createUserRepository(RestClient restClient) =>
+    UserRepositoryImpl(
+      userDatasource: UserDatasourceImpl(restClient: restClient),
+    );
 
 /// {@template composition_result}
 /// Result of composition
@@ -210,10 +212,7 @@ UserRepository createUserRepository(RestClient restClient) => UserRepositoryImpl
 /// {@endtemplate}
 final class CompositionResult {
   /// {@macro composition_result}
-  const CompositionResult({
-    required this.dependencies,
-    required this.msSpent,
-  });
+  const CompositionResult({required this.dependencies, required this.msSpent});
 
   /// The dependencies container
   final DependenciesContainer dependencies;
@@ -222,7 +221,8 @@ final class CompositionResult {
   final int msSpent;
 
   @override
-  String toString() => '$CompositionResult('
+  String toString() =>
+      '$CompositionResult('
       'dependencies: $dependencies, '
       'msSpent: $msSpent'
       ')';

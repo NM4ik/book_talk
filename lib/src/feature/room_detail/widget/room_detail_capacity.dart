@@ -19,12 +19,10 @@ class _RoomCapacitySelectorState extends State<RoomCapacitySelector> {
   @override
   void initState() {
     super.initState();
-    _capacityTextEditingController.text =
-        RoomDetailScope.of(context, listen: false)
-            .state
-            .room
-            .capacity
-            .toString();
+    _capacityTextEditingController.text = RoomDetailScope.of(
+      context,
+      listen: false,
+    ).state.room.capacity.toString();
   }
 
   @override
@@ -47,8 +45,8 @@ class _RoomCapacitySelectorState extends State<RoomCapacitySelector> {
           bloc: roomDetailBloc,
           buildWhen: (previous, current) {
             if (previous.room.capacity != current.room.capacity) {
-              _capacityTextEditingController.text =
-                  current.room.capacity.toString();
+              _capacityTextEditingController.text = current.room.capacity
+                  .toString();
 
               return true;
             }
@@ -61,10 +59,8 @@ class _RoomCapacitySelectorState extends State<RoomCapacitySelector> {
             return Row(
               children: [
                 UiButton.filledDesctructive(
-                  onPressed: () => _changeCapacity(
-                    roomDetailBloc,
-                    capacity - 1,
-                  ),
+                  onPressed: () =>
+                      _changeCapacity(roomDetailBloc, capacity - 1),
                   label: const Icon(Icons.remove),
                 ),
                 Padding(
@@ -77,17 +73,17 @@ class _RoomCapacitySelectorState extends State<RoomCapacitySelector> {
                       maxLength: 4,
                       textAlign: TextAlign.center,
                       onChanged: (value) => _changeCapacity(
-                          roomDetailBloc, int.tryParse(value) ?? 0),
-                      buildCounter: (
-                        p0, {
-                        required currentLength,
-                        required isFocused,
-                        required maxLength,
-                      }) =>
-                          const SizedBox.shrink(),
-                      inputFormatters: [
-                        FilteringTextInputFormatter.digitsOnly,
-                      ],
+                        roomDetailBloc,
+                        int.tryParse(value) ?? 0,
+                      ),
+                      buildCounter:
+                          (
+                            p0, {
+                            required currentLength,
+                            required isFocused,
+                            required maxLength,
+                          }) => const SizedBox.shrink(),
+                      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                     ),
                   ),
                 ),

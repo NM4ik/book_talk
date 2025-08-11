@@ -4,10 +4,7 @@ sealed class AuthEvent {
   const AuthEvent();
 
   factory AuthEvent.signEmailPassword(String email, String password) =>
-      _SignEmailPasswordAuthEvent(
-        email: email,
-        password: password,
-      );
+      _SignEmailPasswordAuthEvent(email: email, password: password);
 
   factory AuthEvent.signOut() => const _SignOutAuthEvent();
 }

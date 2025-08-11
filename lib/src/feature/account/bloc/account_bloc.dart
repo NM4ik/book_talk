@@ -1,8 +1,8 @@
 import 'dart:async';
-import 'package:bloc/bloc.dart';
 import 'package:book_talk/src/feature/account/data/user_repository.dart';
 import 'package:book_talk/src/feature/account/model/user.dart';
 import 'package:book_talk/src/feature/auth/model/auth_status.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
 
 part 'account_event.dart';

@@ -1,4 +1,5 @@
 import 'package:book_talk/generated/assets.gen.dart';
+import 'package:book_talk/src/common/presentation/text_field_base.dart';
 import 'package:book_talk/src/common/widgets/window_size.dart';
 import 'package:book_talk/src/feature/auth/bloc/auth_bloc.dart';
 import 'package:book_talk/src/feature/bootstrap/widget/app_scope.dart';
@@ -16,12 +17,10 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  final TextEditingController _emailController = TextEditingController();
-  final FocusNode emailFocusNode = FocusNode();
-  final TextEditingController _passwordController = TextEditingController();
-  final FocusNode passwordFocusNode = FocusNode();
-  final PageController _pageController = PageController();
-  final ValueNotifier<int> _indexNotifier = ValueNotifier(0);
+  final _emailController = TextFieldController();
+  final _passwordController = TextFieldController();
+  final _pageController = PageController();
+  final _indexNotifier = ValueNotifier<int>(0);
 
   @override
   void initState() {
@@ -35,8 +34,6 @@ class _LoginScreenState extends State<LoginScreen> {
     _indexNotifier.dispose();
     _passwordController.dispose();
     _emailController.dispose();
-    passwordFocusNode.dispose();
-    emailFocusNode.dispose();
     super.dispose();
   }
 
@@ -59,8 +56,6 @@ class _LoginScreenState extends State<LoginScreen> {
               child: LoginForm(
                 emailController: _emailController,
                 passwordController: _passwordController,
-                passwordFocusNode: passwordFocusNode,
-                emailFocusNode: emailFocusNode,
                 onAuthPress: () => _onSignIn(context),
               ),
             ),
@@ -201,16 +196,12 @@ class LoginForm extends StatelessWidget {
   const LoginForm({
     required this.emailController,
     required this.passwordController,
-    required this.passwordFocusNode,
-    required this.emailFocusNode,
     required this.onAuthPress,
     super.key,
   });
 
-  final TextEditingController emailController;
-  final TextEditingController passwordController;
-  final FocusNode passwordFocusNode;
-  final FocusNode emailFocusNode;
+  final TextFieldController emailController;
+  final TextFieldController passwordController;
   final void Function() onAuthPress;
 
   @override
@@ -233,17 +224,17 @@ class LoginForm extends StatelessWidget {
               ),
               UiTextField.standart(
                 hintText: 'Email',
-                controller: emailController,
-                onEditingComplete: passwordFocusNode.requestFocus,
-                focus: emailFocusNode,
+                controller: emailController.controller,
+                onEditingComplete: passwordController.focusNode.requestFocus,
+                focus: emailController.focusNode,
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 20, bottom: 40),
                 child: _PasswordTextFieldWidget(
-                  controller: passwordController,
-                  focusNode: passwordFocusNode,
+                  controller: passwordController.controller,
+                  focusNode: passwordController.focusNode,
                   onEditingComplete: () {
-                    passwordFocusNode.unfocus();
+                    passwordController.focusNode.unfocus();
                     onAuthPress();
                   },
                 ),

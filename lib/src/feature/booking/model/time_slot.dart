@@ -52,15 +52,15 @@ enum TimeSlotStatus {
 
   /// Creates a [TimeSlotStatus] from a JSON string.
   factory TimeSlotStatus.fromJson(String json) => switch (json) {
-        'booked' => booked,
-        _ => available,
-      };
+    'booked' => booked,
+    _ => available,
+  };
 
   /// Converts the [TimeSlotStatus] to a JSON string.
   String toJson() => switch (this) {
-        booked => 'booked',
-        _ => 'available',
-      };
+    booked => 'booked',
+    _ => 'available',
+  };
 
   /// Checks if the time slot is available.
   bool get isAvailable => this == TimeSlotStatus.available;
@@ -75,18 +75,18 @@ class TimeSlotDto {
   });
 
   factory TimeSlotDto.fromJson(Map<String, dynamic> json) => TimeSlotDto(
-        time: DateTime.parse(json['time'].toString()),
-        status: json['status'] as String,
-        user: json['user'] as String?,
-        department: json['department'] as String?,
-      );
+    time: DateTime.parse(json['time'].toString()),
+    status: json['status'] as String,
+    user: json['user'] as String?,
+    department: json['department'] as String?,
+  );
 
   factory TimeSlotDto.fromEntity(TimeSlot timeSlot) => TimeSlotDto(
-        time: timeSlot.time,
-        status: timeSlot.status.toJson(),
-        user: null,
-        department: null,
-      );
+    time: timeSlot.time,
+    status: timeSlot.status.toJson(),
+    user: null,
+    department: null,
+  );
 
   final DateTime time;
   final String status;
@@ -95,11 +95,7 @@ class TimeSlotDto {
 
   TimeSlot toEntity() {
     if (department != null && user != null) {
-      return BookedTimeSlot(
-        time: time,
-        department: department!,
-        user: user!,
-      );
+      return BookedTimeSlot(time: time, department: department!, user: user!);
     }
 
     return TimeSlot(time: time);
