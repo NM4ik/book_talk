@@ -21,15 +21,14 @@ dependencies:
 
   # State and data flow
   rxdart: ^0.28.0
-  flutter_bloc: ^8.1.6
-  bloc: ^8.1.4
-  bloc_concurrency: ^0.2.5
+  flutter_bloc: ^9.1.1
+  bloc_concurrency: ^0.3.0
 
   # Router
   octopus: ^0.0.9
 
   # Device local data
-  shared_preferences: ^2.3.2
+  shared_preferences: ^2.5.3
 
   # UI
   book_talk_ui:
@@ -40,29 +39,28 @@ dependencies:
   animations: ^2.0.11
 
   # Network
-  dio: ^5.8.0+1
+  dio: ^5.9.0
   rest_client:
     path: packages/rest_client
 
   # Utils
   uuid: ^4.5.1
   cupertino_icons: ^1.0.8
-  window_manager: ^0.4.3
-  collection: ^1.18.0
+  window_manager: ^0.5.1
+  collection: ^1.19.1
   image_picker: ^1.1.2
-  dart_jsonwebtoken: ^3.1.1
-  talker_flutter: ^4.6.14
+  dart_jsonwebtoken: ^3.2.0
+  talker_flutter: ^4.9.3
   flutter_dotenv: ^5.2.1
   meta: ^1.16.0
-  clock: 
+  clock: 1.1.2
 
 dev_dependencies:
-  flutter_gen: ^5.8.0
-  flutter_gen_runner: ^5.8.0
-  pubspec_generator: ^4.0.0
+  flutter_gen: ^5.11.0
+  flutter_gen_runner: ^5.11.0
+  pubspec_generator: ^4.3.0
   build_runner: ^2.4.13
-  dart_code_metrics_presets: ^2.17.0
-  dartdoc: ^8.1.0
+  dartdoc: ^8.3.4
   melos: ^6.3.3
   
   # Analysis
